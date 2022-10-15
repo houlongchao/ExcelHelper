@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>ExcelHelper</name>
+        <name>ExcelHelper.Core</name>
     </assembly>
     <members>
         <member name="T:ExcelHelper.ExportHeaderAttribute">

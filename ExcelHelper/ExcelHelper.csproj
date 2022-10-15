@@ -23,5 +23,6 @@
   <PropertyGroup>
 	<DocumentationFile>ExcelHelper.xml</DocumentationFile>
 	<OutputType>Library</OutputType>
+	<AssemblyName>ExcelHelper.Core</AssemblyName>
   </PropertyGroup>
 </Project>
