@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExcelHelper.Aspose</name>
+    </assembly>
+    <members>
+        <member name="T:ExcelHelper.Aspose.AsposeCellHelper">
+            <summary>
+            Aspose Excel Helper
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcel(System.String)">
+            <summary>
+            读取 Excel
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcel(System.Byte[])">
+            <summary>
+            读取 Excel
+            </summary>
+            <param name="fileBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcel(System.IO.Stream)">
+            <summary>
+            读取 Excel
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.CreateExcel">
+            <summary>
+            创建 Excel
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ToBytes(Aspose.Cells.Workbook)">
+            <summary>
+            转换为 byte 数据
+            </summary>
+            <param name="workbook"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.EvaluateAllFormulaCells(Aspose.Cells.Workbook)">
+            <summary>
+            计算 Excel
+            </summary>
+            <param name="workbook"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetSheet(Aspose.Cells.Workbook,System.String)">
+            <summary>
+            获取指定 Sheet
+            </summary>
+            <param name="workbook"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetSheet(Aspose.Cells.Workbook,System.String[])">
+            <summary>
+            获取指定 Sheet，如果指定多个 name ， 则依次获取，获取到第一个匹配的 Sheet 返回
+            </summary>
+            <param name="workbook"></param>
+            <param name="names"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetSheetAt(Aspose.Cells.Workbook,System.Int32)">
+            <summary>
+            获取指定 Sheet
+            </summary>
+            <param name="workbook"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.CreateSheet(Aspose.Cells.Workbook,System.String)">
+            <summary>
+            创建 Sheet
+            </summary>
+            <param name="workbook"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcelSheet(System.String,System.Int32)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcelSheet(System.String,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ReadExcelSheet(System.IO.Stream,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="stream"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetRow(Aspose.Cells.Worksheet,System.Int32)">
+            <summary>
+            获取指定行
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.CreateRow(Aspose.Cells.Worksheet,System.Int32)">
+            <summary>
+            创建指定行
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetCell(Aspose.Cells.Worksheet,System.Int32,System.Int32)">
+            <summary>
+            获取指定单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetCell(Aspose.Cells.Worksheet,System.String)">
+            <summary>
+            获取指定单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetCell(Aspose.Cells.Row,System.Int32)">
+            <summary>
+            获取指定单元格
+            </summary>
+            <param name="row"></param>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetData(Aspose.Cells.Cell,System.Boolean)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="cell"></param>
+            <param name="calculate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.CreateCell(Aspose.Cells.Worksheet,System.String)">
+            <summary>
+            创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.CreateCell(Aspose.Cells.Worksheet,System.Int32,System.Int32)">
+            <summary>
+            创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetOrCreateCell(Aspose.Cells.Worksheet,System.Int32,System.Int32)">
+            <summary>
+            获取或创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetOrCreateCell(Aspose.Cells.Worksheet,System.String)">
+            <summary>
+            获取或创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCell(Aspose.Cells.Worksheet,System.String,System.Boolean)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCell(Aspose.Cells.Worksheet,System.String,System.Double)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCell(Aspose.Cells.Worksheet,System.String,System.String)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetIndex(Aspose.Cells.Row,System.String,System.Int32,System.String[])">
+            <summary>
+            获取指定标题<paramref name="text"/>的列 Index
+            </summary>
+            <param name="row">行</param>
+            <param name="text">要匹配的列内容</param>
+            <param name="defaultIndex">如果没有匹配默认返回的Index</param>
+            <param name="otherTexts">除过<paramref name="text"/>的其它匹配内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetValue(Aspose.Cells.Cell,System.String)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetValue(Aspose.Cells.Cell,System.Double)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetValue(Aspose.Cells.Cell,System.DateTime)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetValue(Aspose.Cells.Cell,System.Boolean)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCellValue(Aspose.Cells.Cell,System.Object)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetComment(Aspose.Cells.Cell,System.String)">
+            <summary>
+            设置单元格备注
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetBorder(Aspose.Cells.Cell,Aspose.Cells.CellBorderType)">
+            <summary>
+            设置单元格边框
+            </summary>
+            <param name="cell"></param>
+            <param name="borderStype"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetBorder(Aspose.Cells.Cell,Aspose.Cells.CellBorderType,Aspose.Cells.CellBorderType,Aspose.Cells.CellBorderType,Aspose.Cells.CellBorderType)">
+            <summary>
+            设置单元格边框
+            </summary>
+            <param name="cell"></param>
+            <param name="borderTop"></param>
+            <param name="borderRight"></param>
+            <param name="borderBottom"></param>
+            <param name="borderLeft"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetFont(Aspose.Cells.Cell,System.Action{Aspose.Cells.Font})">
+            <summary>
+            设置字体
+            </summary>
+            <param name="cell"></param>
+            <param name="fontAction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCellStyle(Aspose.Cells.Cell,Aspose.Cells.Style)">
+            <summary>
+            设置单元格样式
+            </summary>
+            <param name="cell"></param>
+            <param name="cellStyle"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.Aspose.ExcelHelperBuilderExtension">
+            <summary>
+            ExcelHelperBuilder 扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.String)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="fileBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildWrite(ExcelHelper.ExcelHelperBuilder)">
+            <summary>
+            构建Excel文件
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.Aspose.ExcelReadHelper">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="stream"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="fileBytes"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.GetAllSheets">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.ImportSheet``1(System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.Aspose.ExcelWriteHelper">
+            <summary>
+            Excel 写入帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+            <summary>
+            Excel 写入帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.ToBytes">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

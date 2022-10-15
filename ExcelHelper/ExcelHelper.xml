@@ -1,0 +1,400 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExcelHelper</name>
+    </assembly>
+    <members>
+        <member name="T:ExcelHelper.ExportHeaderAttribute">
+            <summary>
+            导出头设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.Name">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.Comment">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.IsAutoSizeColumn">
+            <summary>
+            是否自动列宽度
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.ColumnWidth">
+            <summary>
+            列宽度, <see cref="P:ExcelHelper.ExportHeaderAttribute.IsAutoSizeColumn"/>为<c>false</c>时生效
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.IsBold">
+            <summary>
+            title 是否加粗
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.FontSize">
+            <summary>
+            title 字体大小
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportHeaderAttribute.#ctor(System.String)">
+            <summary>
+            导出头设置
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="T:ExcelHelper.ExportIgnoreAttribute">
+            <summary>
+            导出忽略
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ExportMapperAttribute">
+            <summary>
+            导出映射设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportMapperAttribute.Actual">
+            <summary>
+            真实值
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportMapperAttribute.Display">
+            <summary>
+            显示值
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportMapperAttribute.#ctor(System.Object,System.String)">
+            <summary>
+            导出映射设置
+            </summary>
+            <param name="actual">真实值</param>
+            <param name="display">显示值</param>
+        </member>
+        <member name="T:ExcelHelper.ImportHeaderAttribute">
+            <summary>
+            导入头设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.Name">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportHeaderAttribute.#ctor(System.String)">
+            <summary>
+            导入头设置
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="T:ExcelHelper.ImportMapperAttribute">
+            <summary>
+            导入映射设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportMapperAttribute.Display">
+            <summary>
+            显示值
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportMapperAttribute.Actual">
+            <summary>
+            真实值
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportMapperAttribute.#ctor(System.String,System.Object)">
+            <summary>
+            导入映射设置
+            </summary>
+            <param name="display">显示值</param>
+            <param name="actual">真实值</param>
+        </member>
+        <member name="T:ExcelHelper.BaseExcelReadHelper">
+            <summary>
+            Excel 帮助类基类
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseExcelReadHelper.FileStream">
+            <summary>
+            Excel 文件流
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+            <summary>
+            Excel 帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="stream">Excel 文件流</param>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+            <summary>
+            Excel 帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="fileBytes">Excel 文件字节数据</param>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+            <summary>
+            Excel 帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="filePath">Excel 文件路径</param>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.GetAllSheets">
+            <summary>
+            获取所有Sheet信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.ImportSheet``1(System.String[])">
+            <summary>
+            导入 Sheet 信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.BaseExcelWriteHelper">
+            <summary>
+            Excel 帮助类基类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+            <summary>
+            Excel 帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            导出 Sheet 数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sheetName"></param>
+            <param name="datas"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.ToBytes">
+            <summary>
+            转为 byte 数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.IExcelReadHelper">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.IExcelReadHelper.FileStream">
+            <summary>
+            Excel 文件流
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelReadHelper.GetAllSheets">
+            <summary>
+            获取所有Sheet名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelReadHelper.ImportSheet``1(System.String[])">
+            <summary>
+            导入指定 Sheet 页的数据，如果指定多个 Sheet 页则依次匹配，返回第一个匹配到的 Sheet 页数据 <br/>
+            如果没有指定名称，则解析第一个 sheet 页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.IExcelWriteHelper">
+            <summary>
+            Excel 写入帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            导出数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelWriteHelper.ToBytes">
+            <summary>
+            保存为字节数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.ExcelHelperBuilder">
+            <summary>
+            Excel 帮助类构建器
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelHelperBuilder.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ExcelPropertyInfo">
+            <summary>
+            Excel 属性信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.PropertyInfo">
+            <summary>
+            字段属性信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaders">
+            <summary>
+            导入头
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMappers">
+            <summary>
+            导入映射
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeader">
+            <summary>
+            导出头
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMappers">
+            <summary>
+            导出映射
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
+            <summary>
+            忽略导出，如果为null则导出，不为null则不导出
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            Excel 属性信息
+            </summary>
+            <param name="propertyInfo"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo,System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Collections.Generic.IEnumerable{ExcelHelper.ImportMapperAttribute})">
+            <summary>
+            Excel 属性信息
+            </summary>
+            <param name="propertyInfo"></param>
+            <param name="importHeaders"></param>
+            <param name="importMappers"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo,ExcelHelper.ExportHeaderAttribute,System.Collections.Generic.IEnumerable{ExcelHelper.ExportMapperAttribute})">
+            <summary>
+            Excel 属性信息
+            </summary>
+            <param name="propertyInfo"></param>
+            <param name="exportHeader"></param>
+            <param name="exportMappers"></param>
+        </member>
+        <member name="T:ExcelHelper.ExcelSheetInfo">
+            <summary>
+            Excel Sheet 页信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelSheetInfo.Name">
+            <summary>
+            Sheet 名称
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelSheetInfo.Index">
+            <summary>
+            Sheet 位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelSheetInfo.IsHidden">
+            <summary>
+            是否隐藏
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelSheetInfo.#ctor(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Sheet 页信息
+            </summary>
+            <param name="index"></param>
+            <param name="name"></param>
+            <param name="isHidden"></param>
+        </member>
+        <member name="T:ExcelHelper.ExportMapperExtensions">
+            <summary>
+            导出映射扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportMapperExtensions.MappedToDisplay(System.Collections.Generic.IEnumerable{ExcelHelper.ExportMapperAttribute},System.Object)">
+            <summary>
+            将实际值映射为显示数据
+            </summary>
+            <param name="mappers">映射器</param>
+            <param name="actual">实际值</param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.ImportMapperExtensions">
+            <summary>
+            导入映射扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportMapperExtensions.MappedToActual(System.Collections.Generic.IEnumerable{ExcelHelper.ImportMapperAttribute},System.Object)">
+            <summary>
+            将显示值映射为实际值
+            </summary>
+            <param name="mappers">映射器</param>
+            <param name="display">显示值</param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.PropertyInfoExtensions">
+            <summary>
+            属性信息扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportExcelPropertyInfo(System.Reflection.PropertyInfo)">
+            <summary>
+            获取导入Excel属性对象
+            </summary>
+            <param name="propertyInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportNamePropertyInfoDict(System.Type)">
+            <summary>
+            获取导入模型属性信息字典
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.SetValueAuto(System.Reflection.PropertyInfo,System.Object,System.Object)">
+            <summary>
+            设置值，自动转换类型
+            </summary>
+            <param name="propertyInfo"></param>
+            <param name="obj"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfo(System.Reflection.PropertyInfo)">
+            <summary>
+            获取导出Excel属性对象
+            </summary>
+            <param name="propertyInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportNamePropertyInfoDict(System.Type)">
+            <summary>
+            获取导出模型属性信息字典
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExcelHelper.NPOI</name>
+    </assembly>
+    <members>
+        <member name="T:ExcelHelper.NPOI.ExcelHelperBuilderExtension">
+            <summary>
+            Excel 帮助类构建器扩展
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.String)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="fileBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="builder"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildWrite(ExcelHelper.ExcelHelperBuilder)">
+            <summary>
+            构建Excel文件
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.NPOI.ExcelReadHelper">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="stream"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="fileBytes"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+            <summary>
+            Excel 读取帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.GetAllSheets">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.ImportSheet``1(System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.NPOI.ExcelWriteHelper">
+            <summary>
+            Excel 写入帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+            <summary>
+            Excel 写入帮助类
+            </summary>
+            <param name="excelHelperBuilder"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.ToBytes">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.NPOI.NpoiHelper">
+            <summary>
+            NPOI 帮助类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcel(System.String)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcel(System.Byte[])">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="fileBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcel(System.IO.Stream)">
+            <summary>
+            读取Excel文件
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateExcel">
+            <summary>
+            创建一个Excel操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ToBytes(NPOI.SS.UserModel.IWorkbook)">
+            <summary>
+            将Excel操作对象转为二进制文件
+            </summary>
+            <param name="workbook"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.EvaluateAllFormulaCells(NPOI.SS.UserModel.IWorkbook)">
+            <summary>
+            计算所有公式
+            </summary>
+            <param name="workbook"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.EvaluateAllFormulaCellsIgnoreError(NPOI.SS.UserModel.IWorkbook)">
+            <summary>
+            计算所有公式
+            </summary>
+            <param name="workbook"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateFormulaEvaluator(NPOI.SS.UserModel.IWorkbook)">
+            <summary>
+            获得公式计算器
+            </summary>
+            <param name="workbook"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetSheet(NPOI.SS.UserModel.IWorkbook,System.String[])">
+            <summary>
+            获取指定Sheet页，可以指定多个Sheet名称依次匹配，无匹配项返回<c>null</c>
+            </summary>
+            <param name="workbook"></param>
+            <param name="names"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.Int32)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.IO.Stream,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="stream"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetCell(NPOI.SS.UserModel.ISheet,System.Int32,System.Int32)">
+            <summary>
+            读取指定单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetCell(NPOI.SS.UserModel.ISheet,System.String)">
+            <summary>
+            读取指定单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetData(NPOI.SS.UserModel.ICell,System.Boolean)">
+            <summary>
+            读取单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="calculate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateCell(NPOI.SS.UserModel.ISheet,System.String)">
+            <summary>
+            创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateCell(NPOI.SS.UserModel.ISheet,System.Int32,System.Int32)">
+            <summary>
+            创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateCell(NPOI.SS.UserModel.ISheet,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="firstRow"></param>
+            <param name="lastRow"></param>
+            <param name="firstCol"></param>
+            <param name="lastCol"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetOrCreateCell(NPOI.SS.UserModel.ISheet,System.Int32,System.Int32)">
+            <summary>
+            获取或创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetOrCreateCell(NPOI.SS.UserModel.ISheet,System.String)">
+            <summary>
+            获取或创建单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetCell(NPOI.SS.UserModel.ISheet,System.String,System.Boolean)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetCell(NPOI.SS.UserModel.ISheet,System.String,System.Double)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetCell(NPOI.SS.UserModel.ISheet,System.String,System.String)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellRef"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetIndex(NPOI.SS.UserModel.IRow,System.String,System.Int32,System.String[])">
+            <summary>
+            获取指定标题<paramref name="text"/>的列 Index
+            </summary>
+            <param name="row">行</param>
+            <param name="text">要匹配的列内容</param>
+            <param name="defaultIndex">如果没有匹配默认返回的Index</param>
+            <param name="otherTexts">除过<paramref name="text"/>的其它匹配内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.String)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.Double)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.Boolean)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.DateTime)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetComment(NPOI.SS.UserModel.ICell,System.String)">
+            <summary>
+            设置单元格备注
+            </summary>
+            <param name="cell"></param>
+            <param name="comment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetBorder(NPOI.SS.UserModel.ICell,NPOI.SS.UserModel.BorderStyle)">
+            <summary>
+            设置单元格边框
+            </summary>
+            <param name="cell"></param>
+            <param name="borderStype"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetBorder(NPOI.SS.UserModel.ICell,NPOI.SS.UserModel.BorderStyle,NPOI.SS.UserModel.BorderStyle,NPOI.SS.UserModel.BorderStyle,NPOI.SS.UserModel.BorderStyle)">
+            <summary>
+            设置单元格边框
+            </summary>
+            <param name="cell"></param>
+            <param name="borderTop"></param>
+            <param name="borderRight"></param>
+            <param name="borderBottom"></param>
+            <param name="borderLeft"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetFont(NPOI.SS.UserModel.ICell,System.Action{NPOI.SS.UserModel.IFont})">
+            <summary>
+            设置单元格边框
+            </summary>
+            <param name="cell"></param>
+            <param name="fontAction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetCellStyle(NPOI.SS.UserModel.ICell,NPOI.SS.UserModel.ICellStyle)">
+            <summary>
+            设置单元格样式
+            </summary>
+            <param name="cell"></param>
+            <param name="cellStyle"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
