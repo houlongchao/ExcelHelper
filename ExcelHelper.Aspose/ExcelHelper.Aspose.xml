@@ -390,6 +390,9 @@
         <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
             <inheritdoc/>
         </member>
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.ToBytes">
             <inheritdoc/>
         </member>

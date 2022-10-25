@@ -124,6 +124,20 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
+        public override IExcelWriteHelper SetSheetIndex(string sheetName, int index)
+        {
+            var sheet = _excel.GetSheet(sheetName);
+            if (sheet == null)
+            {
+                return this;
+            }
+
+            _excel.SetSheetOrder(sheetName, index);
+
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override byte[] ToBytes()
         {
             return _excel.ToBytes();

@@ -185,6 +185,9 @@
             <param name="datas"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.BaseExcelWriteHelper.ToBytes">
             <summary>
             转为 byte 数据
@@ -226,6 +229,14 @@
             导出数据
             </summary>
             <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
+            <summary>
+            设置Sheet的位置
+            </summary>
+            <param name="sheetName"></param>
+            <param name="index"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.IExcelWriteHelper.ToBytes">

@@ -38,7 +38,23 @@ namespace ExcelHelperTest
                 C = "c",
                 Status = Status.B,
             });
-            _excelHelper.ExportSheet("test", datas);
+            var data2 = new List<DemoIO>(datas);
+            data2.Add(new DemoIO()
+            {
+                A = "data2",
+                B = "",
+                C = "c",
+                Status = Status.B,
+            });
+            var data3 = new List<DemoIO>(data2);
+            data3.Add(new DemoIO()
+            {
+                A = "data3",
+                B = "",
+                C = "c",
+                Status = Status.B,
+            });
+            _excelHelper.ExportSheet("test", datas).ExportSheet("test2", data2).ExportSheet("test3", data3).SetSheetIndex("test3", 1);
             var bytes = _excelHelper.ToBytes();
             File.WriteAllBytes("test.xlsx", bytes);
         }

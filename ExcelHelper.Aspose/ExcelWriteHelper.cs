@@ -128,6 +128,20 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
+        public override IExcelWriteHelper SetSheetIndex(string sheetName, int index)
+        {
+            var sheet = _excel.GetSheet(sheetName);
+            if (sheet == null)
+            {
+                return this;
+            }
+
+            sheet.MoveTo(index);
+
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override byte[] ToBytes()
         {
             return _excel.ToBytes();

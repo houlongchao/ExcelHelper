@@ -36,6 +36,9 @@ namespace ExcelHelper
         /// <returns></returns>
         public abstract IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas) where T : new();
 
+        /// <inheritdoc/>
+        public abstract IExcelWriteHelper SetSheetIndex(string sheetName, int index);
+
         /// <summary>
         /// 转为 byte 数据
         /// </summary>

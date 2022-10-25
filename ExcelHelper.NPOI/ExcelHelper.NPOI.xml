@@ -86,6 +86,9 @@
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
             <inheritdoc/>
         </member>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.ToBytes">
             <inheritdoc/>
         </member>
