@@ -25,6 +25,11 @@ namespace ExcelHelper
         /// </summary>
         public IEnumerable<ImportMapperAttribute> ImportMappers { get; private set; }
 
+        /// <summary>
+        /// 导入限制
+        /// </summary>
+        public ImportLimitAttribute ImportLimit { get; set; }
+
         #endregion
 
         #region 导出

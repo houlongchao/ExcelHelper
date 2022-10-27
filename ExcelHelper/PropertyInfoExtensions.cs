@@ -18,7 +18,9 @@ namespace ExcelHelper
         {
             var importHeaders = propertyInfo.GetCustomAttributes<ImportHeaderAttribute>();
             var importMappers = propertyInfo.GetCustomAttributes<ImportMapperAttribute>();
+            var importLimit = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
             var excelPropertyInfo = new ExcelPropertyInfo(propertyInfo, importHeaders, importMappers);
+            excelPropertyInfo.ImportLimit = importLimit;
             return excelPropertyInfo;
         }
 

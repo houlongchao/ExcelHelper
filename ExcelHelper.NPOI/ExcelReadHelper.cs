@@ -102,6 +102,8 @@ namespace ExcelHelper.NPOI
                 {
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
 
+                    excelPropertyInfo.Value.ImportLimit.CheckValue(value);
+
                     var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);
 
                     excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);

@@ -21,6 +21,7 @@ namespace ExcelHelperTest
         [ImportHeader("C")]
         [ImportHeader("CC")]
         [ImportMapper("A3", "b")]
+        [ImportLimit("A3", true, 123)]
         [ExportHeader("C2", Comment = "备注")]
         [ExportMapper("a", "Aa")]
         [ExportMapper("b", "Ab")]
@@ -33,6 +34,7 @@ namespace ExcelHelperTest
         [ExportIgnore]
         public DateTime Date { get; set; }
 
+        [ImportLimit(-0.123)]
         [ExportMapper(0, "011")]
         public double Number { get; set; }
 

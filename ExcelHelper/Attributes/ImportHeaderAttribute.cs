@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ExcelHelper
 {
@@ -21,5 +22,10 @@ namespace ExcelHelper
         {
             Name = name;
         }
+
+        /// <summary>
+        /// 输入限制
+        /// </summary>
+        public List<string> InputLimit { get; set; }
     }
 }

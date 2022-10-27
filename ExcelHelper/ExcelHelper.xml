@@ -88,6 +88,27 @@
             </summary>
             <param name="name"></param>
         </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.InputLimit">
+            <summary>
+            输入限制
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ImportLimitAttribute">
+            <summary>
+            导入限制
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportLimitAttribute.#ctor(System.Object[])">
+            <summary>
+            导入限制
+            </summary>
+            <param name="limits"></param>
+        </member>
+        <member name="P:ExcelHelper.ImportLimitAttribute.Limits">
+            <summary>
+            导入限制
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImportMapperAttribute">
             <summary>
             导入映射设置
@@ -255,6 +276,65 @@
             释放
             </summary>
         </member>
+        <member name="T:ExcelHelper.ExcelHelperException">
+            <summary>
+            ExcelHelper异常
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelHelperException.#ctor(System.String)">
+            <summary>
+             ExcelHelper异常
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:ExcelHelper.ExportException">
+            <summary>
+            导出异常
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportException.#ctor(System.String)">
+            <summary>
+            导出异常
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:ExcelHelper.ExportException.New(System.String)">
+            <summary>
+            创建一个导出异常
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.ImportException">
+            <summary>
+            导入异常
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportException.#ctor(System.String)">
+            <summary>
+            导入异常
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:ExcelHelper.ImportException.New(System.String)">
+            <summary>
+            创建一个导入异常
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.ImportLimitExtensions">
+            <summary>
+            导入限制扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportLimitExtensions.CheckValue(ExcelHelper.ImportLimitAttribute,System.Object)">
+            <summary>
+            检查导入限制
+            </summary>
+            <param name="importLimit"></param>
+            <param name="value"></param>
+        </member>
         <member name="T:ExcelHelper.ExcelPropertyInfo">
             <summary>
             Excel 属性信息
@@ -273,6 +353,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMappers">
             <summary>
             导入映射
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimit">
+            <summary>
+            导入限制
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeader">
