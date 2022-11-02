@@ -1,4 +1,5 @@
 ﻿using NPOI.HSSF.UserModel;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.Formula;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -13,6 +14,8 @@ namespace ExcelHelper.NPOI
     /// </summary>
     public static class NpoiHelper
     {
+        #region File to Workbook
+
         /// <summary>
         /// 读取Excel文件
         /// </summary>
@@ -68,6 +71,47 @@ namespace ExcelHelper.NPOI
         {
             return new XSSFWorkbook();
         }
+
+        #endregion
+
+        #region File to Sheet
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static ISheet ReadExcelSheet(string filePath, int index)
+        {
+            return ReadExcel(filePath).GetSheetAt(index);
+        }
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static ISheet ReadExcelSheet(string filePath, string name)
+        {
+            return ReadExcel(filePath).GetSheet(name);
+        }
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static ISheet ReadExcelSheet(Stream stream, string name)
+        {
+            return ReadExcel(stream).GetSheet(name);
+        }
+
+        #endregion
+
+        #region Workbook Extensions
 
         /// <summary>
         /// 将Excel操作对象转为二进制文件
@@ -149,38 +193,9 @@ namespace ExcelHelper.NPOI
             return null;
         }
 
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static ISheet ReadExcelSheet(string filePath, int index)
-        {
-            return ReadExcel(filePath).GetSheetAt(index);
-        }
+        #endregion
 
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static ISheet ReadExcelSheet(string filePath, string name)
-        {
-            return ReadExcel(filePath).GetSheet(name);
-        }
-
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static ISheet ReadExcelSheet(Stream stream, string name)
-        {
-            return ReadExcel(stream).GetSheet(name);
-        }
+        #region Sheet Extensions
 
         /// <summary>
         /// 读取指定单元格
@@ -212,74 +227,7 @@ namespace ExcelHelper.NPOI
 
             return sheet.GetCell(cr.Row, cr.Col);
         }
-
-        /// <summary>
-        /// 读取单元格数据
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="calculate"></param>
-        /// <returns></returns>
-        public static object GetData(this ICell cell, bool calculate = true)
-        {
-            if (cell == null)
-            {
-                return null;
-            }
-            switch (cell.CellType)
-            {
-                case CellType.Blank:
-                    return null;
-                case CellType.Boolean:
-                    return cell.BooleanCellValue;
-                case CellType.Numeric:
-                    {
-                        if (DateUtil.IsCellDateFormatted(cell))
-                        {
-                            return cell.DateCellValue;
-                        }
-                        return cell.NumericCellValue;
-                    }
-                case CellType.String:
-                    return cell.StringCellValue;
-                case CellType.Error:
-                    return cell.ErrorCellValue;
-                case CellType.Formula:
-                    if (!calculate)
-                    {
-                        return cell.CellFormula;
-                    }
-                    try
-                    {
-                        switch (cell.CachedFormulaResultType)
-                        {
-                            case CellType.Blank:
-                                return null;
-                            case CellType.Boolean:
-                                return cell.BooleanCellValue;
-                            case CellType.Numeric:
-                                {
-                                    if (DateUtil.IsCellDateFormatted(cell))
-                                    {
-                                        return cell.DateCellValue;
-                                    }
-                                    return cell.NumericCellValue;
-                                }
-                            case CellType.String:
-                                return cell.StringCellValue;
-                            case CellType.Error:
-                                return cell.ErrorCellValue;
-                        }
-                        return null;
-                    }
-                    catch
-                    {
-                        return cell.StringCellValue;
-                    }
-                default:
-                    return cell.CellFormula;
-            }
-        }
-
+        
         /// <summary>
         /// 创建单元格
         /// </summary>
@@ -393,6 +341,20 @@ namespace ExcelHelper.NPOI
         }
 
         /// <summary>
+        /// 获取Sheet的总行数
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
+        public static int GetRowCount(this ISheet sheet)
+        {
+            return sheet.PhysicalNumberOfRows;
+        }
+
+        #endregion
+
+        #region Row Extensions
+
+        /// <summary>
         /// 获取指定标题<paramref name="text"/>的列 Index
         /// </summary>
         /// <param name="row">行</param>
@@ -418,6 +380,77 @@ namespace ExcelHelper.NPOI
                 }
             }
             return defaultIndex;
+        }
+
+        #endregion
+
+        #region Cell Extensions
+
+        /// <summary>
+        /// 读取单元格数据
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="calculate"></param>
+        /// <returns></returns>
+        public static object GetData(this ICell cell, bool calculate = true)
+        {
+            if (cell == null)
+            {
+                return null;
+            }
+            switch (cell.CellType)
+            {
+                case CellType.Blank:
+                    return null;
+                case CellType.Boolean:
+                    return cell.BooleanCellValue;
+                case CellType.Numeric:
+                    {
+                        if (DateUtil.IsCellDateFormatted(cell))
+                        {
+                            return cell.DateCellValue;
+                        }
+                        return cell.NumericCellValue;
+                    }
+                case CellType.String:
+                    return cell.StringCellValue;
+                case CellType.Error:
+                    return cell.ErrorCellValue;
+                case CellType.Formula:
+                    if (!calculate)
+                    {
+                        return cell.CellFormula;
+                    }
+                    try
+                    {
+                        switch (cell.CachedFormulaResultType)
+                        {
+                            case CellType.Blank:
+                                return null;
+                            case CellType.Boolean:
+                                return cell.BooleanCellValue;
+                            case CellType.Numeric:
+                                {
+                                    if (DateUtil.IsCellDateFormatted(cell))
+                                    {
+                                        return cell.DateCellValue;
+                                    }
+                                    return cell.NumericCellValue;
+                                }
+                            case CellType.String:
+                                return cell.StringCellValue;
+                            case CellType.Error:
+                                return cell.ErrorCellValue;
+                        }
+                        return null;
+                    }
+                    catch
+                    {
+                        return cell.StringCellValue;
+                    }
+                default:
+                    return cell.CellFormula;
+            }
         }
 
         /// <summary>
@@ -556,5 +589,8 @@ namespace ExcelHelper.NPOI
             cell.CellStyle = cellStyle;
             return cell;
         }
+
+        #endregion
+
     }
 }

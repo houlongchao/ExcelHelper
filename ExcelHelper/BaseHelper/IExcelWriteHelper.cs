@@ -27,5 +27,12 @@ namespace ExcelHelper
         /// </summary>
         /// <returns></returns>
         byte[] ToBytes();
+
+        /// <summary>
+        /// 创建一个Sheet页
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
+        IExcelSheet CreateExcelSheet(string sheetName);
     }
 }

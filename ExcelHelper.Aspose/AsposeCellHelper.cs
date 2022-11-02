@@ -1,5 +1,6 @@
 ﻿using Aspose.Cells;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ExcelHelper.Aspose
@@ -9,6 +10,8 @@ namespace ExcelHelper.Aspose
     /// </summary>
     public static class AsposeCellHelper
     {
+        #region File to Workbook
+
         /// <summary>
         /// 读取 Excel
         /// </summary>
@@ -56,6 +59,47 @@ namespace ExcelHelper.Aspose
         {
             return new Workbook();
         }
+
+        #endregion
+
+        #region File to Sheet
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static Worksheet ReadExcelSheet(string filePath, int index)
+        {
+            return ReadExcel(filePath).GetSheetAt(index);
+        }
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Worksheet ReadExcelSheet(string filePath, string name)
+        {
+            return ReadExcel(filePath).GetSheet(name);
+        }
+
+        /// <summary>
+        /// 读取指定 Sheet
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Worksheet ReadExcelSheet(Stream stream, string name)
+        {
+            return ReadExcel(stream).GetSheet(name);
+        }
+
+        #endregion
+
+        #region Workbook Extensions
 
         /// <summary>
         /// 转换为 byte 数据
@@ -131,38 +175,9 @@ namespace ExcelHelper.Aspose
             return workbook.Worksheets.Add(name);
         }
 
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static Worksheet ReadExcelSheet(string filePath, int index)
-        {
-            return ReadExcel(filePath).GetSheetAt(index);
-        }
+        #endregion
 
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Worksheet ReadExcelSheet(string filePath, string name)
-        {
-            return ReadExcel(filePath).GetSheet(name);
-        }
-
-        /// <summary>
-        /// 读取指定 Sheet
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static Worksheet ReadExcelSheet(Stream stream, string name)
-        {
-            return ReadExcel(stream).GetSheet(name);
-        }
+        #region Sheet Extensions
 
         /// <summary>
         /// 获取指定行
@@ -208,36 +223,6 @@ namespace ExcelHelper.Aspose
         public static Cell GetCell(this Worksheet sheet, string cellRef)
         {
             return sheet.Cells[cellRef];
-        }
-
-        /// <summary>
-        /// 获取指定单元格
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="cell"></param>
-        /// <returns></returns>
-        public static Cell GetCell(this Row row, int cell)
-        {
-            return row.GetCellOrNull(cell);
-        }
-
-        /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="calculate"></param>
-        /// <returns></returns>
-        public static object GetData(this Cell cell, bool calculate = true)
-        {
-            if (cell == null)
-            {
-                return null;
-            }
-            if (calculate)
-            {
-                return cell.Value;
-            }
-            return cell.Formula;
         }
 
         /// <summary>
@@ -328,6 +313,32 @@ namespace ExcelHelper.Aspose
             return cell;
         }
 
+
+        /// <summary>
+        /// 获取Sheet的总行数
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
+        public static int GetRowCount(this Worksheet sheet)
+        {
+            return sheet.Cells.MaxRow + 1;
+        }
+
+        #endregion
+
+        #region Row Extensions
+
+        /// <summary>
+        /// 获取指定单元格
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public static Cell GetCell(this Row row, int cell)
+        {
+            return row.GetCellOrNull(cell);
+        }
+
         /// <summary>
         /// 获取指定标题<paramref name="text"/>的列 Index
         /// </summary>
@@ -356,6 +367,29 @@ namespace ExcelHelper.Aspose
             return defaultIndex;
         }
 
+
+        #endregion
+
+        #region Cell Extensions
+
+        /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="calculate"></param>
+        /// <returns></returns>
+        public static object GetData(this Cell cell, bool calculate = true)
+        {
+            if (cell == null)
+            {
+                return null;
+            }
+            if (calculate)
+            {
+                return cell.Value;
+            }
+            return cell.Formula;
+        }
 
         /// <summary>
         /// 设置单元格数据
@@ -494,5 +528,7 @@ namespace ExcelHelper.Aspose
             cell.SetStyle(cellStyle);
             return cell;
         }
+
+        #endregion
     }
 }

@@ -45,6 +45,11 @@
             Excel 读取帮助类
             </summary>
         </member>
+        <member name="P:ExcelHelper.NPOI.ExcelReadHelper.Excel">
+            <summary>
+            NPOI IWorkbook
+            </summary>
+        </member>
         <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
             <summary>
             Excel 读取帮助类
@@ -69,12 +74,45 @@
         <member name="M:ExcelHelper.NPOI.ExcelReadHelper.GetAllSheets">
             <inheritdoc/>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.ImportSheet``1(System.String[])">
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.GetExcelSheet(System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.NPOI.ExcelSheet">
+            <summary>
+            Excel Sheet
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.NPOI.ExcelSheet.Sheet">
+            <summary>
+            NPOI ISheet
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.#ctor(NPOI.SS.UserModel.ISheet)">
+            <summary>
+            Excel Sheet
+            </summary>
+            <param name="sheet"></param>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.AppendEmptyRow">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetData``1">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetRowCount">
             <inheritdoc/>
         </member>
         <member name="T:ExcelHelper.NPOI.ExcelWriteHelper">
             <summary>
             Excel 写入帮助类
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.NPOI.ExcelWriteHelper.Excel">
+            <summary>
+            NPOI IWorkbook
             </summary>
         </member>
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
@@ -83,8 +121,13 @@
             </summary>
             <param name="excelHelperBuilder"></param>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0})">
-            <inheritdoc/>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.CreateExcelSheet(System.String)">
+            <summary>
+            创建一个 Excel Sheet 页
+            </summary>
+            <param name="sheetName"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
             <inheritdoc/>
@@ -124,6 +167,30 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.Int32)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="filePath"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.IO.Stream,System.String)">
+            <summary>
+            读取指定 Sheet
+            </summary>
+            <param name="stream"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.ToBytes(NPOI.SS.UserModel.IWorkbook)">
             <summary>
             将Excel操作对象转为二进制文件
@@ -158,30 +225,6 @@
             <param name="names"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.Int32)">
-            <summary>
-            读取指定 Sheet
-            </summary>
-            <param name="filePath"></param>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.String)">
-            <summary>
-            读取指定 Sheet
-            </summary>
-            <param name="filePath"></param>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.IO.Stream,System.String)">
-            <summary>
-            读取指定 Sheet
-            </summary>
-            <param name="stream"></param>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.GetCell(NPOI.SS.UserModel.ISheet,System.Int32,System.Int32)">
             <summary>
             读取指定单元格
@@ -197,14 +240,6 @@
             </summary>
             <param name="sheet"></param>
             <param name="cellRef"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetData(NPOI.SS.UserModel.ICell,System.Boolean)">
-            <summary>
-            读取单元格数据
-            </summary>
-            <param name="cell"></param>
-            <param name="calculate"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateCell(NPOI.SS.UserModel.ISheet,System.String)">
@@ -279,6 +314,13 @@
             <param name="data"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetRowCount(NPOI.SS.UserModel.ISheet)">
+            <summary>
+            获取Sheet的总行数
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.GetIndex(NPOI.SS.UserModel.IRow,System.String,System.Int32,System.String[])">
             <summary>
             获取指定标题<paramref name="text"/>的列 Index
@@ -287,6 +329,14 @@
             <param name="text">要匹配的列内容</param>
             <param name="defaultIndex">如果没有匹配默认返回的Index</param>
             <param name="otherTexts">除过<paramref name="text"/>的其它匹配内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetData(NPOI.SS.UserModel.ICell,System.Boolean)">
+            <summary>
+            读取单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="calculate"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.String)">

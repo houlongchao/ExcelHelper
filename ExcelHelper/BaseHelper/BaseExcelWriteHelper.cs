@@ -34,7 +34,11 @@ namespace ExcelHelper
         /// <param name="sheetName"></param>
         /// <param name="datas"></param>
         /// <returns></returns>
-        public abstract IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas) where T : new();
+        public IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas) where T : new()
+        {
+            CreateExcelSheet(sheetName).AppendData(datas);
+            return this;
+        }
 
         /// <inheritdoc/>
         public abstract IExcelWriteHelper SetSheetIndex(string sheetName, int index);
@@ -44,5 +48,10 @@ namespace ExcelHelper
         /// </summary>
         /// <returns></returns>
         public abstract byte[] ToBytes();
+
+
+        /// <inheritdoc/>
+        public abstract IExcelSheet CreateExcelSheet(string sheetName);
+
     }
 }

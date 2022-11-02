@@ -1,4 +1,5 @@
-﻿using NPOI.SS.UserModel;
+﻿using NPOI.SS.Formula.Functions;
+using NPOI.SS.UserModel;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,6 +11,11 @@ namespace ExcelHelper.NPOI
     public class ExcelReadHelper : BaseExcelReadHelper
     {
         private readonly IWorkbook _excel;
+
+        /// <summary>
+        /// NPOI IWorkbook
+        /// </summary>
+        public IWorkbook Excel => _excel;
 
         /// <summary>
         /// Excel 读取帮助类
@@ -53,66 +59,21 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
-        public override List<T> ImportSheet<T>(params string[] sheetNames)
+        public override IExcelSheet GetExcelSheet(params string[] sheetNames)
         {
-            var result = new List<T>();
             var sheet = _excel.GetSheet(sheetNames);
-            
+
             if (sheetNames.Length <= 0)
             {
                 sheet = _excel.GetSheetAt(0);
             }
-            
+
             if (sheet == null)
             {
-                return result;
+                return null;
             }
 
-            // 获取导入模型属性信息字典
-            var excelPropertyInfoNameDict = typeof(T).GetImportNamePropertyInfoDict();
-
-            // 获取导入数据列对应的模型属性
-            var excelPropertyInfoIndexDict = new Dictionary<int, ExcelPropertyInfo>();
-            var titleRow = sheet.GetRow(0);
-            foreach (var titleCell in titleRow)
-            {
-                var title = titleCell.GetData()?.ToString();
-                if (string.IsNullOrEmpty(title))
-                {
-                    continue;
-                }
-                if (!excelPropertyInfoNameDict.ContainsKey(title))
-                {
-                    continue;
-                }
-                excelPropertyInfoIndexDict[titleCell.ColumnIndex] = excelPropertyInfoNameDict[title];
-            }
-
-            // 读取数据
-            for (int i = 1; i <= sheet.LastRowNum; i++)
-            {
-                var row = sheet.GetRow(i);
-                if (row == null)
-                {
-                    continue;
-                }
-
-                var t = new T();
-                foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
-                {
-                    var value = row.GetCell(excelPropertyInfo.Key).GetData();
-
-                    excelPropertyInfo.Value.ImportLimit.CheckValue(value);
-
-                    var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);
-
-                    excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
-                }
-                
-                result.Add(t);
-            }
-
-            return result;
+            return new ExcelSheet(sheet);
         }
     }
 }

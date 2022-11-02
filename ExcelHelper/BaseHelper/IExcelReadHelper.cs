@@ -28,5 +28,13 @@ namespace ExcelHelper
         /// <param name="sheetNames"></param>
         /// <returns></returns>
         List<T> ImportSheet<T>(params string[] sheetNames) where T: new();
+
+        /// <summary>
+        /// 读取一个Sheet页，如果指定多个 Sheet 页则依次匹配，返回第一个匹配到的 Sheet 页数据 <br/>
+        /// 如果没有指定名称，则解析第一个 sheet 页
+        /// </summary>
+        /// <param name="sheetNames"></param>
+        /// <returns></returns>
+        IExcelSheet GetExcelSheet(params string[] sheetNames);
     }
 }

@@ -54,6 +54,8 @@ namespace ExcelHelperTest
                 C = "c",
                 Status = Status.B,
             });
+
+            _excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);
             _excelHelper.ExportSheet("test", datas).ExportSheet("test2", data2).ExportSheet("test3", data3).SetSheetIndex("test3", 1);
             var bytes = _excelHelper.ToBytes();
             File.WriteAllBytes("test.xlsx", bytes);

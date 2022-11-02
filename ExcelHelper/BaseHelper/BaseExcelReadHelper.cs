@@ -68,6 +68,12 @@ namespace ExcelHelper
         /// <typeparam name="T"></typeparam>
         /// <param name="sheetNames"></param>
         /// <returns></returns>
-        public abstract List<T> ImportSheet<T>(params string[] sheetNames) where T: new();
+        public List<T> ImportSheet<T>(params string[] sheetNames) where T: new()
+        {
+            return GetExcelSheet(sheetNames)?.GetData<T>();
+        }
+
+        /// <inheritdoc/>
+        public abstract IExcelSheet GetExcelSheet(params string[] sheetNames);
     }
 }

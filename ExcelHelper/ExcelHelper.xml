@@ -181,6 +181,9 @@
             <param name="sheetNames"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.GetExcelSheet(System.String[])">
+            <inheritdoc/>
+        </member>
         <member name="T:ExcelHelper.BaseExcelWriteHelper">
             <summary>
             Excel 帮助类基类
@@ -215,6 +218,9 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.CreateExcelSheet(System.String)">
+            <inheritdoc/>
+        </member>
         <member name="T:ExcelHelper.IExcelReadHelper">
             <summary>
             Excel 读取帮助类
@@ -237,6 +243,14 @@
             如果没有指定名称，则解析第一个 sheet 页
             </summary>
             <typeparam name="T"></typeparam>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelReadHelper.GetExcelSheet(System.String[])">
+            <summary>
+            读取一个Sheet页，如果指定多个 Sheet 页则依次匹配，返回第一个匹配到的 Sheet 页数据 <br/>
+            如果没有指定名称，则解析第一个 sheet 页
+            </summary>
             <param name="sheetNames"></param>
             <returns></returns>
         </member>
@@ -266,6 +280,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.IExcelWriteHelper.CreateExcelSheet(System.String)">
+            <summary>
+            创建一个Sheet页
+            </summary>
+            <param name="sheetName"></param>
+            <returns></returns>
+        </member>
         <member name="T:ExcelHelper.ExcelHelperBuilder">
             <summary>
             Excel 帮助类构建器
@@ -275,6 +296,39 @@
             <summary>
             释放
             </summary>
+        </member>
+        <member name="T:ExcelHelper.IExcelSheet">
+            <summary>
+            Excel Sheet
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            追加数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="datas"></param>
+            <param name="addTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.AppendEmptyRow">
+            <summary>
+            追加空行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.GetData``1">
+            <summary>
+            获取数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.GetRowCount">
+            <summary>
+            获取总行数
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ExcelHelper.ExcelHelperException">
             <summary>
