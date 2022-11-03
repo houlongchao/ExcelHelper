@@ -1,6 +1,7 @@
 ﻿using Aspose.Cells;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace ExcelHelper.Aspose
 {
@@ -68,6 +69,18 @@ namespace ExcelHelper.Aspose
                 foreach (var property in excelPropertyInfoNameDict)
                 {
                     var value = property.Value.PropertyInfo.GetValue(data);
+
+                    // 如果导出的是图片二进制数据
+                    if (property.Value.ExportHeader != null && property.Value.ExportHeader.IsImage)
+                    {
+                        if (value is byte[] imageBytes)
+                        {
+                            var cell = _sheet.CreateCell(rowIndex, colIndex);
+                            cell.SetImage(imageBytes);
+                        }
+                        continue;
+                    }
+
                     var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
                     if (displayValue is DateTime dt)
                     {
@@ -156,7 +169,7 @@ namespace ExcelHelper.Aspose
             // 获取导入数据列对应的模型属性
             var excelPropertyInfoIndexDict = new Dictionary<int, ExcelPropertyInfo>();
 
-            var columnCount = _sheet.GetRowCount();
+            var columnCount = _sheet.Cells.MaxColumn + 1;
             for (int i = 0; i < columnCount; i++)
             {
                 var titleCell = _sheet.GetCell(0, i);
@@ -172,7 +185,7 @@ namespace ExcelHelper.Aspose
                 excelPropertyInfoIndexDict[i] = excelPropertyInfoNameDict[title];
             }
 
-            var rowCount = _sheet.Cells.MaxRow + 1;
+            var rowCount = _sheet.GetRowCount();
             // 读取数据
             for (int i = 1; i < rowCount; i++)
             {
@@ -184,6 +197,15 @@ namespace ExcelHelper.Aspose
                 var t = new T();
                 foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
                 {
+                    // 导入图片
+                    if (excelPropertyInfo.Value.ImportHeaders.IsImage())
+                    {
+                        var bytes = row[excelPropertyInfo.Key].GetImage();
+                        excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
+                        continue;
+                    }
+
+                    // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
 
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);

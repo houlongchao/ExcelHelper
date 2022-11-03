@@ -67,6 +67,13 @@
             <param name="workbook"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.ToFile(Aspose.Cells.Workbook,System.String)">
+            <summary>
+            写入到文件
+            </summary>
+            <param name="workbook"></param>
+            <param name="fileName"></param>
+        </member>
         <member name="M:ExcelHelper.Aspose.AsposeCellHelper.EvaluateAllFormulaCells(Aspose.Cells.Workbook)">
             <summary>
             计算 Excel
@@ -315,6 +322,28 @@
             <param name="cellStyle"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetImage(Aspose.Cells.Cell,System.Byte[])">
+            <summary>
+            设置图片
+            </summary>
+            <param name="cell"></param>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetImage(Aspose.Cells.Cell)">
+            <summary>
+            获取单元格图片数据
+            </summary>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.GetPictureData(Aspose.Cells.Worksheet)">
+            <summary>
+            获取图片字典
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
         <member name="T:ExcelHelper.Aspose.ExcelHelperBuilderExtension">
             <summary>
             ExcelHelperBuilder 扩展方法
@@ -382,6 +411,9 @@
             <param name="excelHelperBuilder"></param>
             <param name="filePath"></param>
         </member>
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.Aspose.ExcelReadHelper.GetAllSheets">
             <inheritdoc/>
         </member>
@@ -431,6 +463,9 @@
             Excel 写入帮助类
             </summary>
             <param name="excelHelperBuilder"></param>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.Dispose">
+            <inheritdoc/>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.CreateExcelSheet(System.String)">
             <inheritdoc/>

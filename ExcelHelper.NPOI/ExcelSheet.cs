@@ -74,6 +74,17 @@ namespace ExcelHelper.NPOI
                 foreach (var property in excelPropertyInfoNameDict)
                 {
                     var value = property.Value.PropertyInfo.GetValue(data);
+                    
+                    // 如果导出的是图片二进制数据
+                    if (property.Value.ExportHeader != null && property.Value.ExportHeader.IsImage)
+                    {
+                        if (value is byte[] imageBytes)
+                        {
+                            dataRow.CreateCell(colIndex).SetImage(imageBytes);
+                        }
+                        continue;
+                    }
+
                     var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
                     if (displayValue is DateTime dt)
                     {
@@ -169,8 +180,11 @@ namespace ExcelHelper.NPOI
                 excelPropertyInfoIndexDict[titleCell.ColumnIndex] = excelPropertyInfoNameDict[title];
             }
 
+            var pictureData = _sheet.GetPictureData();
+
             // 读取数据
-            for (int i = 1; i < _sheet.GetRowCount(); i++)
+            var rowCount = _sheet.GetRowCount();
+            for (int i = 1; i < rowCount; i++)
             {
                 var row = _sheet.GetRow(i);
                 if (row == null)
@@ -183,6 +197,16 @@ namespace ExcelHelper.NPOI
 
                 foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
                 {
+                    // 导入图片
+                    if (excelPropertyInfo.Value.ImportHeaders.IsImage())
+                    {
+                        var bytes = row.GetCellOrCreate(excelPropertyInfo.Key).GetImage();
+                        excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
+                        hasValue = true;
+                        continue;
+                    }
+
+                    // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
 
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);

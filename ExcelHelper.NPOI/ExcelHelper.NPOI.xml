@@ -71,6 +71,9 @@
             <param name="excelHelperBuilder"></param>
             <param name="filePath"></param>
         </member>
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.NPOI.ExcelReadHelper.GetAllSheets">
             <inheritdoc/>
         </member>
@@ -121,6 +124,9 @@
             </summary>
             <param name="excelHelperBuilder"></param>
         </member>
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.CreateExcelSheet(System.String)">
             <summary>
             创建一个 Excel Sheet 页
@@ -167,6 +173,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.CreateExcel_BigWrite(System.Int32)">
+            <summary>
+            创建一个大数据写入Excel操作对象
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.ReadExcelSheet(System.String,System.Int32)">
             <summary>
             读取指定 Sheet
@@ -197,6 +209,13 @@
             </summary>
             <param name="workbook"></param>
             <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.ToFile(NPOI.SS.UserModel.IWorkbook,System.String)">
+            <summary>
+            写入到文件
+            </summary>
+            <param name="workbook"></param>
+            <param name="fileName"></param>
         </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.EvaluateAllFormulaCells(NPOI.SS.UserModel.IWorkbook)">
             <summary>
@@ -331,6 +350,14 @@
             <param name="otherTexts">除过<paramref name="text"/>的其它匹配内容</param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetCellOrCreate(NPOI.SS.UserModel.IRow,System.Int32)">
+            <summary>
+            获取或创建一个Cell
+            </summary>
+            <param name="row"></param>
+            <param name="cellnum"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.GetData(NPOI.SS.UserModel.ICell,System.Boolean)">
             <summary>
             读取单元格数据
@@ -412,6 +439,29 @@
             </summary>
             <param name="cell"></param>
             <param name="cellStyle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetImage(NPOI.SS.UserModel.ICell,System.Byte[],NPOI.SS.UserModel.PictureType)">
+            <summary>
+            设置图片
+            </summary>
+            <param name="cell"></param>
+            <param name="bytes"></param>
+            <param name="pictureType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetImage(NPOI.SS.UserModel.ICell)">
+            <summary>
+            获取单元格图片数据
+            </summary>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetPictureData(NPOI.SS.UserModel.ISheet)">
+            <summary>
+            获取图片字典
+            </summary>
+            <param name="sheet"></param>
             <returns></returns>
         </member>
     </members>

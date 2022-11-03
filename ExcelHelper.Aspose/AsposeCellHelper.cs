@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using Aspose.Cells.Drawing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -115,6 +116,16 @@ namespace ExcelHelper.Aspose
         }
 
         /// <summary>
+        /// 写入到文件
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="fileName"></param>
+        public static void ToFile(this Workbook workbook, string fileName)
+        {
+            workbook.Save(fileName);
+        }
+
+        /// <summary>
         /// 计算 Excel
         /// </summary>
         /// <param name="workbook"></param>
@@ -211,7 +222,7 @@ namespace ExcelHelper.Aspose
         /// <returns></returns>
         public static Cell GetCell(this Worksheet sheet, int row, int cell)
         {
-            return sheet.Cells.GetCell(row, cell);
+            return sheet.Cells[row, cell];
         }
 
         /// <summary>
@@ -529,6 +540,58 @@ namespace ExcelHelper.Aspose
             return cell;
         }
 
+        /// <summary>
+        /// 设置图片
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static Cell SetImage(this Cell cell, byte[] bytes)
+        {
+            cell.Worksheet.Pictures.Add(cell.Row, cell.Column, cell.Row + 1, cell.Column + 1, new MemoryStream(bytes));
+            return cell;
+        }
+
+        /// <summary>
+        /// 获取单元格图片数据
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public static byte[] GetImage(this Cell cell)
+        {
+            var pictureData = GetPictureData(cell.Worksheet);
+            if (pictureData.TryGetValue(cell, out var value))
+            {
+                return value;
+            }
+            return null;
+        }
+
+
         #endregion
+
+
+        #region Sheet Image
+
+        /// <summary>
+        /// 获取图片字典
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
+        public static Dictionary<Cell, byte[]> GetPictureData(this Worksheet sheet)
+        {
+            var result = new Dictionary<Cell, byte[]>();
+
+            foreach (var picture in sheet.Pictures)
+            {
+                var cell = sheet.Cells[picture.UpperLeftRow, picture.UpperLeftColumn];
+                result[cell] = picture.Data;
+            }
+
+            return result;
+        }
+
+        #endregion
+
     }
 }

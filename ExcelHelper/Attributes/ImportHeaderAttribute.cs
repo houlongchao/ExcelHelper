@@ -24,8 +24,9 @@ namespace ExcelHelper
         }
 
         /// <summary>
-        /// 输入限制
+        /// 是否是图片数据
         /// </summary>
-        public List<string> InputLimit { get; set; }
+        public bool IsImage { get; set; } = false;
+
     }
 }

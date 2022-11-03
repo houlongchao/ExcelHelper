@@ -39,6 +39,11 @@ namespace ExcelHelper
         public int FontSize { get; set; } = 12;
 
         /// <summary>
+        /// 是否是图片数据
+        /// </summary>
+        public bool IsImage { get; set; } = false;
+
+        /// <summary>
         /// 导出头设置
         /// </summary>
         /// <param name="name"></param>

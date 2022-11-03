@@ -27,6 +27,13 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
+        public override void Dispose()
+        {
+            _excel.Dispose();
+            base.Dispose();
+        }
+
+        /// <inheritdoc/>
         public override IExcelSheet CreateExcelSheet(string sheetName)
         {
             var sheet = _excel.CreateSheet(sheetName);

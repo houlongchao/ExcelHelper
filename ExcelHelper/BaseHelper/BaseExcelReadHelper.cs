@@ -50,7 +50,7 @@ namespace ExcelHelper
         /// <summary>
         /// 释放资源
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             _excelStream.Dispose();
             _excelHelperBuilder.Dispose();

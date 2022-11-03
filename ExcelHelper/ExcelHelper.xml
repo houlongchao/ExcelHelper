@@ -39,6 +39,11 @@
             title 字体大小
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.IsImage">
+            <summary>
+            是否是图片数据
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExportHeaderAttribute.#ctor(System.String)">
             <summary>
             导出头设置
@@ -88,9 +93,9 @@
             </summary>
             <param name="name"></param>
         </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.InputLimit">
+        <member name="P:ExcelHelper.ImportHeaderAttribute.IsImage">
             <summary>
-            输入限制
+            是否是图片数据
             </summary>
         </member>
         <member name="T:ExcelHelper.ImportLimitAttribute">
@@ -376,6 +381,16 @@
             </summary>
             <param name="message"></param>
             <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.ImportHeaderExtensions">
+            <summary>
+            导入头扩展方法
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportHeaderExtensions.IsImage(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute})">
+            <summary>
+            是否是图片
+            </summary>
         </member>
         <member name="T:ExcelHelper.ImportLimitExtensions">
             <summary>

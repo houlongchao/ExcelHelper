@@ -37,6 +37,8 @@ namespace ExcelHelperTest
                 B = "b2aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 C = "c",
                 Status = Status.B,
+                ImageName = "050.jpg",
+                Image = File.ReadAllBytes("D:\\050.jpg"),
             });
             var data2 = new List<DemoIO>(datas);
             data2.Add(new DemoIO()
@@ -45,6 +47,8 @@ namespace ExcelHelperTest
                 B = "",
                 C = "c",
                 Status = Status.B,
+                ImageName = "050.jpg",
+                Image = File.ReadAllBytes("D:\\050.jpg"),
             });
             var data3 = new List<DemoIO>(data2);
             data3.Add(new DemoIO()
@@ -53,6 +57,8 @@ namespace ExcelHelperTest
                 B = "",
                 C = "c",
                 Status = Status.B,
+                ImageName = "050.jpg",
+                Image = File.ReadAllBytes("D:\\050.jpg"),
             });
 
             _excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);

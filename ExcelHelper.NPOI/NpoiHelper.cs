@@ -1,10 +1,11 @@
 ﻿using NPOI.HSSF.UserModel;
-using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.Formula;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.Streaming;
 using NPOI.XSSF.UserModel;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ExcelHelper.NPOI
@@ -26,16 +27,7 @@ namespace ExcelHelper.NPOI
             var fileBytes = File.ReadAllBytes(filePath);
             using (var stream = new MemoryStream(fileBytes))
             {
-                stream.Position = 0;
-                if (filePath.EndsWith(".xlsx")) // 2007版本
-                {
-                    return new XSSFWorkbook(stream);
-                }
-                if (filePath.EndsWith(".xls")) // 2003版本
-                {
-                    return new HSSFWorkbook(stream);
-                }
-                return new XSSFWorkbook(stream);
+                return WorkbookFactory.Create(stream);
             }
         }
 
@@ -48,7 +40,7 @@ namespace ExcelHelper.NPOI
         {
             using (var stream = new MemoryStream(fileBytes))
             {
-                return new XSSFWorkbook(stream);
+                return WorkbookFactory.Create(stream);
             }
         }
 
@@ -60,7 +52,7 @@ namespace ExcelHelper.NPOI
         public static IWorkbook ReadExcel(Stream stream)
         {
             stream.Position = 0;
-            return new XSSFWorkbook(stream);
+            return WorkbookFactory.Create(stream);
         }
 
         /// <summary>
@@ -70,6 +62,15 @@ namespace ExcelHelper.NPOI
         public static IWorkbook CreateExcel()
         {
             return new XSSFWorkbook();
+        }
+
+        /// <summary>
+        /// 创建一个大数据写入Excel操作对象
+        /// </summary>
+        /// <returns></returns>
+        public static IWorkbook CreateExcel_BigWrite(int rowAccessWindowSize = 100)
+        {
+            return new SXSSFWorkbook(rowAccessWindowSize);
         }
 
         #endregion
@@ -124,6 +125,19 @@ namespace ExcelHelper.NPOI
             {
                 workbook.Write(stream);
                 return stream.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 写入到文件
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="fileName"></param>
+        public static void ToFile(this IWorkbook workbook, string fileName)
+        {
+            using (var file = new FileStream(fileName, FileMode.Create))
+            {
+                workbook.Write(file);
             }
         }
 
@@ -382,6 +396,22 @@ namespace ExcelHelper.NPOI
             return defaultIndex;
         }
 
+        /// <summary>
+        /// 获取或创建一个Cell
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="cellnum"></param>
+        /// <returns></returns>
+        public static ICell GetCellOrCreate(this IRow row, int cellnum)
+        {
+            var cell = row.GetCell(cellnum);
+            if (cell == null)
+            {
+                return row.CreateCell(cellnum);
+            }
+            return cell;
+        }
+
         #endregion
 
         #region Cell Extensions
@@ -589,6 +619,93 @@ namespace ExcelHelper.NPOI
             cell.CellStyle = cellStyle;
             return cell;
         }
+
+        /// <summary>
+        /// 设置图片
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="bytes"></param>
+        /// <param name="pictureType"></param>
+        /// <returns></returns>
+        public static ICell SetImage(this ICell cell, byte[] bytes, PictureType pictureType = PictureType.JPEG)
+        {
+            if (cell.Sheet.DrawingPatriarch == null)
+            {
+                cell.Sheet.CreateDrawingPatriarch();
+            }
+
+            var prictureIndex = cell.Sheet.Workbook.AddPicture(bytes, pictureType);
+
+            var anchor = cell.Sheet.Workbook.GetCreationHelper().CreateClientAnchor();
+            anchor.Row1 = cell.RowIndex;
+            anchor.Col1 = cell.ColumnIndex;
+            anchor.Row2 = cell.RowIndex + 1;
+            anchor.Col2 = cell.ColumnIndex + 1;
+
+            cell.Sheet.DrawingPatriarch.CreatePicture(anchor, prictureIndex);
+            return cell;
+        }
+
+        /// <summary>
+        /// 获取单元格图片数据
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public static byte[] GetImage(this ICell cell)
+        {
+            var pictureData = GetPictureData(cell.Sheet);
+            if (pictureData.TryGetValue(cell.Address, out var value))
+            {
+                return value.Data;
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Sheet Image
+
+        /// <summary>
+        /// 获取图片字典
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
+        public static Dictionary<CellAddress, IPictureData> GetPictureData(this ISheet sheet)
+        {
+            var result = new Dictionary<CellAddress, IPictureData>();
+
+            if (sheet.DrawingPatriarch == null)
+            {
+                return result;
+            }
+
+            if (sheet.DrawingPatriarch is HSSFPatriarch hssfPatriarch)
+            {
+                foreach (var shape in hssfPatriarch.Children)
+                {
+                    if (shape is HSSFPicture picture)
+                    {
+                        result[new CellAddress(picture.ClientAnchor.Row1, picture.ClientAnchor.Col1)] = picture.PictureData;
+                    }
+                }
+                return result;
+            }
+
+            if (sheet.DrawingPatriarch is XSSFDrawing xssfDrawing)
+            {
+                foreach (var shape in xssfDrawing.GetShapes())
+                {
+                    if (shape is XSSFPicture picture)
+                    {
+                        result[new CellAddress(picture.ClientAnchor.Row1, picture.ClientAnchor.Col1)] = picture.PictureData;
+                    }
+                }
+                return result;
+            }
+
+            return result;
+        }
+
 
         #endregion
 

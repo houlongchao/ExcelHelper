@@ -26,6 +26,13 @@ namespace ExcelHelper.NPOI
             _excel = NpoiHelper.CreateExcel();
         }
 
+        /// <inheritdoc/>
+        public override void Dispose()
+        {
+            _excel.Close();
+            base.Dispose();
+        }
+
         /// <summary>
         /// 创建一个 Excel Sheet 页
         /// </summary>

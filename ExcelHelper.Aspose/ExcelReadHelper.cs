@@ -47,6 +47,13 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
+        public override void Dispose()
+        {
+            _excel.Dispose();
+            base.Dispose();
+        }
+
+        /// <inheritdoc/>
         public override List<ExcelSheetInfo> GetAllSheets()
         {
             var result = new List<ExcelSheetInfo>();

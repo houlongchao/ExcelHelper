@@ -48,6 +48,13 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
+        public override void Dispose()
+        {
+            _excel.Close();
+            base.Dispose();
+        }
+
+        /// <inheritdoc/>
         public override List<ExcelSheetInfo> GetAllSheets()
         {
             var result = new List<ExcelSheetInfo>();

@@ -44,6 +44,13 @@ namespace ExcelHelperTest
 
         [ExportMapper(Status.A, "AA")]
         public Status Status { get; set; }
+
+        public string ImageName { get; set; }
+
+        [ExportHeader("图片", IsImage = true)]
+        [ImportHeader("图片", IsImage = true)]
+        public byte[] Image { get; set; }
+
     }
 
     public enum Status
