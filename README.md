@@ -1,11 +1,18 @@
 # Excel 帮助类
 
-- 通过对象模型进行数据的导入导出，简单易用
-- 支持多种Excel驱动
-- 不同Excel驱动使用相同代码，可无法切换
-- 支持导入多个Sheet
-- 支持导出多个Sheet
+- [x]  通过对象模型进行数据的导入导出，简单易用
 
+- [x] 支持多种Excel驱动
+
+- [x] 不同Excel驱动使用相同代码，可无法切换
+
+- [x] 支持导入多个Sheet
+
+- [x] 支持导出多个Sheet
+
+- [x] 支持导入导出图片
+
+      ​
 
 
 ## Nuget 引用
@@ -117,6 +124,9 @@ public enum Status
 [ImportHeader("A")]   // 读取列A的数据
 [ImportHeader("AA")]  // 读取列AA的数据
 public string A { get; set; }
+
+[ImportHeader("图片", IsImage = true)]  // 读取图片
+public byte[] Image { get; set; }       // 图片数据必须用 byte[] 接收
 ```
 
 #### ImportMapperAttribute
@@ -128,6 +138,17 @@ public string A { get; set; }
 [ImportMapper("False", "false")]    // 当Excel中数据为False时读取后为小写false
 public string C { get; set; }
 ```
+
+#### ImportLimitAttribute
+
+导入限制，只能导入设置的数据
+
+``` C#
+[ImportLimit("A1", "A2", "A3")]   // 导入限制
+public string C { get; set; }
+```
+
+
 
 ### 导出
 
@@ -141,6 +162,10 @@ public string C { get; set; }
 
 [ExportHeader("日期", ColumnWidth = 30)]
 public DateTime DateTime { get; set; }
+
+[ExportHeader("图片", IsImage = true)]
+public byte[] Image { get; set; }
+
 ```
 
 #### ExportMapperAttribute
@@ -153,6 +178,8 @@ public DateTime DateTime { get; set; }
 [ExportMapper("c", "Ac")]
 public string C { get; set; }
 ```
+
+
 
 #### ExportIgnoreAttribute
 
