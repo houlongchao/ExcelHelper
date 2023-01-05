@@ -31,11 +31,14 @@ namespace ExcelHelperTest
         [ExportHeader("日期", ColumnWidth = 30)]
         public DateTime DateTime { get; set; }
 
+        [ExportHeader("日期2", ColumnWidth = 30, Format = "yyyy/MM/dd")]
+        public DateTime? DateTime2 { get; set; }
+
         [ExportIgnore]
         public DateTime Date { get; set; }
 
         [ImportLimit(-0.123)]
-        [ExportMapper(0, "011")]
+        [ExportHeader("数字", Format = "0.0")]
         public double Number { get; set; }
 
         public bool Boolean { get; set; }

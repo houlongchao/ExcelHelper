@@ -44,6 +44,11 @@ namespace ExcelHelper
         public bool IsImage { get; set; } = false;
 
         /// <summary>
+        /// 格式化字符串
+        /// </summary>
+        public string Format { get; set; }
+
+        /// <summary>
         /// 导出头设置
         /// </summary>
         /// <param name="name"></param>

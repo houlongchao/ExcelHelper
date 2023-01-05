@@ -44,6 +44,11 @@
             是否是图片数据
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.Format">
+            <summary>
+            格式化字符串
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExportHeaderAttribute.#ctor(System.String)">
             <summary>
             导出头设置

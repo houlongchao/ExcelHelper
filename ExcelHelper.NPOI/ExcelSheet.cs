@@ -86,32 +86,38 @@ namespace ExcelHelper.NPOI
                     }
 
                     var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
+                    var cell = dataRow.CreateCell(colIndex);
                     if (displayValue is DateTime dt)
                     {
                         if (DateTime.MinValue != dt)
                         {
-                            dataRow.CreateCell(colIndex).SetValue(dt);
+                            cell.SetValue(dt).SetDataFormat();
                         }
                     }
                     else if (displayValue is bool b)
                     {
-                        dataRow.CreateCell(colIndex).SetValue(b);
+                        cell.SetValue(b);
                     }
                     else if (displayValue is double d)
                     {
-                        dataRow.CreateCell(colIndex).SetValue(d);
+                        cell.SetValue(d);
                     }
                     else if (displayValue is int di)
                     {
-                        dataRow.CreateCell(colIndex).SetValue(di);
+                        cell.SetValue(di);
                     }
                     else if (displayValue is decimal dc)
                     {
-                        dataRow.CreateCell(colIndex).SetValue((double)dc);
+                        cell.SetValue((double)dc);
                     }
                     else
                     {
-                        dataRow.CreateCell(colIndex).SetValue(displayValue?.ToString());
+                        cell.SetValue(displayValue?.ToString());
+                    }
+
+                    if (!string.IsNullOrEmpty(property.Value.ExportHeader?.Format))
+                    {
+                        cell.SetDataFormat(property.Value.ExportHeader?.Format);
                     }
 
                     colIndex++;

@@ -398,6 +398,14 @@
             <param name="data"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetDataFormat(NPOI.SS.UserModel.ICell,System.String)">
+            <summary>
+            设置单元格格式字符串
+            </summary>
+            <param name="cell"></param>
+            <param name="format"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.SetComment(NPOI.SS.UserModel.ICell,System.String)">
             <summary>
             设置单元格备注

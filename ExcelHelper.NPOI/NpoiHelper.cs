@@ -532,6 +532,22 @@ namespace ExcelHelper.NPOI
         }
 
         /// <summary>
+        /// 设置单元格格式字符串
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public static ICell SetDataFormat(this ICell cell, string format = "yyyy-MM-dd")
+        {
+            var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
+            cellStyle.CloneStyleFrom(cell.CellStyle);
+            var df = cell.Sheet.Workbook.CreateDataFormat();
+            cellStyle.DataFormat = df.GetFormat(format);
+            cell.CellStyle = cellStyle;
+            return cell;
+        }
+
+        /// <summary>
         /// 设置单元格备注
         /// </summary>
         /// <param name="cell"></param>

@@ -1,5 +1,6 @@
 ﻿using ExcelHelper;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,13 +18,18 @@ namespace ExcelHelperTest
             {
                 A = "a1",
                 B = "b2",
-                C = "a"
+                C = "a",
+                DateTime = DateTime.Now,
+                DateTime2 = DateTime.Now,
+                Number = 0.123
+
             });
             datas.Add(new DemoIO()
             {
                 A = "a1",
                 B = "b2",
-                C = "b"
+                C = "b",
+                Number = -123.3456
             });
             datas.Add(new DemoIO()
             {

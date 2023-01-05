@@ -75,45 +75,44 @@ namespace ExcelHelper.Aspose
                     {
                         if (value is byte[] imageBytes)
                         {
-                            var cell = _sheet.CreateCell(rowIndex, colIndex);
-                            cell.SetImage(imageBytes);
+                            _sheet.CreateCell(rowIndex, colIndex).SetImage(imageBytes); 
                         }
                         continue;
                     }
 
                     var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
+                    var cell = _sheet.CreateCell(rowIndex, colIndex);
                     if (displayValue is DateTime dt)
                     {
                         if (DateTime.MinValue != dt)
                         {
-                            var cell = _sheet.CreateCell(rowIndex, colIndex);
-                            cell.SetValue(dt);
+                            cell.SetValue(dt).SetDataFormat();
                         }
                     }
                     else if (displayValue is bool b)
                     {
-                        var cell = _sheet.CreateCell(rowIndex, colIndex);
                         cell.SetValue(b);
                     }
                     else if (displayValue is double d)
                     {
-                        var cell = _sheet.CreateCell(rowIndex, colIndex);
                         cell.SetValue(d);
                     }
                     else if (displayValue is int di)
                     {
-                        var cell = _sheet.CreateCell(rowIndex, colIndex);
                         cell.SetValue(di);
                     }
                     else if (displayValue is decimal dc)
                     {
-                        var cell = _sheet.CreateCell(rowIndex, colIndex);
                         cell.SetValue((double)dc);
                     }
                     else
                     {
-                        var cell = _sheet.CreateCell(rowIndex, colIndex);
                         cell.SetValue(displayValue?.ToString());
+                    }
+
+                    if (!string.IsNullOrEmpty(property.Value.ExportHeader?.Format))
+                    {
+                        cell.SetDataFormat(property.Value.ExportHeader?.Format);
                     }
 
                     colIndex++;

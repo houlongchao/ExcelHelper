@@ -463,6 +463,23 @@ namespace ExcelHelper.Aspose
         }
 
         /// <summary>
+        /// 设置单元格格式字符串
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public static Cell SetDataFormat(this Cell cell, string format = "yyyy-MM-dd")
+        {
+            var cellStyle = cell.Worksheet.Workbook.CreateStyle();
+
+            cellStyle.Copy(cell.GetStyle());
+            cellStyle.Custom = format;
+            cell.SetStyle(cellStyle);
+
+            return cell;
+        }
+
+        /// <summary>
         /// 设置单元格备注
         /// </summary>
         /// <param name="cell"></param>

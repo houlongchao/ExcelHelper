@@ -279,6 +279,14 @@
             <param name="data"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetDataFormat(Aspose.Cells.Cell,System.String)">
+            <summary>
+            设置单元格格式字符串
+            </summary>
+            <param name="cell"></param>
+            <param name="format"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetComment(Aspose.Cells.Cell,System.String)">
             <summary>
             设置单元格备注
