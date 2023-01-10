@@ -28,5 +28,9 @@ namespace ExcelHelper
         /// </summary>
         public bool IsImage { get; set; } = false;
 
+        /// <summary>
+        /// 是否必须
+        /// </summary>
+        public bool IsRequired { get; set; } = false;
     }
 }

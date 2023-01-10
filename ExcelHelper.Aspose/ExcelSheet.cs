@@ -200,13 +200,14 @@ namespace ExcelHelper.Aspose
                     if (excelPropertyInfo.Value.ImportHeaders.IsImage())
                     {
                         var bytes = row[excelPropertyInfo.Key].GetImage();
+                        excelPropertyInfo.Value.ImportHeaders.CheckRequired(bytes);
                         excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
                         continue;
                     }
 
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
-
+                    excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);
 
                     var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);

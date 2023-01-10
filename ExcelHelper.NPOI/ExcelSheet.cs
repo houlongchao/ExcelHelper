@@ -186,8 +186,6 @@ namespace ExcelHelper.NPOI
                 excelPropertyInfoIndexDict[titleCell.ColumnIndex] = excelPropertyInfoNameDict[title];
             }
 
-            var pictureData = _sheet.GetPictureData();
-
             // 读取数据
             var rowCount = _sheet.GetRowCount();
             for (int i = 1; i < rowCount; i++)
@@ -207,6 +205,7 @@ namespace ExcelHelper.NPOI
                     if (excelPropertyInfo.Value.ImportHeaders.IsImage())
                     {
                         var bytes = row.GetCellOrCreate(excelPropertyInfo.Key).GetImage();
+                        excelPropertyInfo.Value.ImportHeaders.CheckRequired(bytes);
                         excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
                         hasValue = true;
                         continue;
@@ -214,7 +213,7 @@ namespace ExcelHelper.NPOI
 
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
-
+                    excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);
 
                     if (value != null)

@@ -103,6 +103,11 @@
             是否是图片数据
             </summary>
         </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.IsRequired">
+            <summary>
+            是否必须
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImportLimitAttribute">
             <summary>
             导入限制
@@ -396,6 +401,12 @@
             <summary>
             是否是图片
             </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportHeaderExtensions.CheckRequired(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Object)">
+            <summary>
+            检查必须,如果设置了必须且没有数据则报错
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ExcelHelper.ImportLimitExtensions">
             <summary>

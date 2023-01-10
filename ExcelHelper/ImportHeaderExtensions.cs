@@ -27,5 +27,25 @@ namespace ExcelHelper
 
             return false;
         }
+
+        /// <summary>
+        /// 检查必须,如果设置了必须且没有数据则报错
+        /// </summary>
+        /// <returns></returns>
+        public static void CheckRequired(this IEnumerable<ImportHeaderAttribute> importHeaders, object data)
+        {
+            if (importHeaders == null)
+            {
+                return;
+            }
+
+            foreach (var importHeader in importHeaders)
+            {
+                if (importHeader.IsRequired && string.IsNullOrEmpty(data?.ToString()))
+                {
+                    throw new ImportException($"{importHeader.Name} is Required!");
+                }
+            }
+        }
     }
 }

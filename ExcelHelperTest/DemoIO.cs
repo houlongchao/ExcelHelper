@@ -8,7 +8,7 @@ namespace ExcelHelperTest
     /// </summary>
     public class DemoIO
     {
-        [ImportHeader("A")]
+        [ImportHeader("A", IsRequired = true)]
         [ImportHeader("AA")]
         [ExportHeader("A2")]
         public string A { get; set; }
