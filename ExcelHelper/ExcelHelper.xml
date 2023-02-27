@@ -108,6 +108,36 @@
             是否必须
             </summary>
         </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.Trim">
+            <summary>
+            字符串Trim
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.Trim">
+            <summary>
+            Trim类型
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.None">
+            <summary>
+            不做处理
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.All">
+            <summary>
+            处理两面
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.Start">
+            <summary>
+            处理前面
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.End">
+            <summary>
+            处理后面
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImportLimitAttribute">
             <summary>
             导入限制
@@ -407,6 +437,13 @@
             检查必须,如果设置了必须且没有数据则报错
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ImportHeaderExtensions.Trim(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Object@)">
+            <summary>
+            移除前后空字符串
+            </summary>
+            <param name="importHeaders"></param>
+            <param name="data"></param>
         </member>
         <member name="T:ExcelHelper.ImportLimitExtensions">
             <summary>

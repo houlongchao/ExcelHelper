@@ -214,6 +214,7 @@ namespace ExcelHelper.NPOI
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
                     excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
+                    excelPropertyInfo.Value.ImportHeaders.Trim(ref value);
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);
 
                     if (value != null)

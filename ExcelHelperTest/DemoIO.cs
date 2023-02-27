@@ -9,7 +9,7 @@ namespace ExcelHelperTest
     public class DemoIO
     {
         [ImportHeader("A", IsRequired = true)]
-        [ImportHeader("AA")]
+        [ImportHeader("AA", Trim = Trim.Start)]
         [ExportHeader("A2")]
         public string A { get; set; }
 

@@ -47,5 +47,38 @@ namespace ExcelHelper
                 }
             }
         }
+
+        /// <summary>
+        /// 移除前后空字符串
+        /// </summary>
+        /// <param name="importHeaders"></param>
+        /// <param name="data"></param>
+        public static void Trim(this IEnumerable<ImportHeaderAttribute> importHeaders, ref object data)
+        {
+            if (importHeaders == null || data == null)
+            {
+                return;
+            }
+
+            foreach (var importHeader in importHeaders)
+            {
+                switch (importHeader.Trim)
+                {
+                    case ExcelHelper.Trim.None:
+                        break;
+                    case ExcelHelper.Trim.All:
+                        data = data.ToString().Trim();
+                        break;
+                    case ExcelHelper.Trim.Start:
+                        data = data.ToString().TrimStart();
+                        break;
+                    case ExcelHelper.Trim.End:
+                        data = data.ToString().TrimEnd();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

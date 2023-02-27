@@ -208,8 +208,9 @@ namespace ExcelHelper.Aspose
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
                     excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
+                    excelPropertyInfo.Value.ImportHeaders.Trim(ref value);
                     excelPropertyInfo.Value.ImportLimit.CheckValue(value);
-
+                    
                     var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);
 
                     excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
