@@ -25,7 +25,7 @@
                 }
             }
 
-            throw ImportException.New($"{value} is limit");
+            throw ImportException.New($"【{value}】is limit");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ExcelHelper;
 using System;
+using System.Drawing;
 
 namespace ExcelHelperTest
 {
@@ -10,7 +11,7 @@ namespace ExcelHelperTest
     {
         [ImportHeader("A", IsRequired = true)]
         [ImportHeader("AA", Trim = Trim.Start)]
-        [ExportHeader("A2")]
+        [ExportHeader("A2", ColorName = "Red")]
         public string A { get; set; }
 
         [ImportHeader("B")]

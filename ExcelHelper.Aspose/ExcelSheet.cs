@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 
 namespace ExcelHelper.Aspose
 {
@@ -52,6 +53,7 @@ namespace ExcelHelper.Aspose
                     {
                         font.Size = exportHeader.FontSize;
                         font.IsBold = exportHeader.IsBold;
+                        font.Color = Color.FromName(exportHeader.ColorName);
                     });
 
                     if (!string.IsNullOrEmpty(exportHeader.Comment))

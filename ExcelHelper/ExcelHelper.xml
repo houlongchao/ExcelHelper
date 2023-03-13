@@ -39,6 +39,12 @@
             title 字体大小
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.ColorName">
+            <summary>
+            title 颜色
+            <br/>颜色受限于Excel驱动框架的颜色系统
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExportHeaderAttribute.IsImage">
             <summary>
             是否是图片数据
@@ -106,6 +112,11 @@
         <member name="P:ExcelHelper.ImportHeaderAttribute.IsRequired">
             <summary>
             是否必须
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.RequiredMessage">
+            <summary>
+            必须提示消息
             </summary>
         </member>
         <member name="P:ExcelHelper.ImportHeaderAttribute.Trim">

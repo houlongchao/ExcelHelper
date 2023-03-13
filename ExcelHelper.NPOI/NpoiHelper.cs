@@ -618,7 +618,6 @@ namespace ExcelHelper.NPOI
             var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
             cellStyle.CloneStyleFrom(cell.CellStyle);
             cellStyle.SetFont(font);
-
             cell.CellStyle = cellStyle;
 
             return cell;

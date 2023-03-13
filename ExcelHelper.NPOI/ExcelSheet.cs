@@ -1,9 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExcelHelper.NPOI
 {
@@ -51,10 +48,12 @@ namespace ExcelHelper.NPOI
                         exportHeader = new ExportHeaderAttribute(null);
                     }
 
+                    var indexedColor = IndexedColors.ValueOf(exportHeader.ColorName);
                     cell.SetFont(font =>
                     {
                         font.FontHeight = exportHeader.FontSize * 20;
                         font.IsBold = exportHeader.IsBold;
+                        font.Color = indexedColor?.Index ?? IndexedColors.Black.Index;
                     });
 
                     if (!string.IsNullOrEmpty(exportHeader.Comment))

@@ -34,6 +34,11 @@ namespace ExcelHelper
         public bool IsRequired { get; set; } = false;
 
         /// <summary>
+        /// 必须提示消息
+        /// </summary>
+        public string RequiredMessage { get; set; }
+
+        /// <summary>
         /// 字符串Trim
         /// </summary>
         public Trim Trim { get; set; } = Trim.None;

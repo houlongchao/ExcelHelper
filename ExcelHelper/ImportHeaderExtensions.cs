@@ -41,9 +41,16 @@ namespace ExcelHelper
 
             foreach (var importHeader in importHeaders)
             {
-                if (importHeader.IsRequired && string.IsNullOrEmpty(data?.ToString()))
+                if (string.IsNullOrEmpty(data?.ToString()))
                 {
-                    throw new ImportException($"{importHeader.Name} is Required!");
+                    if (!string.IsNullOrEmpty(importHeader.RequiredMessage))
+                    {
+                        throw new ImportException(importHeader.RequiredMessage);
+                    }
+                    else if (importHeader.IsRequired)
+                    {
+                        throw new ImportException($"Column【{importHeader.Name}】is Required!");
+                    }
                 }
             }
         }

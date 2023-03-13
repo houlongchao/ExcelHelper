@@ -39,6 +39,12 @@ namespace ExcelHelper
         public int FontSize { get; set; } = 12;
 
         /// <summary>
+        /// title 颜色
+        /// <br/>颜色受限于Excel驱动框架的颜色系统
+        /// </summary>
+        public string ColorName { get; set; } = "Black";
+
+        /// <summary>
         /// 是否是图片数据
         /// </summary>
         public bool IsImage { get; set; } = false;
