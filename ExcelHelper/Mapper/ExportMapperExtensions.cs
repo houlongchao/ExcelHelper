@@ -47,7 +47,7 @@ namespace ExcelHelper
                 {
                     return mapper.Display;
                 }
-                else if (actual.Equals(mapper.Actual))
+                else if (actual == mapper.Actual)
                 {
                     return mapper.Display;
                 }

@@ -46,8 +46,9 @@ namespace ExcelHelperTest
 
         public string Formula { get; set; }
 
-        [ExportMapper(Status.A, "AA")]
-        public Status Status { get; set; }
+        [ExportMapper(ExcelHelperTest.Status.A, "AA")]
+        [ExportMapper(null, "")]
+        public Status? Status { get; set; }
 
         public string ImageName { get; set; }
 

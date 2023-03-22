@@ -31,7 +31,7 @@ namespace ExcelHelper
                 {
                     return mapper.Actual;
                 }
-                else if (mapper.Display == display.ToString())
+                else if (mapper.Display == display?.ToString())
                 {
                     return mapper.Actual;
                 }
