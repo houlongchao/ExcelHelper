@@ -84,7 +84,7 @@ namespace ExcelHelper.NPOI
                         continue;
                     }
 
-                    var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
+                    var displayValue = property.Value.ExportMappedToDisplay(value);
                     var cell = dataRow.CreateCell(colIndex);
                     if (displayValue is DateTime dt)
                     {
@@ -201,10 +201,10 @@ namespace ExcelHelper.NPOI
                 foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
                 {
                     // 导入图片
-                    if (excelPropertyInfo.Value.ImportHeaders.IsImage())
+                    if (excelPropertyInfo.Value.ImportIsImage())
                     {
                         var bytes = row.GetCellOrCreate(excelPropertyInfo.Key).GetImage();
-                        excelPropertyInfo.Value.ImportHeaders.CheckRequired(bytes);
+                        excelPropertyInfo.Value.ImportCheckRequired(bytes);
                         excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
                         hasValue = true;
                         continue;
@@ -212,13 +212,13 @@ namespace ExcelHelper.NPOI
 
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
-                    excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
-                    excelPropertyInfo.Value.ImportHeaders.Trim(ref value);
-                    excelPropertyInfo.Value.ImportLimit.CheckValue(value);
+                    excelPropertyInfo.Value.ImportCheckRequired(value);
+                    excelPropertyInfo.Value.ImportTrim(ref value);
+                    excelPropertyInfo.Value.ImportLimitCheckValue(value);
 
                     if (value != null)
                     {
-                        var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);
+                        var actualValue = excelPropertyInfo.Value.ImportMappedToActual(value);
 
                         excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
 

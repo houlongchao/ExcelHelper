@@ -16,12 +16,7 @@ namespace ExcelHelper
         /// <returns></returns>
         public static ExcelPropertyInfo GetImportExcelPropertyInfo(this PropertyInfo propertyInfo)
         {
-            var importHeaders = propertyInfo.GetCustomAttributes<ImportHeaderAttribute>();
-            var importMappers = propertyInfo.GetCustomAttributes<ImportMapperAttribute>();
-            var importLimit = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
-            var excelPropertyInfo = new ExcelPropertyInfo(propertyInfo, importHeaders, importMappers);
-            excelPropertyInfo.ImportLimit = importLimit;
-            return excelPropertyInfo;
+            return new ExcelPropertyInfo(propertyInfo);
         }
 
         /// <summary>
@@ -98,12 +93,7 @@ namespace ExcelHelper
         /// <returns></returns>
         public static ExcelPropertyInfo GetExportExcelPropertyInfo(this PropertyInfo propertyInfo)
         {
-            var exportHeader = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>();
-            var exportMappers = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
-            var exportIgnore = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
-            var excelPropertyInfo = new ExcelPropertyInfo(propertyInfo, exportHeader, exportMappers);
-            excelPropertyInfo.ExportIgnore = exportIgnore;
-            return excelPropertyInfo;
+            return new ExcelPropertyInfo(propertyInfo);
         }
 
         /// <summary>

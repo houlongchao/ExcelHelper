@@ -88,6 +88,22 @@
             <param name="actual">真实值</param>
             <param name="display">显示值</param>
         </member>
+        <member name="T:ExcelHelper.ExportMapperElseAttribute">
+            <summary>
+            导出映射else设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportMapperElseAttribute.Display">
+            <summary>
+            显示值
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportMapperElseAttribute.#ctor(System.String)">
+            <summary>
+            导出映射设置
+            </summary>
+            <param name="display">显示值</param>
+        </member>
         <member name="T:ExcelHelper.ImportHeaderAttribute">
             <summary>
             导入头设置
@@ -185,6 +201,22 @@
             导入映射设置
             </summary>
             <param name="display">显示值</param>
+            <param name="actual">真实值</param>
+        </member>
+        <member name="T:ExcelHelper.ImportMapperElseAttribute">
+            <summary>
+            导入映射else设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportMapperElseAttribute.Actual">
+            <summary>
+            真实值
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportMapperElseAttribute.#ctor(System.Object)">
+            <summary>
+            导入映射设置
+            </summary>
             <param name="actual">真实值</param>
         </member>
         <member name="T:ExcelHelper.BaseExcelReadHelper">
@@ -433,41 +465,6 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="T:ExcelHelper.ImportHeaderExtensions">
-            <summary>
-            导入头扩展方法
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.ImportHeaderExtensions.IsImage(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute})">
-            <summary>
-            是否是图片
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.ImportHeaderExtensions.CheckRequired(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Object)">
-            <summary>
-            检查必须,如果设置了必须且没有数据则报错
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.ImportHeaderExtensions.Trim(System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Object@)">
-            <summary>
-            移除前后空字符串
-            </summary>
-            <param name="importHeaders"></param>
-            <param name="data"></param>
-        </member>
-        <member name="T:ExcelHelper.ImportLimitExtensions">
-            <summary>
-            导入限制扩展方法
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.ImportLimitExtensions.CheckValue(ExcelHelper.ImportLimitAttribute,System.Object)">
-            <summary>
-            检查导入限制
-            </summary>
-            <param name="importLimit"></param>
-            <param name="value"></param>
-        </member>
         <member name="T:ExcelHelper.ExcelPropertyInfo">
             <summary>
             Excel 属性信息
@@ -488,6 +485,11 @@
             导入映射
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMapperElse">
+            <summary>
+            导入映射else
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimit">
             <summary>
             导入限制
@@ -503,6 +505,11 @@
             导出映射
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMapperElse">
+            <summary>
+            导出映射else
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
             <summary>
             忽略导出，如果为null则导出，不为null则不导出
@@ -514,21 +521,49 @@
             </summary>
             <param name="propertyInfo"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo,System.Collections.Generic.IEnumerable{ExcelHelper.ImportHeaderAttribute},System.Collections.Generic.IEnumerable{ExcelHelper.ImportMapperAttribute})">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ExportMappedToDisplay(System.Object)">
             <summary>
-            Excel 属性信息
+            将导出实际值映射为显示数据
             </summary>
-            <param name="propertyInfo"></param>
-            <param name="importHeaders"></param>
-            <param name="importMappers"></param>
+            <param name="actual">实际值</param>
+            <returns></returns>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo,ExcelHelper.ExportHeaderAttribute,System.Collections.Generic.IEnumerable{ExcelHelper.ExportMapperAttribute})">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ExportMappedToElseDisplay(System.Object)">
             <summary>
-            Excel 属性信息
+            导出映射else
             </summary>
-            <param name="propertyInfo"></param>
-            <param name="exportHeader"></param>
-            <param name="exportMappers"></param>
+            <param name="actual"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportMappedToActual(System.Object)">
+            <summary>
+            将显示值映射为实际值
+            </summary>
+            <param name="display">显示值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportLimitCheckValue(System.Object)">
+            <summary>
+            检查导入限制
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportIsImage">
+            <summary>
+            是否是图片
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckRequired(System.Object)">
+            <summary>
+            检查必须,如果设置了必须且没有数据则报错
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportTrim(System.Object@)">
+            <summary>
+            移除前后空字符串
+            </summary>
+            <param name="data"></param>
         </member>
         <member name="T:ExcelHelper.ExcelSheetInfo">
             <summary>
@@ -557,32 +592,6 @@
             <param name="index"></param>
             <param name="name"></param>
             <param name="isHidden"></param>
-        </member>
-        <member name="T:ExcelHelper.ExportMapperExtensions">
-            <summary>
-            导出映射扩展方法
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.ExportMapperExtensions.MappedToDisplay(System.Collections.Generic.IEnumerable{ExcelHelper.ExportMapperAttribute},System.Object)">
-            <summary>
-            将实际值映射为显示数据
-            </summary>
-            <param name="mappers">映射器</param>
-            <param name="actual">实际值</param>
-            <returns></returns>
-        </member>
-        <member name="T:ExcelHelper.ImportMapperExtensions">
-            <summary>
-            导入映射扩展方法
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.ImportMapperExtensions.MappedToActual(System.Collections.Generic.IEnumerable{ExcelHelper.ImportMapperAttribute},System.Object)">
-            <summary>
-            将显示值映射为实际值
-            </summary>
-            <param name="mappers">映射器</param>
-            <param name="display">显示值</param>
-            <returns></returns>
         </member>
         <member name="T:ExcelHelper.PropertyInfoExtensions">
             <summary>

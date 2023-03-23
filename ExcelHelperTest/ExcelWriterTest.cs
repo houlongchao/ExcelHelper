@@ -29,14 +29,16 @@ namespace ExcelHelperTest
                 A = "a1",
                 B = "b2",
                 C = "b",
+                Status = null,
                 Number = -123.3456
             });
             datas.Add(new DemoIO()
             {
                 A = "a1",
                 B = "b2",
-                C = "C3"
-            }); 
+                C = "C3",
+                Status = Status.A
+            });; 
             datas.Add(new DemoIO()
             {
                 A = "a1",

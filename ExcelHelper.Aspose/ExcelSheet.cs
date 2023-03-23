@@ -82,7 +82,7 @@ namespace ExcelHelper.Aspose
                         continue;
                     }
 
-                    var displayValue = property.Value.ExportMappers.MappedToDisplay(value);
+                    var displayValue = property.Value.ExportMappedToDisplay(value);
                     var cell = _sheet.CreateCell(rowIndex, colIndex);
                     if (displayValue is DateTime dt)
                     {
@@ -199,21 +199,21 @@ namespace ExcelHelper.Aspose
                 foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
                 {
                     // 导入图片
-                    if (excelPropertyInfo.Value.ImportHeaders.IsImage())
+                    if (excelPropertyInfo.Value.ImportIsImage())
                     {
                         var bytes = row[excelPropertyInfo.Key].GetImage();
-                        excelPropertyInfo.Value.ImportHeaders.CheckRequired(bytes);
+                        excelPropertyInfo.Value.ImportCheckRequired(bytes);
                         excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
                         continue;
                     }
 
                     // 导入其它数据
                     var value = row.GetCell(excelPropertyInfo.Key).GetData();
-                    excelPropertyInfo.Value.ImportHeaders.CheckRequired(value);
-                    excelPropertyInfo.Value.ImportHeaders.Trim(ref value);
-                    excelPropertyInfo.Value.ImportLimit.CheckValue(value);
-                    
-                    var actualValue = excelPropertyInfo.Value.ImportMappers.MappedToActual(value);
+                    excelPropertyInfo.Value.ImportCheckRequired(value);
+                    excelPropertyInfo.Value.ImportTrim(ref value);
+                    excelPropertyInfo.Value.ImportLimitCheckValue(value);
+
+                    var actualValue = excelPropertyInfo.Value.ImportMappedToActual(value);
 
                     excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
                 }
