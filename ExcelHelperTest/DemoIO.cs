@@ -1,6 +1,5 @@
 ﻿using ExcelHelper;
 using System;
-using System.Drawing;
 
 namespace ExcelHelperTest
 {
@@ -9,7 +8,7 @@ namespace ExcelHelperTest
     /// </summary>
     public class DemoIO
     {
-        [ImportHeader("A", IsRequired = true)]
+        [ImportHeader("A", IsRequired = true, IsUnique = false)]
         [ImportHeader("AA", Trim = Trim.Start)]
         [ExportHeader("A2", ColorName = "Red")]
         public string A { get; set; }

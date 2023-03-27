@@ -42,6 +42,11 @@ namespace ExcelHelper
         /// 字符串Trim
         /// </summary>
         public Trim Trim { get; set; } = Trim.None;
+
+        /// <summary>
+        /// 是否唯一
+        /// </summary>
+        public bool IsUnique { get; set; } = false;
     }
 
     /// <summary>

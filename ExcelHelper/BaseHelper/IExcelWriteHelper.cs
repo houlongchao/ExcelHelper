@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ExcelHelper.Settings;
+using System.Collections.Generic;
 
 namespace ExcelHelper
 {
@@ -13,6 +14,13 @@ namespace ExcelHelper
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas) where T : new();
+
+        /// <summary>
+        /// 导出数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas, ExportSetting exportSetting) where T : new();
 
         /// <summary>
         /// 设置Sheet的位置

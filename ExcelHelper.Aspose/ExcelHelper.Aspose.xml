@@ -447,6 +447,9 @@
         <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
             <inheritdoc/>
         </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendEmptyRow">
             <inheritdoc/>
         </member>

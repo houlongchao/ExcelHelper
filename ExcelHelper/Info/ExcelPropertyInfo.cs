@@ -17,6 +17,11 @@ namespace ExcelHelper
         #region 导入
 
         /// <summary>
+        /// 导入头标题
+        /// </summary>
+        public string ImportHeaderTitle { get; set; }
+
+        /// <summary>
         /// 导入头
         /// </summary>
         public IEnumerable<ImportHeaderAttribute> ImportHeaders { get; }
@@ -41,6 +46,11 @@ namespace ExcelHelper
         #region 导出
 
         /// <summary>
+        /// 导出头标题
+        /// </summary>
+        public string ExportHeaderTitle { get; }
+
+        /// <summary>
         /// 导出头
         /// </summary>
         public ExportHeaderAttribute ExportHeader { get; }
@@ -60,6 +70,11 @@ namespace ExcelHelper
         /// </summary>
         public ExportIgnoreAttribute ExportIgnore { get; }
 
+        /// <summary>
+        /// 是否忽略导出
+        /// </summary>
+        public bool IsIgnoreExport => ExportIgnore != null;
+
         #endregion
 
         /// <summary>
@@ -75,11 +90,27 @@ namespace ExcelHelper
             ImportMapperElse = propertyInfo.GetCustomAttribute<ImportMapperElseAttribute>();
             ImportLimit = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
 
-            ExportHeader = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>();
+            ExportHeader = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>() ?? new ExportHeaderAttribute(null);
             ExportMappers = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
             ExportMapperElse = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
-            ExportHeader = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>();
             ExportIgnore = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
+            ExportHeaderTitle = GetExportHeaderTitle();
+        }
+
+        /// <summary>
+        /// 获取导出头标题
+        /// </summary>
+        /// <returns></returns>
+        private string GetExportHeaderTitle()
+        {
+            if (!string.IsNullOrEmpty(ExportHeader?.Name))
+            {
+                return ExportHeader.Name;
+            }
+            else
+            {
+                return PropertyInfo.Name;
+            }
         }
 
         #region Export
@@ -304,6 +335,28 @@ namespace ExcelHelper
             }
         }
         
+        /// <summary>
+        /// 是否唯一
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUnqiue()
+        {
+            if (ImportHeaders == null)
+            {
+                return false;
+            }
+
+            foreach (var header in ImportHeaders)
+            {
+                if (header.IsUnique)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExcelHelper.Settings;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -97,35 +98,36 @@ namespace ExcelHelper
         }
 
         /// <summary>
-        /// 获取导出模型属性信息字典
+        /// 获取导出模型属性信息列表
         /// </summary>
         /// <param name="type"></param>
+        /// <param name="exportSetting"></param>
         /// <returns></returns>
-        public static Dictionary<string, ExcelPropertyInfo> GetExportNamePropertyInfoDict(this Type type)
+        public static List<ExcelPropertyInfo> GetExportExcelPropertyInfoList(this Type type, ExportSetting exportSetting)
         {
+            var result = new List<ExcelPropertyInfo>();
             var properties = type.GetProperties();
-            var excelPropertyInfoNameDict = new Dictionary<string, ExcelPropertyInfo>();
             foreach (var property in properties)
             {
                 var excelPropertyInfo = property.GetExportExcelPropertyInfo();
-
-                // 忽略当前属性导出
-                if (excelPropertyInfo.ExportIgnore != null)
+                
+                if (excelPropertyInfo.IsIgnoreExport)
                 {
+                    // 模型属性自身设置了导出忽略配置
                     continue;
                 }
-
-                if (string.IsNullOrEmpty(excelPropertyInfo.ExportHeader?.Name))
+                else if (exportSetting.IgnoreProperties.Contains(property.Name))
                 {
-                    excelPropertyInfoNameDict.Add(property.Name, excelPropertyInfo);
+                    // 导出时设置的导出忽略
+                    continue;
                 }
                 else
                 {
-                    excelPropertyInfoNameDict.Add(excelPropertyInfo.ExportHeader.Name, excelPropertyInfo);
+                    result.Add(excelPropertyInfo);
                 }
             }
 
-            return excelPropertyInfoNameDict;
+            return result;
         }
     }
 }

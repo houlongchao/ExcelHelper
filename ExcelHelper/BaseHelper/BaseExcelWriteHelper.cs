@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExcelHelper.Settings;
+using System;
 using System.Collections.Generic;
 
 namespace ExcelHelper
@@ -37,6 +38,20 @@ namespace ExcelHelper
         public IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas) where T : new()
         {
             CreateExcelSheet(sheetName).AppendData(datas);
+            return this;
+        }
+
+        /// <summary>
+        /// 导出 Sheet 数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sheetName"></param>
+        /// <param name="datas"></param>
+        /// <param name="exportSetting"></param>
+        /// <returns></returns>
+        public IExcelWriteHelper ExportSheet<T>(string sheetName, IEnumerable<T> datas, ExportSetting exportSetting) where T : new()
+        {
+            CreateExcelSheet(sheetName).AppendData(datas, exportSetting);
             return this;
         }
 

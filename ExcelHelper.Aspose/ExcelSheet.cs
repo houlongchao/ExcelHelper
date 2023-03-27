@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using ExcelHelper.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,20 +31,35 @@ namespace ExcelHelper.Aspose
         /// <inheritdoc/>
         public IExcelSheet AppendData<T>(IEnumerable<T> datas, bool addTitle = true) where T : new()
         {
-            // 获取导出模型属性信息字典
-            var excelPropertyInfoNameDict = typeof(T).GetExportNamePropertyInfoDict();
+            var exportSetting = new ExportSetting();
+            exportSetting.AddTitle = addTitle;
+
+            return AppendData(datas, exportSetting);
+        }
+
+        /// <inheritdoc/>
+        public IExcelSheet AppendData<T>(IEnumerable<T> datas, ExportSetting exportSetting) where T : new()
+        {
+            if (exportSetting == null)
+            {
+                exportSetting = new ExportSetting();
+            }
+
+            // 获取导出模型属性信息列表
+            var excelPropertyInfoList = typeof(T).GetExportExcelPropertyInfoList(exportSetting);
+
             var rowIndex = _sheet.GetRowCount();
 
             // 设置表头信息
-            if (addTitle)
+            if (exportSetting.AddTitle)
             {
                 int colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
                     var cell = _sheet.CreateCell(rowIndex, colIndex++);
-                    cell.SetValue(property.Key);
+                    cell.SetValue(property.ExportHeaderTitle);
 
-                    var exportHeader = property.Value.ExportHeader;
+                    var exportHeader = property.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -68,21 +84,21 @@ namespace ExcelHelper.Aspose
             foreach (var data in datas)
             {
                 var colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
-                    var value = property.Value.PropertyInfo.GetValue(data);
+                    var value = property.PropertyInfo.GetValue(data);
 
                     // 如果导出的是图片二进制数据
-                    if (property.Value.ExportHeader != null && property.Value.ExportHeader.IsImage)
+                    if (property.ExportHeader != null && property.ExportHeader.IsImage)
                     {
                         if (value is byte[] imageBytes)
                         {
-                            _sheet.CreateCell(rowIndex, colIndex).SetImage(imageBytes); 
+                            _sheet.CreateCell(rowIndex, colIndex).SetImage(imageBytes);
                         }
                         continue;
                     }
 
-                    var displayValue = property.Value.ExportMappedToDisplay(value);
+                    var displayValue = property.ExportMappedToDisplay(value);
                     var cell = _sheet.CreateCell(rowIndex, colIndex);
                     if (displayValue is DateTime dt)
                     {
@@ -112,9 +128,9 @@ namespace ExcelHelper.Aspose
                         cell.SetValue(displayValue?.ToString());
                     }
 
-                    if (!string.IsNullOrEmpty(property.Value.ExportHeader?.Format))
+                    if (!string.IsNullOrEmpty(property.ExportHeader?.Format))
                     {
-                        cell.SetDataFormat(property.Value.ExportHeader?.Format);
+                        cell.SetDataFormat(property.ExportHeader?.Format);
                     }
 
                     colIndex++;
@@ -125,9 +141,9 @@ namespace ExcelHelper.Aspose
             // 设置列宽度
             {
                 var colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
-                    var exportHeader = property.Value.ExportHeader;
+                    var exportHeader = property.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -137,7 +153,7 @@ namespace ExcelHelper.Aspose
                     {
                         _sheet.AutoFitColumn(colIndex);
                     }
-                    else if(exportHeader.ColumnWidth > 0)
+                    else if (exportHeader.ColumnWidth > 0)
                     {
                         _sheet.Cells.SetColumnWidth(colIndex, exportHeader.ColumnWidth);
                     }
@@ -184,7 +200,10 @@ namespace ExcelHelper.Aspose
                     continue;
                 }
                 excelPropertyInfoIndexDict[i] = excelPropertyInfoNameDict[title];
+                excelPropertyInfoIndexDict[i].ImportHeaderTitle = title;
             }
+
+            var checkDict = new Dictionary<string, HashSet<string>>();
 
             var rowCount = _sheet.GetRowCount();
             // 读取数据
@@ -216,6 +235,20 @@ namespace ExcelHelper.Aspose
                     var actualValue = excelPropertyInfo.Value.ImportMappedToActual(value);
 
                     excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
+
+                    // 唯一检查
+                    if (actualValue is string strValue && excelPropertyInfo.Value.IsUnqiue())
+                    {
+                        if (!checkDict.ContainsKey(excelPropertyInfo.Value.PropertyInfo.Name))
+                        {
+                            checkDict[excelPropertyInfo.Value.PropertyInfo.Name] = new HashSet<string>();
+                        }
+                        if (checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Contains(strValue))
+                        {
+                            throw new ImportException($"{excelPropertyInfo.Value.ImportHeaderTitle} 列存在重复数据");
+                        }
+                        checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Add(strValue);
+                    }
                 }
 
                 result.Add(t);

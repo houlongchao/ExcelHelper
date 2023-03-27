@@ -140,6 +140,11 @@
             字符串Trim
             </summary>
         </member>
+        <member name="P:ExcelHelper.ImportHeaderAttribute.IsUnique">
+            <summary>
+            是否唯一
+            </summary>
+        </member>
         <member name="T:ExcelHelper.Trim">
             <summary>
             Trim类型
@@ -297,6 +302,16 @@
             <param name="datas"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+            <summary>
+            导出 Sheet 数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sheetName"></param>
+            <param name="datas"></param>
+            <param name="exportSetting"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.BaseExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
             <inheritdoc/>
         </member>
@@ -354,6 +369,13 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.IExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+            <summary>
+            导出数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.IExcelWriteHelper.SetSheetIndex(System.String,System.Int32)">
             <summary>
             设置Sheet的位置
@@ -397,6 +419,15 @@
             <typeparam name="T"></typeparam>
             <param name="datas"></param>
             <param name="addTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+            <summary>
+            追加数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="datas"></param>
+            <param name="exportSetting"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.IExcelSheet.AppendEmptyRow">
@@ -475,6 +506,11 @@
             字段属性信息
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderTitle">
+            <summary>
+            导入头标题
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaders">
             <summary>
             导入头
@@ -493,6 +529,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimit">
             <summary>
             导入限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderTitle">
+            <summary>
+            导出头标题
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeader">
@@ -515,11 +556,22 @@
             忽略导出，如果为null则导出，不为null则不导出
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.IsIgnoreExport">
+            <summary>
+            是否忽略导出
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo)">
             <summary>
             Excel 属性信息
             </summary>
             <param name="propertyInfo"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.GetExportHeaderTitle">
+            <summary>
+            获取导出头标题
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ExportMappedToDisplay(System.Object)">
             <summary>
@@ -564,6 +616,12 @@
             移除前后空字符串
             </summary>
             <param name="data"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsUnqiue">
+            <summary>
+            是否唯一
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ExcelHelper.ExcelSheetInfo">
             <summary>
@@ -627,12 +685,28 @@
             <param name="propertyInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportNamePropertyInfoDict(System.Type)">
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfoList(System.Type,ExcelHelper.Settings.ExportSetting)">
             <summary>
-            获取导出模型属性信息字典
+            获取导出模型属性信息列表
             </summary>
             <param name="type"></param>
+            <param name="exportSetting"></param>
             <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.Settings.ExportSetting">
+            <summary>
+            导出配置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.Settings.ExportSetting.AddTitle">
+            <summary>
+            是否添加列标题
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.Settings.ExportSetting.IgnoreProperties">
+            <summary>
+            要忽略的属性
+            </summary>
         </member>
     </members>
 </doc>

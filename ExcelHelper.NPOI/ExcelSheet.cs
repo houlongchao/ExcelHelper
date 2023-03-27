@@ -1,4 +1,5 @@
-﻿using NPOI.SS.UserModel;
+﻿using ExcelHelper.Settings;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 
@@ -28,21 +29,35 @@ namespace ExcelHelper.NPOI
         /// <inheritdoc/>
         public IExcelSheet AppendData<T>(IEnumerable<T> datas, bool addTitle = true) where T : new()
         {
-            // 获取导出模型属性信息字典
-            var excelPropertyInfoNameDict = typeof(T).GetExportNamePropertyInfoDict();
+            var exportSetting = new ExportSetting();
+            exportSetting.AddTitle = addTitle;
+
+            return AppendData(datas, exportSetting);
+        }
+
+        /// <inheritdoc/>
+        public IExcelSheet AppendData<T>(IEnumerable<T> datas, ExportSetting exportSetting) where T : new()
+        {
+            if (exportSetting == null)
+            {
+                exportSetting = new ExportSetting();
+            }
+
+            // 获取导出模型属性信息列表
+            var excelPropertyInfoList = typeof(T).GetExportExcelPropertyInfoList(exportSetting);
             int rowIndex = _sheet.GetRowCount();
 
             // 表头
-            if (addTitle)
+            if (exportSetting.AddTitle)
             {
                 // 设置表头
                 var titleRow = _sheet.CreateRow(rowIndex++);
                 int colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
-                    var cell = titleRow.CreateCell(colIndex).SetValue(property.Key);
+                    var cell = titleRow.CreateCell(colIndex).SetValue(property.ExportHeaderTitle);
 
-                    var exportHeader = property.Value.ExportHeader;
+                    var exportHeader = property.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -70,12 +85,12 @@ namespace ExcelHelper.NPOI
             {
                 var dataRow = _sheet.CreateRow(rowIndex++);
                 var colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
-                    var value = property.Value.PropertyInfo.GetValue(data);
+                    var value = property.PropertyInfo.GetValue(data);
                     
                     // 如果导出的是图片二进制数据
-                    if (property.Value.ExportHeader != null && property.Value.ExportHeader.IsImage)
+                    if (property.ExportHeader != null && property.ExportHeader.IsImage)
                     {
                         if (value is byte[] imageBytes)
                         {
@@ -84,7 +99,7 @@ namespace ExcelHelper.NPOI
                         continue;
                     }
 
-                    var displayValue = property.Value.ExportMappedToDisplay(value);
+                    var displayValue = property.ExportMappedToDisplay(value);
                     var cell = dataRow.CreateCell(colIndex);
                     if (displayValue is DateTime dt)
                     {
@@ -114,9 +129,9 @@ namespace ExcelHelper.NPOI
                         cell.SetValue(displayValue?.ToString());
                     }
 
-                    if (!string.IsNullOrEmpty(property.Value.ExportHeader?.Format))
+                    if (!string.IsNullOrEmpty(property.ExportHeader?.Format))
                     {
-                        cell.SetDataFormat(property.Value.ExportHeader?.Format);
+                        cell.SetDataFormat(property.ExportHeader?.Format);
                     }
 
                     colIndex++;
@@ -126,9 +141,9 @@ namespace ExcelHelper.NPOI
             // 设置列宽度
             {
                 var colIndex = 0;
-                foreach (var property in excelPropertyInfoNameDict)
+                foreach (var property in excelPropertyInfoList)
                 {
-                    var exportHeader = property.Value.ExportHeader;
+                    var exportHeader = property.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -183,7 +198,10 @@ namespace ExcelHelper.NPOI
                     continue;
                 }
                 excelPropertyInfoIndexDict[titleCell.ColumnIndex] = excelPropertyInfoNameDict[title];
+                excelPropertyInfoIndexDict[titleCell.ColumnIndex].ImportHeaderTitle = title;
             }
+
+            var checkDict = new Dictionary<string, HashSet<string>>();
 
             // 读取数据
             var rowCount = _sheet.GetRowCount();
@@ -221,6 +239,20 @@ namespace ExcelHelper.NPOI
                         var actualValue = excelPropertyInfo.Value.ImportMappedToActual(value);
 
                         excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
+
+                        // 唯一检查
+                        if (actualValue is string strValue && excelPropertyInfo.Value.IsUnqiue())
+                        {
+                            if (!checkDict.ContainsKey(excelPropertyInfo.Value.PropertyInfo.Name))
+                            {
+                                checkDict[excelPropertyInfo.Value.PropertyInfo.Name] = new HashSet<string>();
+                            }
+                            if (checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Contains(strValue))
+                            {
+                                throw new ImportException($"{excelPropertyInfo.Value.ImportHeaderTitle} 列存在重复数据");
+                            }
+                            checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Add(strValue);
+                        }
 
                         hasValue = true;
                     }

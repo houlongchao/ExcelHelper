@@ -70,7 +70,9 @@ namespace ExcelHelper
         /// <returns></returns>
         public List<T> ImportSheet<T>(params string[] sheetNames) where T: new()
         {
-            return GetExcelSheet(sheetNames)?.GetData<T>();
+            var result = GetExcelSheet(sheetNames)?.GetData<T>();
+
+            return result ?? new List<T>();
         }
 
         /// <inheritdoc/>
