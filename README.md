@@ -1,30 +1,52 @@
 # Excel 帮助类
 
 - [x] 通过对象模型进行数据的导入导出，简单易用
-- [x] 支持多种Excel驱动（`NPOI`, `Aspose`）
-- [x] 不同Excel驱动使用相同代码，可无感切换
-- [x] 导入
-      - [x] 支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
-      - [x] 支持导入图片 `[ImportHeader("图片", IsImage = true)]`
-      - [x] 支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
-      - [x] 支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
-      - [x] 支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
-      - [x] 支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
-      - [x] 支持导入数据映射 `[ImportMapper("A3", "b")]`
-      - [x] 支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
-      - [x] 支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
 
-- [x] 导出
-      - [x] 支持导出多个Sheet页 `.ExportSheet("sheet", data)`
-      - [x] 支持导出图片 `[ExportHeader("图片", IsImage = true)]`
-      - [x] 支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
-      - [x] 支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
-      - [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
-      - [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
-      - [x] 支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
-      - [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
-      - [x] 支持导出时动态设置忽略导出字段 `new ExportSetting()`
-      - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
+- [x] 支持多种Excel驱动（`NPOI`, `Aspose`）
+
+- [x] 不同Excel驱动使用相同代码，可无感切换
+
+      ​
+
+- [x] 【导入】支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
+
+- [x] 【导入】支持导入图片 `[ImportHeader("图片", IsImage = true)]`
+
+- [x] 【导入】支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
+
+- [x] 【导入】支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
+
+- [x] 【导入】支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
+
+- [x] 【导入】支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
+
+- [x] 【导入】支持导入数据映射 `[ImportMapper("A3", "b")]`
+
+- [x] 【导入】支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
+
+- [x] 【导入】支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
+
+      ​
+
+- [x] 【导出】支持导出多个Sheet页 `.ExportSheet("sheet", data)`
+
+- [x] 【导出】支持导出图片 `[ExportHeader("图片", IsImage = true)]`
+
+- [x] 【导出】支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
+
+- [x] 【导出】支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
+
+- [x] 【导出】支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
+
+- [x] 【导出】支持导出数据映射 `[ExportMapper("a", "Aa")]`
+
+- [x] 【导出】支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
+
+- [x] 【导出】支持导出忽略指定字段导出 `[ExportIgnore]`
+
+- [x] 【导出】支持导出时动态设置忽略导出字段 `new ExportSetting()`
+
+- [x] 【导出】支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
 
 ## Nuget 引用
 
