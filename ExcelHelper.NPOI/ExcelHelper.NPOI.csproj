@@ -1,37 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net452; netstandard2.0; netstandard2.1; net6.0;</TargetFrameworks>
+		<Nullable>disable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+		<Company>Hou Longchao</Company>
+		<Owners>Hou Longchao</Owners>
+		<Authors>Hou Longchao</Authors>
+		<Description>Excel 导入导出帮助类</Description>
+		<Copyright>Copyright © HLC 2022</Copyright>
+		<Product>ExcelHelper</Product>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>Excel, Helper, Common, Util</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryType>Common</RepositoryType>
+		<RepositoryUrl>https://github.com/houlongchao/ExcelHelper</RepositoryUrl>
+		<Version>0.3.2</Version>
+	</PropertyGroup>
 
-  <PropertyGroup>
-	<TargetFrameworks>net452; netstandard2.0; netstandard2.1; net6.0;</TargetFrameworks>
-    <Nullable>disable</Nullable>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-	<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
-	<Company>Hou Longchao</Company>
-	<Owners>Hou Longchao</Owners>
-	<Authors>Hou Longchao</Authors>
-	<Description>Excel 导入导出帮助类</Description>
-	<Copyright>Copyright © HLC 2022</Copyright>
-	<Product>ExcelHelper</Product>
-	<PackageLicenseUrl />
-	<PackageTags>Excel, Helper, Common, Util</PackageTags>
-	<RepositoryType>Common</RepositoryType>
-	<Version>0.3.1</Version>
-  </PropertyGroup>
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
-  <PropertyGroup>
-	<DocumentationFile>ExcelHelper.NPOI.xml</DocumentationFile>
-	<OutputType>Library</OutputType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<DocumentationFile>ExcelHelper.NPOI.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
 
 
 	<ItemGroup>
-    <PackageReference Include="NPOI" Version="2.5.6" />
-  </ItemGroup>
+		<PackageReference Include="NPOI" Version="2.5.6" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExcelHelper\ExcelHelper.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExcelHelper\ExcelHelper.csproj" />
+	</ItemGroup>
 
 </Project>

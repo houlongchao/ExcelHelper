@@ -1,19 +1,30 @@
 # Excel 帮助类
 
-- [x]  通过对象模型进行数据的导入导出，简单易用
+- [x] 通过对象模型进行数据的导入导出，简单易用
+- [x] 支持多种Excel驱动（`NPOI`, `Aspose`）
+- [x] 不同Excel驱动使用相同代码，可无感切换
+- [x] 导入
+      - [x] 支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
+      - [x] 支持导入图片 `[ImportHeader("图片", IsImage = true)]`
+      - [x] 支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
+      - [x] 支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
+      - [x] 支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
+      - [x] 支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
+      - [x] 支持导入数据映射 `[ImportMapper("A3", "b")]`
+      - [x] 支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
+      - [x] 支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
 
-- [x] 支持多种Excel驱动
-
-- [x] 不同Excel驱动使用相同代码，可无法切换
-
-- [x] 支持导入多个Sheet
-
-- [x] 支持导出多个Sheet
-
-- [x] 支持导入导出图片
-
-      ​
-
+- [x] 导出
+      - [x] 支持导出多个Sheet页 `.ExportSheet("sheet", data)`
+      - [x] 支持导出图片 `[ExportHeader("图片", IsImage = true)]`
+      - [x] 支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
+      - [x] 支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
+      - [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
+      - [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
+      - [x] 支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
+      - [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
+      - [x] 支持导出时动态设置忽略导出字段 `new ExportSetting()`
+      - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
 
 ## Nuget 引用
 
@@ -25,9 +36,7 @@ dotnet add package ExcelHelper.NPOI
 dotnet add package ExcelHelper.Aspose
 ```
 
-
-
-## 使用
+## 基本使用
 
 ### 读数据
 
@@ -53,6 +62,8 @@ _excelHelper = new ExcelHelperBuilder().BuildWrite();
 _excelHelper.ExportSheet("test", datas);
 // 写入树datas到test2页
 _excelHelper.ExportSheet("test2", datas);
+// 创建一个sheet页aaa，然后sheet页中依次写入数据data1，写入一个空行，写入数据data2，写入数据data3（不写入标题）
+_excelHelper.CreateExcelSheet("aaa").AppendData(data1).AppendEmptyRow().AppendData(data2).AppendData(data3, false);
 // 导出为bytes数据
 var bytes = _excelHelper.ToBytes();
 // 写入到文件
@@ -65,11 +76,12 @@ File.WriteAllBytes("test.xlsx", bytes);
 /// <summary>
 /// 导入导出测试模型
 /// </summary>
+[ImportUnique(nameof(A), nameof(B))]
 public class DemoIO
 {
-  [ImportHeader("A")]
-  [ImportHeader("AA")]
-  [ExportHeader("A2")]
+  [ImportHeader("A", IsRequired = true, IsUnique = false)]
+  [ImportHeader("AA", Trim = Trim.Start)]
+  [ExportHeader("A2", ColorName = "Red")]
   public string A { get; set; }
 
   [ImportHeader("B")]
@@ -88,13 +100,14 @@ public class DemoIO
   [ExportMapper("c", "Ac")]
   public string C { get; set; }
 
-  [ExportHeader("日期", ColumnWidth = 30)]
+  [ExportHeader("日期", ColumnWidth = 30, Format = "yyyy/MM/dd")]
   public DateTime DateTime { get; set; }
 
   [ExportIgnore]
   public DateTime Date { get; set; }
 
   [ExportMapper(0, "011")]
+  [ExportHeader("数字", Format = "0.0")]
   public double Number { get; set; }
 
   public bool Boolean { get; set; }
@@ -102,7 +115,14 @@ public class DemoIO
   public string Formula { get; set; }
 
   [ExportMapper(Status.A, "AA")]
-  public Status Status { get; set; }
+  [ExportMapper(null, "")]
+  [ExportMapperElse("其它数据")]
+  public Status? Status { get; set; }
+  
+  
+  [ExportHeader("图片", IsImage = true)]
+  [ImportHeader("图片", IsImage = true)]
+  public byte[] Image { get; set; }
 }
 
 public enum Status
@@ -112,13 +132,13 @@ public enum Status
 }
 ```
 
-## 属性说明
+## 模型配置说明
 
 ### 导入
 
 #### ImportHeaderAttribute
 
-导入头设置，可以指定多个，方便兼容导入模板的改动
+导入头设置，可以指定多个，方便兼容导入模板的改动。未配置时以属性名称作为列名称。
 
 ``` C#
 [ImportHeader("A")]   // 读取列A的数据
@@ -127,6 +147,19 @@ public string A { get; set; }
 
 [ImportHeader("图片", IsImage = true)]  // 读取图片
 public byte[] Image { get; set; }       // 图片数据必须用 byte[] 接收
+
+[ImportHeader("A", IsRequired = true)] // 数据必须不能为空
+public string A { get; set; }
+
+[ImportHeader("A", RequiredMessage = "数据A必填")] // 数据必填消息自定义
+public string A { get; set; }
+
+[ImportHeader("A", IsUnique = false)] // 数据必须不能重复
+public string A { get; set; }
+
+[ImportHeader("AA", Trim = Trim.Start)]  // 依次数据前面的空白字符
+public string A { get; set; }
+
 ```
 
 #### ImportMapperAttribute
@@ -139,6 +172,16 @@ public byte[] Image { get; set; }       // 图片数据必须用 byte[] 接收
 public string C { get; set; }
 ```
 
+#### ImportMapperElseAttribute
+
+与导入映射转换器`ImportMapperAttribute`配合使用，当`ImportMapperAttribute`没有匹配的数据时全部数据值设置为该属性配置的值。
+
+```C#
+[ImportMapper("A3", "b")]        // 当Excel中数据为A3时读取后数据为b
+[ImportMapperElse("其它数据")]    // 否则其它数据都读取为"其它数据"
+public string C { get; set; }
+```
+
 #### ImportLimitAttribute
 
 导入限制，只能导入设置的数据
@@ -148,13 +191,23 @@ public string C { get; set; }
 public string C { get; set; }
 ```
 
+#### ImportUniqueAttribute
 
+导入唯一性数据限制，**在class上设置**
+
+```C#
+[ImportUnique(nameof(A), nameof(B))] // A和B的组合数据都唯一
+public class DemoIO
+{
+   // ...
+}
+```
 
 ### 导出
 
 #### ExportHeaderAttribute
 
-导出头设置，可以设置列名称，列备注信息，列宽度等
+导出头设置，可以设置列名称，列备注信息，列宽度等。未配置时以属性名称作为列名称。
 
 ``` C#
 [ExportHeader("C2", Comment = "备注", IsAutoSizeColumn = true)]
@@ -166,6 +219,8 @@ public DateTime DateTime { get; set; }
 [ExportHeader("图片", IsImage = true)]
 public byte[] Image { get; set; }
 
+[ExportHeader("A2", ColorName = "Red", IsBold = true, FontSize = 12)] // 指定导出标题字体
+public string A { get; set; }
 ```
 
 #### ExportMapperAttribute
@@ -179,7 +234,15 @@ public byte[] Image { get; set; }
 public string C { get; set; }
 ```
 
+#### ExportMapperAttribute
 
+与导出映射转换器`ExportMapperAttribute`配合使用，当`ExportMapperAttribute`没有匹配的数据时全部数据值设置为该属性配置的值。
+
+```C#
+[ExportMapper("A3", "b")]        // 当数据为A3时Excel中写入数据b
+[ExportMapperrElse("其它数据")]    // 否则其它数据都写入为"其它数据"
+public string C { get; set; }
+```
 
 #### ExportIgnoreAttribute
 
@@ -189,4 +252,3 @@ public string C { get; set; }
 [ExportIgnore]
 public DateTime Date { get; set; }
 ```
-
