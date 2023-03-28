@@ -224,6 +224,21 @@
             </summary>
             <param name="actual">真实值</param>
         </member>
+        <member name="T:ExcelHelper.ImportUniqueAttribute">
+            <summary>
+            导入唯一限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportUniqueAttribute.UniquePropertites">
+            <summary>
+            导入唯一限制联合属性
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportUniqueAttribute.#ctor(System.String[])">
+            <summary>
+            导入唯一限制
+            </summary>
+        </member>
         <member name="T:ExcelHelper.BaseExcelReadHelper">
             <summary>
             Excel 帮助类基类
@@ -496,6 +511,40 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="T:ExcelHelper.ExcelObjectInfo">
+            <summary>
+            Excel对象信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelObjectInfo.ObjectType">
+            <summary>
+            对象类型
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelObjectInfo.ImportUniques">
+            <summary>
+            导入唯一限制
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelObjectInfo.#ctor(System.Type)">
+            <summary>
+            Excel 对象信息
+            </summary>
+            <param name="objectType"></param>
+        </member>
+        <member name="F:ExcelHelper.ExcelObjectInfo.uniqueDict">
+            <summary>
+            唯一判断字典
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelObjectInfo.CheckImportUnique``1(``0)">
+            <summary>
+            检查导入唯一性限制
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <exception cref="T:ExcelHelper.ImportException"></exception>
+        </member>
         <member name="T:ExcelHelper.ExcelPropertyInfo">
             <summary>
             Excel 属性信息
@@ -509,6 +558,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderTitle">
             <summary>
             导入头标题
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderColumnIndex">
+            <summary>
+            导入标题所在列索引
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaders">
@@ -623,6 +677,24 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:ExcelHelper.ExcelPropertyInfo.importCheckSet">
+            <summary>
+            导入检查字典
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckUnqiue(System.Object)">
+            <summary>
+            导入检查唯一性
+            </summary>
+            <param name="actualValue">导入的数据</param>
+            <exception cref="T:ExcelHelper.ImportException"></exception>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetImportHeaderInfo(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            设置导入头信息
+            </summary>
+            <param name="titleIndexDict"></param>
+        </member>
         <member name="T:ExcelHelper.ExcelSheetInfo">
             <summary>
             Excel Sheet 页信息
@@ -656,18 +728,27 @@
             属性信息扩展方法
             </summary>
         </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportExcelPropertyInfo(System.Reflection.PropertyInfo)">
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExcelObjectInfo(System.Type)">
             <summary>
-            获取导入Excel属性对象
+            获取Excel对象
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExcelPropertyInfo(System.Reflection.PropertyInfo)">
+            <summary>
+            获取Excel属性对象
             </summary>
             <param name="propertyInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportNamePropertyInfoDict(System.Type)">
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportExcelPropertyInfoList(System.Type,System.Collections.Generic.Dictionary{System.String,System.Int32},ExcelHelper.Settings.ImportSetting)">
             <summary>
-            获取导入模型属性信息字典
+            获取导入模型属性信息列表
             </summary>
             <param name="type"></param>
+            <param name="titleIndexDict"></param>
+            <param name="importSetting"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.PropertyInfoExtensions.SetValueAuto(System.Reflection.PropertyInfo,System.Object,System.Object)">
@@ -677,13 +758,6 @@
             <param name="propertyInfo"></param>
             <param name="obj"></param>
             <param name="value"></param>
-        </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfo(System.Reflection.PropertyInfo)">
-            <summary>
-            获取导出Excel属性对象
-            </summary>
-            <param name="propertyInfo"></param>
-            <returns></returns>
         </member>
         <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfoList(System.Type,ExcelHelper.Settings.ExportSetting)">
             <summary>
@@ -706,6 +780,11 @@
         <member name="P:ExcelHelper.Settings.ExportSetting.IgnoreProperties">
             <summary>
             要忽略的属性
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.Settings.ImportSetting">
+            <summary>
+            导入配置
             </summary>
         </member>
     </members>

@@ -17,7 +17,7 @@
 	<PackageLicenseUrl />
 	<PackageTags>Excel, Helper, Common, Util</PackageTags>
 	<RepositoryType>Common</RepositoryType>
-	<Version>0.3.0</Version>
+	<Version>0.3.1</Version>
   </PropertyGroup>
 	
   <PropertyGroup>

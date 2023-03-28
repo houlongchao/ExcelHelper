@@ -2,6 +2,7 @@
 using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExcelHelper.NPOI
 {
@@ -47,7 +48,7 @@ namespace ExcelHelper.NPOI
             var excelPropertyInfoList = typeof(T).GetExportExcelPropertyInfoList(exportSetting);
             int rowIndex = _sheet.GetRowCount();
 
-            // 表头
+            // 写表头
             if (exportSetting.AddTitle)
             {
                 // 设置表头
@@ -180,11 +181,8 @@ namespace ExcelHelper.NPOI
         {
             var result = new List<T>();
 
-            // 获取导入模型属性信息字典
-            var excelPropertyInfoNameDict = typeof(T).GetImportNamePropertyInfoDict();
-
-            // 获取导入数据列对应的模型属性
-            var excelPropertyInfoIndexDict = new Dictionary<int, ExcelPropertyInfo>();
+            // 读标题
+            var titleIndexDict = new Dictionary<string, int>();
             var titleRow = _sheet.GetRow(0);
             foreach (var titleCell in titleRow)
             {
@@ -193,15 +191,13 @@ namespace ExcelHelper.NPOI
                 {
                     continue;
                 }
-                if (!excelPropertyInfoNameDict.ContainsKey(title))
-                {
-                    continue;
-                }
-                excelPropertyInfoIndexDict[titleCell.ColumnIndex] = excelPropertyInfoNameDict[title];
-                excelPropertyInfoIndexDict[titleCell.ColumnIndex].ImportHeaderTitle = title;
+                titleIndexDict[title] = titleCell.ColumnIndex;
             }
 
-            var checkDict = new Dictionary<string, HashSet<string>>();
+            // 获取导入模型信息
+            var excelObjectInfo = typeof(T).GetExcelObjectInfo();
+            // 获取导入模型属性信息列表
+            var excelPropertyInfoList = typeof(T).GetImportExcelPropertyInfoList(titleIndexDict);
 
             // 读取数据
             var rowCount = _sheet.GetRowCount();
@@ -216,43 +212,30 @@ namespace ExcelHelper.NPOI
                 var t = new T();
                 var hasValue = false;
 
-                foreach (var excelPropertyInfo in excelPropertyInfoIndexDict)
+                foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
                     // 导入图片
-                    if (excelPropertyInfo.Value.ImportIsImage())
+                    if (excelPropertyInfo.ImportIsImage())
                     {
-                        var bytes = row.GetCellOrCreate(excelPropertyInfo.Key).GetImage();
-                        excelPropertyInfo.Value.ImportCheckRequired(bytes);
-                        excelPropertyInfo.Value.PropertyInfo.SetValue(t, bytes);
+                        var bytes = row.GetCellOrCreate(excelPropertyInfo.ImportHeaderColumnIndex).GetImage();
+                        excelPropertyInfo.ImportCheckRequired(bytes);
+                        excelPropertyInfo.PropertyInfo.SetValue(t, bytes);
                         hasValue = true;
                         continue;
                     }
 
                     // 导入其它数据
-                    var value = row.GetCell(excelPropertyInfo.Key).GetData();
-                    excelPropertyInfo.Value.ImportCheckRequired(value);
-                    excelPropertyInfo.Value.ImportTrim(ref value);
-                    excelPropertyInfo.Value.ImportLimitCheckValue(value);
+                    var value = row.GetCell(excelPropertyInfo.ImportHeaderColumnIndex).GetData();
+                    excelPropertyInfo.ImportCheckRequired(value);
+                    excelPropertyInfo.ImportTrim(ref value);
+                    excelPropertyInfo.ImportLimitCheckValue(value);
+                    excelPropertyInfo.ImportCheckUnqiue(value);
 
                     if (value != null)
                     {
-                        var actualValue = excelPropertyInfo.Value.ImportMappedToActual(value);
+                        var actualValue = excelPropertyInfo.ImportMappedToActual(value);
 
-                        excelPropertyInfo.Value.PropertyInfo.SetValueAuto(t, actualValue);
-
-                        // 唯一检查
-                        if (actualValue is string strValue && excelPropertyInfo.Value.IsUnqiue())
-                        {
-                            if (!checkDict.ContainsKey(excelPropertyInfo.Value.PropertyInfo.Name))
-                            {
-                                checkDict[excelPropertyInfo.Value.PropertyInfo.Name] = new HashSet<string>();
-                            }
-                            if (checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Contains(strValue))
-                            {
-                                throw new ImportException($"{excelPropertyInfo.Value.ImportHeaderTitle} 列存在重复数据");
-                            }
-                            checkDict[excelPropertyInfo.Value.PropertyInfo.Name].Add(strValue);
-                        }
+                        excelPropertyInfo.PropertyInfo.SetValueAuto(t, actualValue);
 
                         hasValue = true;
                     }
@@ -260,6 +243,7 @@ namespace ExcelHelper.NPOI
 
                 if (hasValue)
                 {
+                    excelObjectInfo.CheckImportUnique(t);
                     result.Add(t);
                 }
             }

@@ -11,41 +11,49 @@ namespace ExcelHelper
     public static class PropertyInfoExtensions
     {
         /// <summary>
-        /// 获取导入Excel属性对象
+        /// 获取Excel对象
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static ExcelObjectInfo GetExcelObjectInfo(this Type type)
+        {
+            return new ExcelObjectInfo(type);
+        }
+
+        /// <summary>
+        /// 获取Excel属性对象
         /// </summary>
         /// <param name="propertyInfo"></param>
         /// <returns></returns>
-        public static ExcelPropertyInfo GetImportExcelPropertyInfo(this PropertyInfo propertyInfo)
+        public static ExcelPropertyInfo GetExcelPropertyInfo(this PropertyInfo propertyInfo)
         {
             return new ExcelPropertyInfo(propertyInfo);
         }
 
         /// <summary>
-        /// 获取导入模型属性信息字典
+        /// 获取导入模型属性信息列表
         /// </summary>
         /// <param name="type"></param>
+        /// <param name="titleIndexDict"></param>
+        /// <param name="importSetting"></param>
         /// <returns></returns>
-        public static Dictionary<string, ExcelPropertyInfo> GetImportNamePropertyInfoDict(this Type type)
+        public static List<ExcelPropertyInfo> GetImportExcelPropertyInfoList(this Type type, Dictionary<string, int> titleIndexDict, ImportSetting importSetting = null)
         {
+            var result = new List<ExcelPropertyInfo>();
             // 获取导入模型属性信息
             var properties = type.GetProperties();
-            var excelPropertyInfoNameDict = new Dictionary<string, ExcelPropertyInfo>();
             foreach (var property in properties)
             {
-                var excelPropertyInfo = property.GetImportExcelPropertyInfo();
+                var excelPropertyInfo = property.GetExcelPropertyInfo();
 
-                foreach (var importHeader in excelPropertyInfo.ImportHeaders)
+                // 如果表头能被识别则加入要读取的列表
+                if (excelPropertyInfo.SetImportHeaderInfo(titleIndexDict))
                 {
-                    excelPropertyInfoNameDict.Add(importHeader.Name, excelPropertyInfo);
-                }
-
-                if (!excelPropertyInfoNameDict.ContainsKey(property.Name))
-                {
-                    excelPropertyInfoNameDict.Add(property.Name, excelPropertyInfo);
+                    result.Add(excelPropertyInfo);
                 }
             }
 
-            return excelPropertyInfoNameDict;
+            return result;
         }
 
         /// <summary>
@@ -88,16 +96,6 @@ namespace ExcelHelper
         }
 
         /// <summary>
-        /// 获取导出Excel属性对象
-        /// </summary>
-        /// <param name="propertyInfo"></param>
-        /// <returns></returns>
-        public static ExcelPropertyInfo GetExportExcelPropertyInfo(this PropertyInfo propertyInfo)
-        {
-            return new ExcelPropertyInfo(propertyInfo);
-        }
-
-        /// <summary>
         /// 获取导出模型属性信息列表
         /// </summary>
         /// <param name="type"></param>
@@ -109,7 +107,7 @@ namespace ExcelHelper
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                var excelPropertyInfo = property.GetExportExcelPropertyInfo();
+                var excelPropertyInfo = property.GetExcelPropertyInfo();
                 
                 if (excelPropertyInfo.IsIgnoreExport)
                 {

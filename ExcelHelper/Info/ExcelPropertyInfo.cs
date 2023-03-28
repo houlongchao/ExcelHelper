@@ -19,7 +19,12 @@ namespace ExcelHelper
         /// <summary>
         /// 导入头标题
         /// </summary>
-        public string ImportHeaderTitle { get; set; }
+        public string ImportHeaderTitle { get; private set; }
+
+        /// <summary>
+        /// 导入标题所在列索引
+        /// </summary>
+        public int ImportHeaderColumnIndex { get; private set; }
 
         /// <summary>
         /// 导入头
@@ -297,7 +302,7 @@ namespace ExcelHelper
                     }
                     else if (importHeader.IsRequired)
                     {
-                        throw new ImportException($"Column【{importHeader.Name}】is Required!");
+                        throw new ImportException($"【{ImportHeaderTitle}】是必须的!");
                     }
                 }
             }
@@ -352,6 +357,55 @@ namespace ExcelHelper
                 {
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 导入检查字典
+        /// </summary>
+        private HashSet<string> importCheckSet = new HashSet<string>();
+
+        /// <summary>
+        /// 导入检查唯一性
+        /// </summary>
+        /// <param name="actualValue">导入的数据</param>
+        /// <exception cref="ImportException"></exception>
+        public void ImportCheckUnqiue(object actualValue)
+        {
+            // 唯一检查
+            if (IsUnqiue())
+            {
+                if (importCheckSet.Contains(actualValue?.ToString()))
+                {
+                    throw new ImportException($"【{ImportHeaderTitle}】列存在重复数据：{actualValue}");
+                }
+                importCheckSet.Add(actualValue?.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 设置导入头信息
+        /// </summary>
+        /// <param name="titleIndexDict"></param>
+        public bool SetImportHeaderInfo(Dictionary<string, int> titleIndexDict)
+        {
+            foreach (var importHeader in ImportHeaders)
+            {
+                if (titleIndexDict.ContainsKey(importHeader.Name))
+                {
+                    ImportHeaderTitle = importHeader.Name;
+                    ImportHeaderColumnIndex = titleIndexDict[importHeader.Name];
+                    return true;
+                }
+            }
+
+            if (titleIndexDict.ContainsKey(PropertyInfo.Name))
+            {
+                ImportHeaderTitle = PropertyInfo.Name;
+                ImportHeaderColumnIndex = titleIndexDict[PropertyInfo.Name];
+                return true;
             }
 
             return false;
