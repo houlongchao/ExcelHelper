@@ -6,8 +6,6 @@
 
 - [x] 不同Excel驱动使用相同代码，可无感切换
 
-      ​
-
 - [x] 【导入】支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
 
 - [x] 【导入】支持导入图片 `[ImportHeader("图片", IsImage = true)]`
@@ -24,9 +22,7 @@
 
 - [x] 【导入】支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
 
-- [x] 【导入】支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
-
-      ​
+- [x] 【导入】支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`​
 
 - [x] 【导出】支持导出多个Sheet页 `.ExportSheet("sheet", data)`
 
