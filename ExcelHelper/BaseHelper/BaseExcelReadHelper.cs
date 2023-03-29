@@ -75,6 +75,20 @@ namespace ExcelHelper
             return result ?? new List<T>();
         }
 
+        /// <summary>
+        /// 导入 Sheet 信息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="importSetting"></param>
+        /// <param name="sheetNames"></param>
+        /// <returns></returns>
+        public List<T> ImportSheet<T>(ImportSetting importSetting = null, params string[] sheetNames) where T : new()
+        {
+            var result = GetExcelSheet(sheetNames)?.GetData<T>(importSetting);
+
+            return result ?? new List<T>();
+        }
+
         /// <inheritdoc/>
         public abstract IExcelSheet GetExcelSheet(params string[] sheetNames);
     }

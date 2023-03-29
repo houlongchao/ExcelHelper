@@ -1,5 +1,4 @@
-﻿using ExcelHelper.Settings;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ExcelHelper
 {
@@ -37,7 +36,7 @@ namespace ExcelHelper
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        List<T> GetData<T>() where T : new();
+        List<T> GetData<T>(ImportSetting importSetting = null) where T : new();
 
         /// <summary>
         /// 获取总行数

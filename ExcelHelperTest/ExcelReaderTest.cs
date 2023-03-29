@@ -1,5 +1,6 @@
 ﻿using ExcelHelper;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace ExcelHelperTest
 {
@@ -28,6 +29,14 @@ namespace ExcelHelperTest
         {
             var sheets = _excelHelper.ImportSheet<DemoIO>();
             Assert.IsNotNull(sheets);
+
+            var sheets2 = _excelHelper.ImportSheet<DemoIO>(new ImportSetting()
+            {
+                TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.A), "AA"} },
+                RequiredProperties = new List<string>() { nameof(DemoIO.Image) },
+                UniqueProperties = new List<string> { nameof(DemoIO.A) },
+            });
+            Assert.IsNotNull(sheets2);
         }
     }
 }

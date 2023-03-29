@@ -447,13 +447,13 @@
         <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
             <inheritdoc/>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
             <inheritdoc/>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendEmptyRow">
             <inheritdoc/>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetData``1">
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
             <inheritdoc/>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelSheet.GetRowCount">

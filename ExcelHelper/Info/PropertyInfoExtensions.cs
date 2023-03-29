@@ -1,5 +1,4 @@
-﻿using ExcelHelper.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -45,9 +44,10 @@ namespace ExcelHelper
             foreach (var property in properties)
             {
                 var excelPropertyInfo = property.GetExcelPropertyInfo();
+                excelPropertyInfo.UpdateByImportSetting(importSetting);
 
                 // 如果表头能被识别则加入要读取的列表
-                if (excelPropertyInfo.SetImportHeaderInfo(titleIndexDict))
+                if (excelPropertyInfo.SetImportHeaderColumnIndex(titleIndexDict))
                 {
                     result.Add(excelPropertyInfo);
                 }
@@ -108,17 +108,25 @@ namespace ExcelHelper
             foreach (var property in properties)
             {
                 var excelPropertyInfo = property.GetExcelPropertyInfo();
+                excelPropertyInfo.UpdateByExportSetting(exportSetting);
                 
-                if (excelPropertyInfo.IsIgnoreExport)
+                // 如果动态配置的导出忽略，则必定忽略
+                if (exportSetting.IgnoreProperties.Contains(property.Name))
                 {
-                    // 模型属性自身设置了导出忽略配置
                     continue;
                 }
-                else if (exportSetting.IgnoreProperties.Contains(property.Name))
+                // 否则，如果动态配置的导出包含，则必定包含
+                else if (exportSetting.IncludeProperties.Contains(property.Name))
                 {
-                    // 导出时设置的导出忽略
+                    result.Add(excelPropertyInfo);
                     continue;
                 }
+                // 否则，如果模型上设置了导出忽略则导出忽略
+                else if (excelPropertyInfo.IsIgnoreExport)
+                {
+                    continue;
+                }
+                // 否则，添加至导出列表
                 else
                 {
                     result.Add(excelPropertyInfo);

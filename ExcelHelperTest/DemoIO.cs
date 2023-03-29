@@ -9,7 +9,7 @@ namespace ExcelHelperTest
     [ImportUnique(nameof(A), nameof(B))]
     public class DemoIO
     {
-        [ImportHeader("A", IsRequired = true, IsUnique = false)]
+        [ImportHeader("A", IsRequired = false, IsUnique = false)]
         [ImportHeader("AA", Trim = Trim.Start)]
         [ExportHeader("A2", ColorName = "Red")]
         public string A { get; set; }
@@ -38,7 +38,6 @@ namespace ExcelHelperTest
         [ExportIgnore]
         public DateTime Date { get; set; }
 
-        [ImportLimit(-0.123)]
         [ExportHeader("数字", Format = "0.0")]
         public double Number { get; set; }
 
@@ -63,40 +62,5 @@ namespace ExcelHelperTest
     {
         A = 0,
         B = 1,
-    }
-
-
-    /// <summary>
-    /// 参数值导入导出模型
-    /// </summary>
-    public class ParamItemIO
-    {
-        /// <summary>
-        /// 编码
-        /// </summary>
-        [ExportHeader("编码")]
-        [ImportHeader("编码", IsRequired = true, IsUnique = true)]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        [ExportHeader("中文名称")]
-        [ImportHeader("中文名称", IsRequired = true)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 英文名称
-        /// </summary>
-        [ExportHeader("英文名称")]
-        [ImportHeader("英文名称")]
-        public string NameEn { get; set; }
-
-        /// <summary>
-        /// 描述说明
-        /// </summary>
-        [ExportHeader("描述说明")]
-        [ImportHeader("描述说明")]
-        public string Desc { get; set; }
     }
 }

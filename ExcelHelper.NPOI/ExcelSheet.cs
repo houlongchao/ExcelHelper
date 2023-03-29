@@ -1,8 +1,6 @@
-﻿using ExcelHelper.Settings;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ExcelHelper.NPOI
 {
@@ -54,11 +52,11 @@ namespace ExcelHelper.NPOI
                 // 设置表头
                 var titleRow = _sheet.CreateRow(rowIndex++);
                 int colIndex = 0;
-                foreach (var property in excelPropertyInfoList)
+                foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
-                    var cell = titleRow.CreateCell(colIndex).SetValue(property.ExportHeaderTitle);
+                    var cell = titleRow.CreateCell(colIndex).SetValue(excelPropertyInfo.ExportHeaderTitle);
 
-                    var exportHeader = property.ExportHeader;
+                    var exportHeader = excelPropertyInfo.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -72,11 +70,10 @@ namespace ExcelHelper.NPOI
                         font.Color = indexedColor?.Index ?? IndexedColors.Black.Index;
                     });
 
-                    if (!string.IsNullOrEmpty(exportHeader.Comment))
+                    if (!string.IsNullOrEmpty(excelPropertyInfo.ExportHeaderComment))
                     {
-                        cell.SetComment(exportHeader.Comment);
+                        cell.SetComment(excelPropertyInfo.ExportHeaderComment);
                     }
-
                     colIndex++;
                 }
             }
@@ -91,7 +88,7 @@ namespace ExcelHelper.NPOI
                     var value = property.PropertyInfo.GetValue(data);
                     
                     // 如果导出的是图片二进制数据
-                    if (property.ExportHeader != null && property.ExportHeader.IsImage)
+                    if (property.IsExportImage())
                     {
                         if (value is byte[] imageBytes)
                         {
@@ -177,7 +174,7 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
-        public List<T> GetData<T>() where T : new()
+        public List<T> GetData<T>(ImportSetting importSetting = null) where T : new()
         {
             var result = new List<T>();
 
@@ -197,7 +194,7 @@ namespace ExcelHelper.NPOI
             // 获取导入模型信息
             var excelObjectInfo = typeof(T).GetExcelObjectInfo();
             // 获取导入模型属性信息列表
-            var excelPropertyInfoList = typeof(T).GetImportExcelPropertyInfoList(titleIndexDict);
+            var excelPropertyInfoList = typeof(T).GetImportExcelPropertyInfoList(titleIndexDict, importSetting);
 
             // 读取数据
             var rowCount = _sheet.GetRowCount();
@@ -215,7 +212,7 @@ namespace ExcelHelper.NPOI
                 foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
                     // 导入图片
-                    if (excelPropertyInfo.ImportIsImage())
+                    if (excelPropertyInfo.IsImportImage())
                     {
                         var bytes = row.GetCellOrCreate(excelPropertyInfo.ImportHeaderColumnIndex).GetImage();
                         excelPropertyInfo.ImportCheckRequired(bytes);

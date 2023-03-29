@@ -289,6 +289,15 @@
             <param name="sheetNames"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.BaseExcelReadHelper.ImportSheet``1(ExcelHelper.ImportSetting,System.String[])">
+            <summary>
+            导入 Sheet 信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="importSetting"></param>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.BaseExcelReadHelper.GetExcelSheet(System.String[])">
             <inheritdoc/>
         </member>
@@ -317,7 +326,7 @@
             <param name="datas"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.BaseExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+        <member name="M:ExcelHelper.BaseExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
             <summary>
             导出 Sheet 数据
             </summary>
@@ -364,6 +373,16 @@
             <param name="sheetNames"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.IExcelReadHelper.ImportSheet``1(ExcelHelper.ImportSetting,System.String[])">
+            <summary>
+            导入指定 Sheet 页的数据，如果指定多个 Sheet 页则依次匹配，返回第一个匹配到的 Sheet 页数据 <br/>
+            如果没有指定名称，则解析第一个 sheet 页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="importSetting"></param>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.IExcelReadHelper.GetExcelSheet(System.String[])">
             <summary>
             读取一个Sheet页，如果指定多个 Sheet 页则依次匹配，返回第一个匹配到的 Sheet 页数据 <br/>
@@ -384,7 +403,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.IExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+        <member name="M:ExcelHelper.IExcelWriteHelper.ExportSheet``1(System.String,System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
             <summary>
             导出数据
             </summary>
@@ -436,7 +455,7 @@
             <param name="addTitle"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.IExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.Settings.ExportSetting)">
+        <member name="M:ExcelHelper.IExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
             <summary>
             追加数据
             </summary>
@@ -451,7 +470,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.IExcelSheet.GetData``1">
+        <member name="M:ExcelHelper.IExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
             <summary>
             获取数据
             </summary>
@@ -565,6 +584,21 @@
             导入标题所在列索引
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportUnique">
+            <summary>
+            导入唯一性限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportRequired">
+            <summary>
+            导入数据必须
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportRequiredMessage">
+            <summary>
+            导入数据必须提示信息
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaders">
             <summary>
             导入头
@@ -588,6 +622,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderTitle">
             <summary>
             导出头标题
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderComment">
+            <summary>
+            导出头备注
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeader">
@@ -621,7 +660,7 @@
             </summary>
             <param name="propertyInfo"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.GetExportHeaderTitle">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetExportHeaderInfo">
             <summary>
             获取导出头标题
             </summary>
@@ -641,6 +680,16 @@
             <param name="actual"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByExportSetting(ExcelHelper.ExportSetting)">
+            <summary>
+            更新导出信息
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsExportImage">
+            <summary>
+            是否是图片
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportMappedToActual(System.Object)">
             <summary>
             将显示值映射为实际值
@@ -654,10 +703,16 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportIsImage">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportImage">
             <summary>
             是否是图片
             </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportRequired">
+            <summary>
+            是否必须
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckRequired(System.Object)">
             <summary>
@@ -671,16 +726,16 @@
             </summary>
             <param name="data"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.IsUnqiue">
-            <summary>
-            是否唯一
-            </summary>
-            <returns></returns>
-        </member>
         <member name="F:ExcelHelper.ExcelPropertyInfo.importCheckSet">
             <summary>
             导入检查字典
             </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportUnqiue">
+            <summary>
+            是否唯一
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckUnqiue(System.Object)">
             <summary>
@@ -689,9 +744,15 @@
             <param name="actualValue">导入的数据</param>
             <exception cref="T:ExcelHelper.ImportException"></exception>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.SetImportHeaderInfo(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByImportSetting(ExcelHelper.ImportSetting)">
             <summary>
-            设置导入头信息
+            更新导入信息
+            </summary>
+            <param name="importSetting"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetImportHeaderColumnIndex(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            设置导入头列索引
             </summary>
             <param name="titleIndexDict"></param>
         </member>
@@ -742,7 +803,7 @@
             <param name="propertyInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportExcelPropertyInfoList(System.Type,System.Collections.Generic.Dictionary{System.String,System.Int32},ExcelHelper.Settings.ImportSetting)">
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetImportExcelPropertyInfoList(System.Type,System.Collections.Generic.Dictionary{System.String,System.Int32},ExcelHelper.ImportSetting)">
             <summary>
             获取导入模型属性信息列表
             </summary>
@@ -759,7 +820,7 @@
             <param name="obj"></param>
             <param name="value"></param>
         </member>
-        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfoList(System.Type,ExcelHelper.Settings.ExportSetting)">
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetExportExcelPropertyInfoList(System.Type,ExcelHelper.ExportSetting)">
             <summary>
             获取导出模型属性信息列表
             </summary>
@@ -767,24 +828,60 @@
             <param name="exportSetting"></param>
             <returns></returns>
         </member>
-        <member name="T:ExcelHelper.Settings.ExportSetting">
+        <member name="T:ExcelHelper.ExportSetting">
             <summary>
             导出配置
             </summary>
         </member>
-        <member name="P:ExcelHelper.Settings.ExportSetting.AddTitle">
+        <member name="P:ExcelHelper.ExportSetting.AddTitle">
             <summary>
             是否添加列标题
             </summary>
         </member>
-        <member name="P:ExcelHelper.Settings.ExportSetting.IgnoreProperties">
+        <member name="P:ExcelHelper.ExportSetting.IgnoreProperties">
             <summary>
             要忽略的属性
             </summary>
         </member>
-        <member name="T:ExcelHelper.Settings.ImportSetting">
+        <member name="P:ExcelHelper.ExportSetting.IncludeProperties">
+            <summary>
+            要添加的属性
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.TitleMapping">
+            <summary>
+            导出头映射 (<c>nameof(A)</c>, <c>title</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>title</c> : Excel列标题</para>
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.TitleComment">
+            <summary>
+            标题备注 (<c>nameof(A)</c>, <c>comment</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>comment</c> : Excel列标题上的备注</para>
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ImportSetting">
             <summary>
             导入配置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportSetting.TitleMapping">
+            <summary>
+            导入头映射 (<c>nameof(A)</c>, <c>title</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>title</c> : Excel列标题</para>
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportSetting.RequiredProperties">
+            <summary>
+            必须有数据的属性
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportSetting.UniqueProperties">
+            <summary>
+            唯一性验证的属性
             </summary>
         </member>
     </members>

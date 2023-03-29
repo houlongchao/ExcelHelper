@@ -27,6 +27,21 @@ namespace ExcelHelper
         public int ImportHeaderColumnIndex { get; private set; }
 
         /// <summary>
+        /// 导入唯一性限制
+        /// </summary>
+        public bool ImportUnique { get; private set; } = false;
+
+        /// <summary>
+        /// 导入数据必须
+        /// </summary>
+        public bool ImportRequired { get; private set; } = false;
+
+        /// <summary>
+        /// 导入数据必须提示信息
+        /// </summary>
+        public string ImportRequiredMessage { get; private set; }
+
+        /// <summary>
         /// 导入头
         /// </summary>
         public IEnumerable<ImportHeaderAttribute> ImportHeaders { get; }
@@ -53,7 +68,12 @@ namespace ExcelHelper
         /// <summary>
         /// 导出头标题
         /// </summary>
-        public string ExportHeaderTitle { get; }
+        public string ExportHeaderTitle { get; private set; }
+
+        /// <summary>
+        /// 导出头备注
+        /// </summary>
+        public string ExportHeaderComment { get; private set; }
 
         /// <summary>
         /// 导出头
@@ -99,23 +119,27 @@ namespace ExcelHelper
             ExportMappers = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
             ExportMapperElse = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
             ExportIgnore = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
-            ExportHeaderTitle = GetExportHeaderTitle();
+            SetExportHeaderInfo();
         }
 
         /// <summary>
         /// 获取导出头标题
         /// </summary>
         /// <returns></returns>
-        private string GetExportHeaderTitle()
+        private void SetExportHeaderInfo()
         {
+            // 导出头标题
             if (!string.IsNullOrEmpty(ExportHeader?.Name))
             {
-                return ExportHeader.Name;
+                ExportHeaderTitle = ExportHeader.Name;
             }
             else
             {
-                return PropertyInfo.Name;
+                ExportHeaderTitle = PropertyInfo.Name;
             }
+
+            // 导出头备注
+            ExportHeaderComment = ExportHeader?.Comment;
         }
 
         #region Export
@@ -191,6 +215,38 @@ namespace ExcelHelper
             }
         }
 
+        /// <summary>
+        /// 更新导出信息
+        /// </summary>
+        public void UpdateByExportSetting(ExportSetting exportSetting)
+        {
+            if (exportSetting == null)
+            {
+                return;
+            }
+
+            // 导出头标题映射
+            if (exportSetting.TitleMapping.TryGetValue(PropertyInfo.Name, out var title))
+            {
+                ExportHeaderTitle = title;
+            }
+
+            // 导出头备注
+            if (exportSetting.TitleComment.TryGetValue(PropertyInfo.Name, out var comment))
+            {
+                ExportHeaderComment = comment;
+            }
+        }
+
+        /// <summary>
+        /// 是否是图片
+        /// </summary>
+        public bool IsExportImage()
+        {
+            return ExportHeader != null && ExportHeader.IsImage;
+        }
+
+
         #endregion
 
         #region Import
@@ -251,19 +307,19 @@ namespace ExcelHelper
 
             foreach (var limit in ImportLimit.Limits)
             {
-                if (limit.Equals(value))
+                if (limit?.ToString() == value?.ToString())
                 {
                     return;
                 }
             }
 
-            throw ImportException.New($"【{value}】is limit");
+            throw ImportException.New($"列【{ImportHeaderTitle}】值【{value}】不被支持");
         }
 
         /// <summary>
         /// 是否是图片
         /// </summary>
-        public bool ImportIsImage()
+        public bool IsImportImage()
         {
             if (ImportHeaders == null)
             {
@@ -282,27 +338,56 @@ namespace ExcelHelper
         }
 
         /// <summary>
+        /// 是否必须
+        /// </summary>
+        /// <returns></returns>
+        public bool IsImportRequired()
+        {
+            if (ImportRequired)
+            {
+                return true;
+            }
+
+            if (ImportHeaders == null)
+            {
+                return false;
+            }
+
+            foreach (var importHeader in ImportHeaders)
+            {
+                if (!string.IsNullOrEmpty(importHeader.RequiredMessage))
+                {
+                    ImportRequired = true;
+                    ImportRequiredMessage = importHeader.RequiredMessage;
+                    return true;
+                }
+                else if (importHeader.IsRequired)
+                {
+                    ImportRequired = true;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 检查必须,如果设置了必须且没有数据则报错
         /// </summary>
         /// <returns></returns>
         public void ImportCheckRequired(object data)
         {
-            if (ImportHeaders == null)
-            {
-                return;
-            }
-
-            foreach (var importHeader in ImportHeaders)
+            if (IsImportRequired())
             {
                 if (string.IsNullOrEmpty(data?.ToString()))
                 {
-                    if (!string.IsNullOrEmpty(importHeader.RequiredMessage))
-                    {
-                        throw new ImportException(importHeader.RequiredMessage);
-                    }
-                    else if (importHeader.IsRequired)
+                    if (string.IsNullOrEmpty(ImportRequiredMessage))
                     {
                         throw new ImportException($"【{ImportHeaderTitle}】是必须的!");
+                    }
+                    else
+                    {
+                        throw new ImportException(ImportRequiredMessage);
                     }
                 }
             }
@@ -341,11 +426,21 @@ namespace ExcelHelper
         }
         
         /// <summary>
+        /// 导入检查字典
+        /// </summary>
+        private HashSet<string> importCheckSet = new HashSet<string>();
+
+        /// <summary>
         /// 是否唯一
         /// </summary>
         /// <returns></returns>
-        public bool IsUnqiue()
+        public bool IsImportUnqiue()
         {
+            if (ImportUnique)
+            {
+                return true;
+            }
+
             if (ImportHeaders == null)
             {
                 return false;
@@ -355,17 +450,13 @@ namespace ExcelHelper
             {
                 if (header.IsUnique)
                 {
+                    ImportUnique = true;
                     return true;
                 }
             }
 
             return false;
         }
-
-        /// <summary>
-        /// 导入检查字典
-        /// </summary>
-        private HashSet<string> importCheckSet = new HashSet<string>();
 
         /// <summary>
         /// 导入检查唯一性
@@ -375,7 +466,7 @@ namespace ExcelHelper
         public void ImportCheckUnqiue(object actualValue)
         {
             // 唯一检查
-            if (IsUnqiue())
+            if (IsImportUnqiue())
             {
                 if (importCheckSet.Contains(actualValue?.ToString()))
                 {
@@ -386,11 +477,43 @@ namespace ExcelHelper
         }
 
         /// <summary>
-        /// 设置导入头信息
+        /// 更新导入信息
+        /// </summary>
+        /// <param name="importSetting"></param>
+        public void UpdateByImportSetting(ImportSetting importSetting)
+        {
+            if (importSetting == null)
+            {
+                return;
+            }
+
+            // 导入头标题映射
+            if (importSetting.TitleMapping.TryGetValue(PropertyInfo.Name, out var title))
+            {
+                ImportHeaderTitle = title;
+            }
+
+            // 导入唯一性限制
+            ImportUnique = importSetting.UniqueProperties.Contains(PropertyInfo.Name);
+            // 导入必须限制
+            ImportRequired = importSetting.RequiredProperties.Contains(PropertyInfo.Name);
+        }
+
+        /// <summary>
+        /// 设置导入头列索引
         /// </summary>
         /// <param name="titleIndexDict"></param>
-        public bool SetImportHeaderInfo(Dictionary<string, int> titleIndexDict)
+        public bool SetImportHeaderColumnIndex(Dictionary<string, int> titleIndexDict)
         {
+            // 从excel标题列表中获取到了导入标题，直接设置对应的列索引
+            // 此时的导入标题是从动态导入配置中获取
+            if (!string.IsNullOrEmpty(ImportHeaderTitle) && titleIndexDict.TryGetValue(ImportHeaderTitle, out var index))
+            {
+                ImportHeaderColumnIndex = index;
+                return true;
+            }
+
+            // 识别模型上的导入头设置
             foreach (var importHeader in ImportHeaders)
             {
                 if (titleIndexDict.ContainsKey(importHeader.Name))
@@ -401,6 +524,7 @@ namespace ExcelHelper
                 }
             }
 
+            // 从属性自身识别
             if (titleIndexDict.ContainsKey(PropertyInfo.Name))
             {
                 ImportHeaderTitle = PropertyInfo.Name;

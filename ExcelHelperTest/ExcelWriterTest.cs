@@ -70,11 +70,18 @@ namespace ExcelHelperTest
             });
 
             _excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);
-            _excelHelper.ExportSheet("test", datas)
-                .ExportSheet("test2", data2)
-                .ExportSheet("test3", data3, new ExcelHelper.Settings.ExportSetting()
+            _excelHelper
+                .ExportSheet("test", datas)
+                .ExportSheet("test2", data2, new ExportSetting()
                 {
                     IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) }
+                })
+                .ExportSheet("test3", data3, new ExportSetting()
+                {
+                    IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) },
+                    IncludeProperties = new List<string>() { nameof(DemoIO.Date), nameof(DemoIO.B) },
+                    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期" } },
+                    TitleComment = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期备注" } },
                 })
                 .SetSheetIndex("test3", 1);
             var bytes = _excelHelper.ToBytes();

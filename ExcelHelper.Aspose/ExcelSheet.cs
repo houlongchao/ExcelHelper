@@ -1,8 +1,6 @@
 ﻿using Aspose.Cells;
-using ExcelHelper.Settings;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 
 namespace ExcelHelper.Aspose
@@ -54,12 +52,12 @@ namespace ExcelHelper.Aspose
             if (exportSetting.AddTitle)
             {
                 int colIndex = 0;
-                foreach (var property in excelPropertyInfoList)
+                foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
                     var cell = _sheet.CreateCell(rowIndex, colIndex++);
-                    cell.SetValue(property.ExportHeaderTitle);
+                    cell.SetValue(excelPropertyInfo.ExportHeaderTitle);
 
-                    var exportHeader = property.ExportHeader;
+                    var exportHeader = excelPropertyInfo.ExportHeader;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -72,9 +70,9 @@ namespace ExcelHelper.Aspose
                         font.Color = Color.FromName(exportHeader.ColorName);
                     });
 
-                    if (!string.IsNullOrEmpty(exportHeader.Comment))
+                    if (!string.IsNullOrEmpty(excelPropertyInfo.ExportHeaderComment))
                     {
-                        cell.SetComment(exportHeader.Comment);
+                        cell.SetComment(excelPropertyInfo.ExportHeaderComment);
                     }
                 }
                 rowIndex++;
@@ -84,12 +82,12 @@ namespace ExcelHelper.Aspose
             foreach (var data in datas)
             {
                 var colIndex = 0;
-                foreach (var property in excelPropertyInfoList)
+                foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
-                    var value = property.PropertyInfo.GetValue(data);
+                    var value = excelPropertyInfo.PropertyInfo.GetValue(data);
 
                     // 如果导出的是图片二进制数据
-                    if (property.ExportHeader != null && property.ExportHeader.IsImage)
+                    if (excelPropertyInfo.IsExportImage())
                     {
                         if (value is byte[] imageBytes)
                         {
@@ -98,7 +96,7 @@ namespace ExcelHelper.Aspose
                         continue;
                     }
 
-                    var displayValue = property.ExportMappedToDisplay(value);
+                    var displayValue = excelPropertyInfo.ExportMappedToDisplay(value);
                     var cell = _sheet.CreateCell(rowIndex, colIndex);
                     if (displayValue is DateTime dt)
                     {
@@ -128,9 +126,9 @@ namespace ExcelHelper.Aspose
                         cell.SetValue(displayValue?.ToString());
                     }
 
-                    if (!string.IsNullOrEmpty(property.ExportHeader?.Format))
+                    if (!string.IsNullOrEmpty(excelPropertyInfo.ExportHeader?.Format))
                     {
-                        cell.SetDataFormat(property.ExportHeader?.Format);
+                        cell.SetDataFormat(excelPropertyInfo.ExportHeader?.Format);
                     }
 
                     colIndex++;
@@ -176,7 +174,7 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
-        public List<T> GetData<T>() where T : new()
+        public List<T> GetData<T>(ImportSetting importSetting = null) where T : new()
         {
             var result = new List<T>();
 
@@ -197,7 +195,7 @@ namespace ExcelHelper.Aspose
             // 获取导入模型信息
             var excelObjectInfo = typeof(T).GetExcelObjectInfo();
             // 获取导入模型属性信息列表
-            var excelPropertyInfoList = typeof(T).GetImportExcelPropertyInfoList(titleIndexDict);
+            var excelPropertyInfoList = typeof(T).GetImportExcelPropertyInfoList(titleIndexDict, importSetting);
 
             // 读取数据
             var rowCount = _sheet.GetRowCount();
@@ -212,7 +210,7 @@ namespace ExcelHelper.Aspose
                 foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
                     // 导入图片
-                    if (excelPropertyInfo.ImportIsImage())
+                    if (excelPropertyInfo.IsImportImage())
                     {
                         var bytes = row[excelPropertyInfo.ImportHeaderColumnIndex].GetImage();
                         excelPropertyInfo.ImportCheckRequired(bytes);

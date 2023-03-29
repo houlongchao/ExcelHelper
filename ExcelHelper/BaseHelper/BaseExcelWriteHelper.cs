@@ -1,5 +1,4 @@
-﻿using ExcelHelper.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace ExcelHelper
