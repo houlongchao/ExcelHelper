@@ -1,48 +1,42 @@
-# Excel 帮助类
+# Excel 导入导出工具库
 
-- [x] 通过对象模型进行数据的导入导出，简单易用
+[![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.Core)](https://www.nuget.org/packages/ExcelHelper.Core)
+[![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.NPOI)](https://www.nuget.org/packages/ExcelHelper.NPOI)
+[![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.Aspose)](https://www.nuget.org/packages/ExcelHelper.Aspose)
 
-- [x] 支持多种Excel驱动（`NPOI`, `Aspose`）
+![GitHub](https://img.shields.io/github/license/houlongchao/ExcelHelper?style=social)
 
-- [x] 不同Excel驱动使用相同代码，可无感切换
+简单，易用，灵活的Excel导入导出工具库。支持不同Excel驱动（`NPOI`, `Aspose`），只需切换驱动包，无需修改代码。
 
-- [x] 【导入】支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
+## 功能说明
 
-- [x] 【导入】支持导入图片 `[ImportHeader("图片", IsImage = true)]`
+### 导入
 
-- [x] 【导入】支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
 
-- [x] 【导入】支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
+- [x] 支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
+- [x] 支持导入图片 `[ImportHeader("图片", IsImage = true)]`
+- [x] 支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
+- [x] 支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
+- [x] 支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
+- [x] 支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
+- [x] 支持导入数据映射 `[ImportMapper("A3", "b")]`
+- [x] 支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
+- [x] 支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
+- [x] 支持导入时动态设置 `new ImportSetting()`
 
-- [x] 【导入】支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
+### 导出
 
-- [x] 【导入】支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
 
-- [x] 【导入】支持导入数据映射 `[ImportMapper("A3", "b")]`
-
-- [x] 【导入】支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
-
-- [x] 【导入】支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`​
-
-- [x] 【导出】支持导出多个Sheet页 `.ExportSheet("sheet", data)`
-
-- [x] 【导出】支持导出图片 `[ExportHeader("图片", IsImage = true)]`
-
-- [x] 【导出】支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
-
-- [x] 【导出】支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
-
-- [x] 【导出】支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
-
-- [x] 【导出】支持导出数据映射 `[ExportMapper("a", "Aa")]`
-
-- [x] 【导出】支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
-
-- [x] 【导出】支持导出忽略指定字段导出 `[ExportIgnore]`
-
-- [x] 【导出】支持导出时动态设置忽略导出字段 `new ExportSetting()`
-
-- [x] 【导出】支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
+- [x] 支持导出多个Sheet页 `.ExportSheet("sheet", data)`
+- [x] 支持导出图片 `[ExportHeader("图片", IsImage = true)]`
+- [x] 支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
+- [x] 支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
+- [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
+- [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
+- [x] 支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
+- [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
+- [x] 支持导出时动态设置 `new ExportSetting()`
+- [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
 
 ## Nuget 引用
 
@@ -270,3 +264,52 @@ public string C { get; set; }
 [ExportIgnore]
 public DateTime Date { get; set; }
 ```
+
+## 动态设置
+
+### ImportSetting
+
+数据导入时设置的动态配置。
+
+``` c#
+var importSetting = new ImportSetting()
+{
+    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.A), "AA"} },
+    RequiredProperties = new List<string>() { nameof(DemoIO.Image) },
+    UniqueProperties = new List<string> { nameof(DemoIO.A) },
+};
+var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
+```
+
+> `TitleMapping` : 导入头映射，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导入列名。
+>
+> `RequiredProperties` : 对导入数据进行必须性验证，接收一个字符串列表。如果模型属性名称在列表中，则对该列数据进行必须性验证。
+>
+> `UniqueProperties` ：对导入数据进行唯一性验证，接收一个字符串列表。如果模型属性名称在列表中，则对该列数据进行唯一性验证。
+
+## 
+
+### ExportSetting
+
+数据导出时设置的动态配置
+
+``` C#
+var exportSetting = new ExportSetting()
+{
+    IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) },
+    IncludeProperties = new List<string>() { nameof(DemoIO.Date), nameof(DemoIO.B) },
+    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期" } },
+    TitleComment = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期备注" } },
+};
+_excelHelper.ExportSheet("test3", data3, exportSetting);
+```
+
+> `AddTitle` : 导出时是否添加列标题，默认为`true`。
+>
+> `TitleMapping` : 导出头映射，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导出列名。
+>
+> `IgnoreProperties` : 要忽略导出的属性，接收一个字符串列表。如果模型属性名称在列表中，则导出时不导出该列数据。
+>
+> `IncludeProperties` : 要导出的属性，接收一个字符串列表。如果模型属性名称在列表中，则导出时导出该列数据。优先级：`IgnoreProperties` > `IncludeProperties` > `ExportIgnoreAttribute`
+>
+> `TitleComment` : 导出列标题备注信息，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导出列名的备注信息。
