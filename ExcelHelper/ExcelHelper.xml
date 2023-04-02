@@ -599,22 +599,32 @@
             导入数据必须提示信息
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaders">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimitValues">
+            <summary>
+            导入限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportTrimValue">
+            <summary>
+            导入值Trim
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderAttributes">
             <summary>
             导入头
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMappers">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMapperAttributes">
             <summary>
             导入映射
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMapperElse">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportMapperElseAttribute">
             <summary>
             导入映射else
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimit">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimitAttribute">
             <summary>
             导入限制
             </summary>
@@ -629,22 +639,22 @@
             导出头备注
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeader">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderAttribute">
             <summary>
             导出头
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMappers">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMapperAttributes">
             <summary>
             导出映射
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMapperElse">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMapperElseAttribute">
             <summary>
             导出映射else
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnoreAttribute">
             <summary>
             忽略导出，如果为null则导出，不为null则不导出
             </summary>
@@ -660,7 +670,12 @@
             </summary>
             <param name="propertyInfo"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.SetExportHeaderInfo">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetImportInfo">
+            <summary>
+            设置导入信息
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetExportInfo">
             <summary>
             获取导出头标题
             </summary>
@@ -838,16 +853,6 @@
             是否添加列标题
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExportSetting.IgnoreProperties">
-            <summary>
-            要忽略的属性
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ExportSetting.IncludeProperties">
-            <summary>
-            要添加的属性
-            </summary>
-        </member>
         <member name="P:ExcelHelper.ExportSetting.TitleMapping">
             <summary>
             导出头映射 (<c>nameof(A)</c>, <c>title</c>)
@@ -862,6 +867,42 @@
             <para><c>comment</c> : Excel列标题上的备注</para>
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExportSetting.IgnoreProperties">
+            <summary>
+            要忽略的属性
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.IncludeProperties">
+            <summary>
+            要添加的属性
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportSetting.AddTitleMapping(System.String,System.String)">
+            <summary>
+            添加属性与excel头映射
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="title">excel中列标题</param>
+        </member>
+        <member name="M:ExcelHelper.ExportSetting.AddTitleComment(System.String,System.String)">
+            <summary>
+            添加excel标题备注信息
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="comment">excel标题备注信息</param>
+        </member>
+        <member name="M:ExcelHelper.ExportSetting.AddIgnoreProperties(System.String[])">
+            <summary>
+            添加导出时要忽略的属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
+        </member>
+        <member name="M:ExcelHelper.ExportSetting.AddIncludeProperties(System.String[])">
+            <summary>
+            指定导出时要导出的属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
+        </member>
         <member name="T:ExcelHelper.ImportSetting">
             <summary>
             导入配置
@@ -874,6 +915,18 @@
             <para><c>title</c> : Excel列标题</para>
             </summary>
         </member>
+        <member name="P:ExcelHelper.ImportSetting.LimitValues">
+            <summary>
+            导入值限制 (<c>nameof(A)</c>, <c>value list</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>value list</c> : 值列表</para>
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportSetting.ValueTrim">
+            <summary>
+            值Trim
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ImportSetting.RequiredProperties">
             <summary>
             必须有数据的属性
@@ -883,6 +936,39 @@
             <summary>
             唯一性验证的属性
             </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportSetting.AddTitleMapping(System.String,System.String)">
+            <summary>
+            添加属性与excel头映射
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="title">excel中列标题</param>
+        </member>
+        <member name="M:ExcelHelper.ImportSetting.AddLimitValues(System.String,System.Object[])">
+            <summary>
+            添加限制值清单
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="values">导入数据限制列表</param>
+        </member>
+        <member name="M:ExcelHelper.ImportSetting.AddValueTrim(System.String,ExcelHelper.Trim)">
+            <summary>
+            添加数据值Trim
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="trim">数据Trim方式</param>
+        </member>
+        <member name="M:ExcelHelper.ImportSetting.AddRequiredProperties(System.String[])">
+            <summary>
+            添加必填属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
+        </member>
+        <member name="M:ExcelHelper.ImportSetting.AddUniqueProperties(System.String[])">
+            <summary>
+            添加唯一属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
         </member>
     </members>
 </doc>

@@ -3,7 +3,6 @@
 [![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.Core)](https://www.nuget.org/packages/ExcelHelper.Core)
 [![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.NPOI)](https://www.nuget.org/packages/ExcelHelper.NPOI)
 [![NuGet Badge](https://buildstats.info/nuget/ExcelHelper.Aspose)](https://www.nuget.org/packages/ExcelHelper.Aspose)
-
 ![GitHub](https://img.shields.io/github/license/houlongchao/ExcelHelper?style=social)
 
 简单，易用，灵活的Excel导入导出工具库。支持不同Excel驱动（`NPOI`, `Aspose`），只需切换驱动包，无需修改代码。
@@ -272,20 +271,25 @@ public DateTime Date { get; set; }
 数据导入时设置的动态配置。
 
 ``` c#
-var importSetting = new ImportSetting()
-{
-    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.A), "AA"} },
-    RequiredProperties = new List<string>() { nameof(DemoIO.Image) },
-    UniqueProperties = new List<string> { nameof(DemoIO.A) },
-};
+var importSetting = new ImportSetting();
+importSetting.AddTitleMapping(nameof(DemoIO.A), "AA");
+importSetting.AddRequiredProperties(nameof(DemoIO.Image));
+importSetting.AddUniqueProperties(nameof(DemoIO.A));
+importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
+importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
+
 var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
 ```
 
-> `TitleMapping` : 导入头映射，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导入列名。
+> `TitleMapping` : 导入头映射，参数为一个字典，`key`为接收模型属性名，`value`为excel表格导入列名。
 >
-> `RequiredProperties` : 对导入数据进行必须性验证，接收一个字符串列表。如果模型属性名称在列表中，则对该列数据进行必须性验证。
+> `RequiredProperties` : 对导入数据进行必须性验证，参数为属性名字符串列表。如果模型属性名称在列表中，则对该列数据进行必须性验证。
 >
-> `UniqueProperties` ：对导入数据进行唯一性验证，接收一个字符串列表。如果模型属性名称在列表中，则对该列数据进行唯一性验证。
+> `UniqueProperties` ：对导入数据进行唯一性验证，参数为属性名字符串列表。如果模型属性名称在列表中，则对该列数据进行唯一性验证。
+>
+> `LimitValues` ：对导入数据进行验证，参数为一个字典。`key`为属性名，`value`为要检查的值列表。如果导入的值在指定列表中，则该导入值有效。
+>
+> `ValueTrim` ：对导入数据进行前后空白字符移除，参数为一个字典。`key`为属性名，`value`为要移除的模式。
 
 ## 
 
@@ -295,21 +299,20 @@ var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
 
 ``` C#
 var exportSetting = new ExportSetting()
-{
-    IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) },
-    IncludeProperties = new List<string>() { nameof(DemoIO.Date), nameof(DemoIO.B) },
-    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期" } },
-    TitleComment = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期备注" } },
-};
+setting.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));
+setting.AddIncludeProperties(nameof(DemoIO.Date), nameof(DemoIO.B));
+setting.AddTitleMapping(nameof(DemoIO.Date), "日期");
+setting.AddTitleComment(nameof(DemoIO.Date), "日期备注");
+
 _excelHelper.ExportSheet("test3", data3, exportSetting);
 ```
 
 > `AddTitle` : 导出时是否添加列标题，默认为`true`。
 >
-> `TitleMapping` : 导出头映射，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导出列名。
+> `TitleMapping` : 导出头映射，参数为一个字典。`key`为接收模型属性名，`value`为excel表格导出列名。
 >
-> `IgnoreProperties` : 要忽略导出的属性，接收一个字符串列表。如果模型属性名称在列表中，则导出时不导出该列数据。
+> `IgnoreProperties` : 要忽略导出的属性，参数为属性名字符串列表。如果模型属性名称在列表中，则导出时不导出该列数据。
 >
-> `IncludeProperties` : 要导出的属性，接收一个字符串列表。如果模型属性名称在列表中，则导出时导出该列数据。优先级：`IgnoreProperties` > `IncludeProperties` > `ExportIgnoreAttribute`
+> `IncludeProperties` : 要导出的属性，参数为属性名字符串列表。如果模型属性名称在列表中，则导出时导出该列数据。优先级：`IgnoreProperties` > `IncludeProperties` > `ExportIgnoreAttribute`
 >
-> `TitleComment` : 导出列标题备注信息，接收参数为一个字典，`key`为接收模型属性名，`value`为excel表格导出列名的备注信息。
+> `TitleComment` : 导出列标题备注信息，参数为一个字典。`key`为接收模型属性名，`value`为excel表格导出列名的备注信息。

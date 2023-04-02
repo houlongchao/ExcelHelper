@@ -42,24 +42,34 @@ namespace ExcelHelper
         public string ImportRequiredMessage { get; private set; }
 
         /// <summary>
+        /// 导入限制
+        /// </summary>
+        public List<object> ImportLimitValues { get; private set; } = new List<object>();
+
+        /// <summary>
+        /// 导入值Trim
+        /// </summary>
+        public Trim ImportTrimValue { get; private set; } = Trim.None;
+
+        /// <summary>
         /// 导入头
         /// </summary>
-        public IEnumerable<ImportHeaderAttribute> ImportHeaders { get; }
+        public IEnumerable<ImportHeaderAttribute> ImportHeaderAttributes { get; }
 
         /// <summary>
         /// 导入映射
         /// </summary>
-        public IEnumerable<ImportMapperAttribute> ImportMappers { get; }
+        public IEnumerable<ImportMapperAttribute> ImportMapperAttributes { get; }
 
         /// <summary>
         /// 导入映射else
         /// </summary>
-        public ImportMapperElseAttribute ImportMapperElse { get; }
+        public ImportMapperElseAttribute ImportMapperElseAttribute { get; }
 
         /// <summary>
         /// 导入限制
         /// </summary>
-        public ImportLimitAttribute ImportLimit { get; }
+        public ImportLimitAttribute ImportLimitAttribute { get; }
 
         #endregion
 
@@ -78,27 +88,27 @@ namespace ExcelHelper
         /// <summary>
         /// 导出头
         /// </summary>
-        public ExportHeaderAttribute ExportHeader { get; }
+        public ExportHeaderAttribute ExportHeaderAttribute { get; }
 
         /// <summary>
         /// 导出映射
         /// </summary>
-        public IEnumerable<ExportMapperAttribute> ExportMappers { get; }
+        public IEnumerable<ExportMapperAttribute> ExportMapperAttributes { get; }
 
         /// <summary>
         /// 导出映射else
         /// </summary>
-        public ExportMapperElseAttribute ExportMapperElse { get; }
+        public ExportMapperElseAttribute ExportMapperElseAttribute { get; }
 
         /// <summary>
         /// 忽略导出，如果为null则导出，不为null则不导出
         /// </summary>
-        public ExportIgnoreAttribute ExportIgnore { get; }
+        public ExportIgnoreAttribute ExportIgnoreAttribute { get; }
 
         /// <summary>
         /// 是否忽略导出
         /// </summary>
-        public bool IsIgnoreExport => ExportIgnore != null;
+        public bool IsIgnoreExport => ExportIgnoreAttribute != null;
 
         #endregion
 
@@ -110,28 +120,53 @@ namespace ExcelHelper
         {
             PropertyInfo = propertyInfo;
 
-            ImportHeaders = propertyInfo.GetCustomAttributes<ImportHeaderAttribute>();
-            ImportMappers = propertyInfo.GetCustomAttributes<ImportMapperAttribute>();
-            ImportMapperElse = propertyInfo.GetCustomAttribute<ImportMapperElseAttribute>();
-            ImportLimit = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
+            ImportHeaderAttributes = propertyInfo.GetCustomAttributes<ImportHeaderAttribute>();
+            ImportMapperAttributes = propertyInfo.GetCustomAttributes<ImportMapperAttribute>();
+            ImportMapperElseAttribute = propertyInfo.GetCustomAttribute<ImportMapperElseAttribute>();
+            ImportLimitAttribute = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
+            SetImportInfo();
 
-            ExportHeader = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>() ?? new ExportHeaderAttribute(null);
-            ExportMappers = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
-            ExportMapperElse = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
-            ExportIgnore = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
-            SetExportHeaderInfo();
+            ExportHeaderAttribute = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>() ?? new ExportHeaderAttribute(null);
+            ExportMapperAttributes = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
+            ExportMapperElseAttribute = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
+            ExportIgnoreAttribute = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
+            SetExportInfo();
+        }
+
+        /// <summary>
+        /// 设置导入信息
+        /// </summary>
+        private void SetImportInfo()
+        {
+            // 导入值限制
+            if (ImportLimitAttribute?.Limits != null)
+            {
+                foreach (var limit in ImportLimitAttribute.Limits)
+                {
+                    ImportLimitValues.Add(limit);
+                }
+            }
+            // 导入头Trim
+            if (ImportHeaderAttributes != null)
+            {
+                foreach (var importHeader in ImportHeaderAttributes)
+                {
+                    ImportTrimValue = importHeader.Trim;
+                }
+            }
+            
         }
 
         /// <summary>
         /// 获取导出头标题
         /// </summary>
         /// <returns></returns>
-        private void SetExportHeaderInfo()
+        private void SetExportInfo()
         {
             // 导出头标题
-            if (!string.IsNullOrEmpty(ExportHeader?.Name))
+            if (!string.IsNullOrEmpty(ExportHeaderAttribute?.Name))
             {
-                ExportHeaderTitle = ExportHeader.Name;
+                ExportHeaderTitle = ExportHeaderAttribute.Name;
             }
             else
             {
@@ -139,7 +174,7 @@ namespace ExcelHelper
             }
 
             // 导出头备注
-            ExportHeaderComment = ExportHeader?.Comment;
+            ExportHeaderComment = ExportHeaderAttribute?.Comment;
         }
 
         #region Export
@@ -151,12 +186,12 @@ namespace ExcelHelper
         /// <returns></returns>
         public object ExportMappedToDisplay(object actual)
         {
-            if (ExportMappers == null)
+            if (ExportMapperAttributes == null)
             {
                 return ExportMappedToElseDisplay(actual);
             }
 
-            foreach (var mapper in ExportMappers)
+            foreach (var mapper in ExportMapperAttributes)
             {
                 if (actual is DateTime dt && dt.Equals(mapper.Actual))
                 {
@@ -205,13 +240,13 @@ namespace ExcelHelper
         /// <returns></returns>
         private object ExportMappedToElseDisplay(object actual)
         {
-            if (ExportMapperElse == null)
+            if (ExportMapperElseAttribute == null)
             {
                 return actual;
             }
             else
             {
-                return ExportMapperElse.Display;
+                return ExportMapperElseAttribute.Display;
             }
         }
 
@@ -243,7 +278,7 @@ namespace ExcelHelper
         /// </summary>
         public bool IsExportImage()
         {
-            return ExportHeader != null && ExportHeader.IsImage;
+            return ExportHeaderAttribute != null && ExportHeaderAttribute.IsImage;
         }
 
 
@@ -258,12 +293,12 @@ namespace ExcelHelper
         /// <returns></returns>
         public object ImportMappedToActual(object display)
         {
-            if (ImportMappers == null)
+            if (ImportMapperAttributes == null)
             {
                 return ImportMappedToElseActual(display);
             }
 
-            foreach (var mapper in ImportMappers)
+            foreach (var mapper in ImportMapperAttributes)
             {
                 if (display is DateTime dt && mapper.Display == dt.ToString("yyyy-MM-dd HH:mm:ss"))
                 {
@@ -284,13 +319,13 @@ namespace ExcelHelper
 
         private object ImportMappedToElseActual(object display)
         {
-            if (ImportMapperElse == null)
+            if (ImportMapperElseAttribute == null)
             {
                 return display;
             }
             else
             {
-                return ImportMapperElse.Actual;
+                return ImportMapperElseAttribute.Actual;
             }
         }
 
@@ -300,12 +335,12 @@ namespace ExcelHelper
         /// <param name="value"></param>
         public void ImportLimitCheckValue(object value)
         {
-            if (ImportLimit == null || ImportLimit.Limits == null || ImportLimit.Limits.Length <= 0)
+            if (ImportLimitValues.Count <= 0)
             {
                 return;
             }
 
-            foreach (var limit in ImportLimit.Limits)
+            foreach (var limit in ImportLimitValues)
             {
                 if (limit?.ToString() == value?.ToString())
                 {
@@ -321,12 +356,12 @@ namespace ExcelHelper
         /// </summary>
         public bool IsImportImage()
         {
-            if (ImportHeaders == null)
+            if (ImportHeaderAttributes == null)
             {
                 return false;
             }
 
-            foreach (var importHeader in ImportHeaders)
+            foreach (var importHeader in ImportHeaderAttributes)
             {
                 if (importHeader.IsImage)
                 {
@@ -348,12 +383,12 @@ namespace ExcelHelper
                 return true;
             }
 
-            if (ImportHeaders == null)
+            if (ImportHeaderAttributes == null)
             {
                 return false;
             }
 
-            foreach (var importHeader in ImportHeaders)
+            foreach (var importHeader in ImportHeaderAttributes)
             {
                 if (!string.IsNullOrEmpty(importHeader.RequiredMessage))
                 {
@@ -399,29 +434,21 @@ namespace ExcelHelper
         /// <param name="data"></param>
         public void ImportTrim(ref object data)
         {
-            if (ImportHeaders == null || data == null)
+            switch (ImportTrimValue)
             {
-                return;
-            }
-
-            foreach (var importHeader in ImportHeaders)
-            {
-                switch (importHeader.Trim)
-                {
-                    case Trim.None:
-                        break;
-                    case Trim.All:
-                        data = data?.ToString()?.Trim();
-                        break;
-                    case Trim.Start:
-                        data = data?.ToString()?.TrimStart();
-                        break;
-                    case Trim.End:
-                        data = data?.ToString()?.TrimEnd();
-                        break;
-                    default:
-                        break;
-                }
+                case Trim.None:
+                    break;
+                case Trim.All:
+                    data = data?.ToString()?.Trim();
+                    break;
+                case Trim.Start:
+                    data = data?.ToString()?.TrimStart();
+                    break;
+                case Trim.End:
+                    data = data?.ToString()?.TrimEnd();
+                    break;
+                default:
+                    break;
             }
         }
         
@@ -441,12 +468,12 @@ namespace ExcelHelper
                 return true;
             }
 
-            if (ImportHeaders == null)
+            if (ImportHeaderAttributes == null)
             {
                 return false;
             }
 
-            foreach (var header in ImportHeaders)
+            foreach (var header in ImportHeaderAttributes)
             {
                 if (header.IsUnique)
                 {
@@ -492,6 +519,19 @@ namespace ExcelHelper
             {
                 ImportHeaderTitle = title;
             }
+            // 导入限制
+            if (importSetting.LimitValues.TryGetValue(PropertyInfo.Name, out var values))
+            {
+                foreach (var value in values)
+                {
+                    ImportLimitValues.Add(value);
+                }
+            }
+            // 导入值Trim
+            if (importSetting.ValueTrim.TryGetValue(PropertyInfo.Name, out var trim))
+            {
+                ImportTrimValue = trim;
+            }
 
             // 导入唯一性限制
             ImportUnique = importSetting.UniqueProperties.Contains(PropertyInfo.Name);
@@ -514,7 +554,7 @@ namespace ExcelHelper
             }
 
             // 识别模型上的导入头设置
-            foreach (var importHeader in ImportHeaders)
+            foreach (var importHeader in ImportHeaderAttributes)
             {
                 if (titleIndexDict.ContainsKey(importHeader.Name))
                 {

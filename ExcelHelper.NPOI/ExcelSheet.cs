@@ -56,7 +56,7 @@ namespace ExcelHelper.NPOI
                 {
                     var cell = titleRow.CreateCell(colIndex).SetValue(excelPropertyInfo.ExportHeaderTitle);
 
-                    var exportHeader = excelPropertyInfo.ExportHeader;
+                    var exportHeader = excelPropertyInfo.ExportHeaderAttribute;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -127,9 +127,9 @@ namespace ExcelHelper.NPOI
                         cell.SetValue(displayValue?.ToString());
                     }
 
-                    if (!string.IsNullOrEmpty(property.ExportHeader?.Format))
+                    if (!string.IsNullOrEmpty(property.ExportHeaderAttribute?.Format))
                     {
-                        cell.SetDataFormat(property.ExportHeader?.Format);
+                        cell.SetDataFormat(property.ExportHeaderAttribute?.Format);
                     }
 
                     colIndex++;
@@ -141,7 +141,7 @@ namespace ExcelHelper.NPOI
                 var colIndex = 0;
                 foreach (var property in excelPropertyInfoList)
                 {
-                    var exportHeader = property.ExportHeader;
+                    var exportHeader = property.ExportHeaderAttribute;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);

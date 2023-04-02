@@ -30,12 +30,14 @@ namespace ExcelHelperTest
             var sheets = _excelHelper.ImportSheet<DemoIO>();
             Assert.IsNotNull(sheets);
 
-            var sheets2 = _excelHelper.ImportSheet<DemoIO>(new ImportSetting()
-            {
-                TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.A), "AA"} },
-                RequiredProperties = new List<string>() { nameof(DemoIO.Image) },
-                UniqueProperties = new List<string> { nameof(DemoIO.A) },
-            });
+            var importSetting = new ImportSetting();
+            importSetting.AddTitleMapping(nameof(DemoIO.A), "AA");
+            importSetting.AddRequiredProperties(nameof(DemoIO.Image));
+            importSetting.AddUniqueProperties(nameof(DemoIO.A));
+            importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
+            importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
+
+            var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
             Assert.IsNotNull(sheets2);
         }
     }

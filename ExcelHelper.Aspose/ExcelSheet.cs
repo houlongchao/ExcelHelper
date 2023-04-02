@@ -57,7 +57,7 @@ namespace ExcelHelper.Aspose
                     var cell = _sheet.CreateCell(rowIndex, colIndex++);
                     cell.SetValue(excelPropertyInfo.ExportHeaderTitle);
 
-                    var exportHeader = excelPropertyInfo.ExportHeader;
+                    var exportHeader = excelPropertyInfo.ExportHeaderAttribute;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);
@@ -126,9 +126,9 @@ namespace ExcelHelper.Aspose
                         cell.SetValue(displayValue?.ToString());
                     }
 
-                    if (!string.IsNullOrEmpty(excelPropertyInfo.ExportHeader?.Format))
+                    if (!string.IsNullOrEmpty(excelPropertyInfo.ExportHeaderAttribute?.Format))
                     {
-                        cell.SetDataFormat(excelPropertyInfo.ExportHeader?.Format);
+                        cell.SetDataFormat(excelPropertyInfo.ExportHeaderAttribute?.Format);
                     }
 
                     colIndex++;
@@ -141,7 +141,7 @@ namespace ExcelHelper.Aspose
                 var colIndex = 0;
                 foreach (var property in excelPropertyInfoList)
                 {
-                    var exportHeader = property.ExportHeader;
+                    var exportHeader = property.ExportHeaderAttribute;
                     if (exportHeader == null)
                     {
                         exportHeader = new ExportHeaderAttribute(null);

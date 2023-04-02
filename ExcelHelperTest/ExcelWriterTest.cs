@@ -70,19 +70,19 @@ namespace ExcelHelperTest
             });
 
             _excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);
+
+            var setting01 = new ExportSetting();
+            setting01.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));
+            var setting02 = new ExportSetting();
+            setting02.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));
+            setting02.AddIncludeProperties(nameof(DemoIO.Date), nameof(DemoIO.B));
+            setting02.AddTitleMapping(nameof(DemoIO.Date), "日期");
+            setting02.AddTitleComment(nameof(DemoIO.Date), "日期备注");
+
             _excelHelper
                 .ExportSheet("test", datas)
-                .ExportSheet("test2", data2, new ExportSetting()
-                {
-                    IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) }
-                })
-                .ExportSheet("test3", data3, new ExportSetting()
-                {
-                    IgnoreProperties = new List<string>() { nameof(DemoIO.A), nameof(DemoIO.B) },
-                    IncludeProperties = new List<string>() { nameof(DemoIO.Date), nameof(DemoIO.B) },
-                    TitleMapping = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期" } },
-                    TitleComment = new Dictionary<string, string>() { { nameof(DemoIO.Date), "日期备注" } },
-                })
+                .ExportSheet("test2", data2, setting01)
+                .ExportSheet("test3", data3, setting02)
                 .SetSheetIndex("test3", 1);
             var bytes = _excelHelper.ToBytes();
             File.WriteAllBytes("test.xlsx", bytes);
