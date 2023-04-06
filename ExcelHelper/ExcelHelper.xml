@@ -581,7 +581,7 @@
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderColumnIndex">
             <summary>
-            导入标题所在列索引
+            导入标题所在列索引,执行<see cref="M:ExcelHelper.ExcelPropertyInfo.SetImportHeaderColumnIndex(System.Collections.Generic.Dictionary{System.String,System.Int32})"/>之后有效
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportUnique">
@@ -639,6 +639,11 @@
             导出头备注
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
+            <summary>
+            导出忽略
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderAttribute">
             <summary>
             导出头
@@ -657,11 +662,6 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnoreAttribute">
             <summary>
             忽略导出，如果为null则导出，不为null则不导出
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.IsIgnoreExport">
-            <summary>
-            是否忽略导出
             </summary>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo)">
@@ -697,7 +697,8 @@
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByExportSetting(ExcelHelper.ExportSetting)">
             <summary>
-            更新导出信息
+            更新导出信息，
+            动态设置会覆盖模型静态配置
             </summary>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.IsExportImage">
@@ -705,18 +706,18 @@
             是否是图片
             </summary>
         </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsExportIgnore">
+            <summary>
+            是否导出时忽略当前属性
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportMappedToActual(System.Object)">
             <summary>
             将显示值映射为实际值
             </summary>
             <param name="display">显示值</param>
             <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportLimitCheckValue(System.Object)">
-            <summary>
-            检查导入限制
-            </summary>
-            <param name="value"></param>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportImage">
             <summary>
@@ -729,28 +730,28 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportUnqiue">
+            <summary>
+            是否唯一
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckLimitValue(System.Object)">
+            <summary>
+            检查导入限制
+            </summary>
+            <param name="value"></param>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckRequired(System.Object)">
             <summary>
             检查必须,如果设置了必须且没有数据则报错
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportTrim(System.Object@)">
-            <summary>
-            移除前后空字符串
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="F:ExcelHelper.ExcelPropertyInfo.importCheckSet">
+        <member name="F:ExcelHelper.ExcelPropertyInfo.importUnqiueCheckSet">
             <summary>
             导入检查字典
             </summary>
-        </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportUnqiue">
-            <summary>
-            是否唯一
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ImportCheckUnqiue(System.Object)">
             <summary>
@@ -758,6 +759,12 @@
             </summary>
             <param name="actualValue">导入的数据</param>
             <exception cref="T:ExcelHelper.ImportException"></exception>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.ImportTrim(System.Object@)">
+            <summary>
+            移除前后空字符串
+            </summary>
+            <param name="data"></param>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByImportSetting(ExcelHelper.ImportSetting)">
             <summary>

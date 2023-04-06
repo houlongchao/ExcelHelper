@@ -225,7 +225,7 @@ namespace ExcelHelper.NPOI
                     var value = row.GetCell(excelPropertyInfo.ImportHeaderColumnIndex).GetData();
                     excelPropertyInfo.ImportCheckRequired(value);
                     excelPropertyInfo.ImportTrim(ref value);
-                    excelPropertyInfo.ImportLimitCheckValue(value);
+                    excelPropertyInfo.ImportCheckLimitValue(value);
                     excelPropertyInfo.ImportCheckUnqiue(value);
 
                     if (value != null)

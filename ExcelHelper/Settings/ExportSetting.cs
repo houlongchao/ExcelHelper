@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace ExcelHelper
 {
@@ -38,7 +37,7 @@ namespace ExcelHelper
         public List<string> IncludeProperties { get; private set; } = new List<string>();
 
 
-        #region Set
+        #region Add
 
         /// <summary>
         /// 添加属性与excel头映射

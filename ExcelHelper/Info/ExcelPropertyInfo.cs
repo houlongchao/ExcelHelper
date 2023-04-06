@@ -14,7 +14,7 @@ namespace ExcelHelper
         /// </summary>
         public PropertyInfo PropertyInfo { get; }
 
-        #region 导入
+        #region 导入配置
 
         /// <summary>
         /// 导入头标题
@@ -22,7 +22,7 @@ namespace ExcelHelper
         public string ImportHeaderTitle { get; private set; }
 
         /// <summary>
-        /// 导入标题所在列索引
+        /// 导入标题所在列索引,执行<see cref="SetImportHeaderColumnIndex(Dictionary{string, int})"/>之后有效
         /// </summary>
         public int ImportHeaderColumnIndex { get; private set; }
 
@@ -51,6 +51,10 @@ namespace ExcelHelper
         /// </summary>
         public Trim ImportTrimValue { get; private set; } = Trim.None;
 
+        #endregion
+
+        #region 导入Attribute
+
         /// <summary>
         /// 导入头
         /// </summary>
@@ -73,7 +77,7 @@ namespace ExcelHelper
 
         #endregion
 
-        #region 导出
+        #region 导出配置
 
         /// <summary>
         /// 导出头标题
@@ -84,6 +88,15 @@ namespace ExcelHelper
         /// 导出头备注
         /// </summary>
         public string ExportHeaderComment { get; private set; }
+
+        /// <summary>
+        /// 导出忽略
+        /// </summary>
+        public bool ExportIgnore { get; private set; } = false;
+
+        #endregion
+
+        #region 导出Attribute
 
         /// <summary>
         /// 导出头
@@ -105,12 +118,9 @@ namespace ExcelHelper
         /// </summary>
         public ExportIgnoreAttribute ExportIgnoreAttribute { get; }
 
-        /// <summary>
-        /// 是否忽略导出
-        /// </summary>
-        public bool IsIgnoreExport => ExportIgnoreAttribute != null;
-
         #endregion
+
+        #region 构造函数
 
         /// <summary>
         /// Excel 属性信息
@@ -175,9 +185,16 @@ namespace ExcelHelper
 
             // 导出头备注
             ExportHeaderComment = ExportHeaderAttribute?.Comment;
+
+            // 导出忽略
+            ExportIgnore = ExportIgnoreAttribute != null;
         }
 
+        #endregion
+
         #region Export
+
+        #region Mapper
 
         /// <summary>
         /// 将导出实际值映射为显示数据
@@ -250,8 +267,13 @@ namespace ExcelHelper
             }
         }
 
+        #endregion
+
+        #region Set
+
         /// <summary>
-        /// 更新导出信息
+        /// 更新导出信息，
+        /// 动态设置会覆盖模型静态配置
         /// </summary>
         public void UpdateByExportSetting(ExportSetting exportSetting)
         {
@@ -271,7 +293,23 @@ namespace ExcelHelper
             {
                 ExportHeaderComment = comment;
             }
+
+            // 导出时是否被忽略
+            // 如果动态配置的导出忽略，则必定忽略
+            if (exportSetting.IgnoreProperties.Contains(PropertyInfo.Name))
+            {
+                ExportIgnore = true;
+            }
+            // 否则，如果动态配置的导出包含，则必定包含
+            else if (exportSetting.IncludeProperties.Contains(PropertyInfo.Name))
+            {
+                ExportIgnore = false;
+            }
         }
+
+        #endregion
+
+        #region Check
 
         /// <summary>
         /// 是否是图片
@@ -281,10 +319,22 @@ namespace ExcelHelper
             return ExportHeaderAttribute != null && ExportHeaderAttribute.IsImage;
         }
 
+        /// <summary>
+        /// 是否导出时忽略当前属性
+        /// </summary>
+        /// <returns></returns>
+        public bool IsExportIgnore()
+        {
+            return ExportIgnore;
+        }
+
+        #endregion
 
         #endregion
 
         #region Import
+
+        #region Mapper
 
         /// <summary>
         /// 将显示值映射为实际值
@@ -329,27 +379,9 @@ namespace ExcelHelper
             }
         }
 
-        /// <summary>
-        /// 检查导入限制
-        /// </summary>
-        /// <param name="value"></param>
-        public void ImportLimitCheckValue(object value)
-        {
-            if (ImportLimitValues.Count <= 0)
-            {
-                return;
-            }
+        #endregion
 
-            foreach (var limit in ImportLimitValues)
-            {
-                if (limit?.ToString() == value?.ToString())
-                {
-                    return;
-                }
-            }
-
-            throw ImportException.New($"列【{ImportHeaderTitle}】值【{value}】不被支持");
-        }
+        #region Check
 
         /// <summary>
         /// 是否是图片
@@ -407,57 +439,6 @@ namespace ExcelHelper
         }
 
         /// <summary>
-        /// 检查必须,如果设置了必须且没有数据则报错
-        /// </summary>
-        /// <returns></returns>
-        public void ImportCheckRequired(object data)
-        {
-            if (IsImportRequired())
-            {
-                if (string.IsNullOrEmpty(data?.ToString()))
-                {
-                    if (string.IsNullOrEmpty(ImportRequiredMessage))
-                    {
-                        throw new ImportException($"【{ImportHeaderTitle}】是必须的!");
-                    }
-                    else
-                    {
-                        throw new ImportException(ImportRequiredMessage);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 移除前后空字符串
-        /// </summary>
-        /// <param name="data"></param>
-        public void ImportTrim(ref object data)
-        {
-            switch (ImportTrimValue)
-            {
-                case Trim.None:
-                    break;
-                case Trim.All:
-                    data = data?.ToString()?.Trim();
-                    break;
-                case Trim.Start:
-                    data = data?.ToString()?.TrimStart();
-                    break;
-                case Trim.End:
-                    data = data?.ToString()?.TrimEnd();
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        /// <summary>
-        /// 导入检查字典
-        /// </summary>
-        private HashSet<string> importCheckSet = new HashSet<string>();
-
-        /// <summary>
         /// 是否唯一
         /// </summary>
         /// <returns></returns>
@@ -486,6 +467,55 @@ namespace ExcelHelper
         }
 
         /// <summary>
+        /// 检查导入限制
+        /// </summary>
+        /// <param name="value"></param>
+        public void ImportCheckLimitValue(object value)
+        {
+            if (ImportLimitValues.Count <= 0)
+            {
+                return;
+            }
+
+            foreach (var limit in ImportLimitValues)
+            {
+                if (limit?.ToString() == value?.ToString())
+                {
+                    return;
+                }
+            }
+
+            throw ImportException.New($"列【{ImportHeaderTitle}】值【{value}】不被支持");
+        }
+
+        /// <summary>
+        /// 检查必须,如果设置了必须且没有数据则报错
+        /// </summary>
+        /// <returns></returns>
+        public void ImportCheckRequired(object data)
+        {
+            if (IsImportRequired())
+            {
+                if (string.IsNullOrEmpty(data?.ToString()))
+                {
+                    if (string.IsNullOrEmpty(ImportRequiredMessage))
+                    {
+                        throw new ImportException($"【{ImportHeaderTitle}】是必须的!");
+                    }
+                    else
+                    {
+                        throw new ImportException(ImportRequiredMessage);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导入检查字典
+        /// </summary>
+        private HashSet<string> importUnqiueCheckSet = new HashSet<string>();
+
+        /// <summary>
         /// 导入检查唯一性
         /// </summary>
         /// <param name="actualValue">导入的数据</param>
@@ -495,13 +525,45 @@ namespace ExcelHelper
             // 唯一检查
             if (IsImportUnqiue())
             {
-                if (importCheckSet.Contains(actualValue?.ToString()))
+                if (importUnqiueCheckSet.Contains(actualValue?.ToString()))
                 {
                     throw new ImportException($"【{ImportHeaderTitle}】列存在重复数据：{actualValue}");
                 }
-                importCheckSet.Add(actualValue?.ToString());
+                importUnqiueCheckSet.Add(actualValue?.ToString());
             }
         }
+
+        #endregion
+
+        #region Trim
+
+        /// <summary>
+        /// 移除前后空字符串
+        /// </summary>
+        /// <param name="data"></param>
+        public void ImportTrim(ref object data)
+        {
+            switch (ImportTrimValue)
+            {
+                case Trim.None:
+                    break;
+                case Trim.All:
+                    data = data?.ToString()?.Trim();
+                    break;
+                case Trim.Start:
+                    data = data?.ToString()?.TrimStart();
+                    break;
+                case Trim.End:
+                    data = data?.ToString()?.TrimEnd();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Set
 
         /// <summary>
         /// 更新导入信息
@@ -574,6 +636,8 @@ namespace ExcelHelper
 
             return false;
         }
+
+        #endregion
 
         #endregion
     }

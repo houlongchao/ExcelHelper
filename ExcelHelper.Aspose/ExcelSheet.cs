@@ -222,7 +222,7 @@ namespace ExcelHelper.Aspose
                     var value = row.GetCell(excelPropertyInfo.ImportHeaderColumnIndex).GetData();
                     excelPropertyInfo.ImportCheckRequired(value);
                     excelPropertyInfo.ImportTrim(ref value);
-                    excelPropertyInfo.ImportLimitCheckValue(value);
+                    excelPropertyInfo.ImportCheckLimitValue(value);
                     excelPropertyInfo.ImportCheckUnqiue(value);
 
                     var actualValue = excelPropertyInfo.ImportMappedToActual(value);

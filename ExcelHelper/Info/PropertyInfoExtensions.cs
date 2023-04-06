@@ -109,25 +109,7 @@ namespace ExcelHelper
             {
                 var excelPropertyInfo = property.GetExcelPropertyInfo();
                 excelPropertyInfo.UpdateByExportSetting(exportSetting);
-                
-                // 如果动态配置的导出忽略，则必定忽略
-                if (exportSetting.IgnoreProperties.Contains(property.Name))
-                {
-                    continue;
-                }
-                // 否则，如果动态配置的导出包含，则必定包含
-                else if (exportSetting.IncludeProperties.Contains(property.Name))
-                {
-                    result.Add(excelPropertyInfo);
-                    continue;
-                }
-                // 否则，如果模型上设置了导出忽略则导出忽略
-                else if (excelPropertyInfo.IsIgnoreExport)
-                {
-                    continue;
-                }
-                // 否则，添加至导出列表
-                else
+                if (!excelPropertyInfo.IsExportIgnore())
                 {
                     result.Add(excelPropertyInfo);
                 }

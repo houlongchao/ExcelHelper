@@ -19,11 +19,17 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Common</RepositoryType>
 		<RepositoryUrl>https://github.com/houlongchao/ExcelHelper</RepositoryUrl>
-		<Version>0.3.3</Version>
+		<Version>0.4.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="ExcelHelper.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<PropertyGroup>
