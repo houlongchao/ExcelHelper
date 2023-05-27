@@ -9,10 +9,17 @@ namespace ExcelHelper
     /// </summary>
     public class ExcelPropertyInfo
     {
+        #region Property
+
         /// <summary>
         /// 字段属性信息
         /// </summary>
         public PropertyInfo PropertyInfo { get; }
+
+        /// <summary>
+        /// 是否是数组
+        /// </summary>
+        public bool IsArray { get; }
 
         #region 导入配置
 
@@ -32,6 +39,11 @@ namespace ExcelHelper
         public bool ImportUnique { get; private set; } = false;
 
         /// <summary>
+        /// 导入唯一性限制提示信息
+        /// </summary>
+        public string ImportUniqueMessage { get; private set; }
+
+        /// <summary>
         /// 导入数据必须
         /// </summary>
         public bool ImportRequired { get; private set; } = false;
@@ -47,9 +59,90 @@ namespace ExcelHelper
         public List<object> ImportLimitValues { get; private set; } = new List<object>();
 
         /// <summary>
+        /// 导入限制提示信息
+        /// </summary>
+        public string ImportLimitMessage { get; private set; }
+
+        /// <summary>
         /// 导入值Trim
         /// </summary>
         public Trim ImportTrimValue { get; private set; } = Trim.None;
+
+        #endregion
+
+        #region 导出配置
+
+        /// <summary>
+        /// 导出头标题
+        /// </summary>
+        public string ExportHeaderTitle { get; private set; }
+
+        /// <summary>
+        /// 导出头备注
+        /// </summary>
+        public string ExportHeaderComment { get; private set; }
+
+        /// <summary>
+        /// 导出忽略
+        /// </summary>
+        public bool ExportIgnore { get; private set; } = false;
+
+        #endregion
+
+        #region 模板配置
+
+        /// <summary>
+        /// 是否设置了模板配置信息
+        /// </summary>
+        public bool HasTempInfo { get; private set; } = false;
+
+        /// <summary>
+        /// 是否设置了列表模板项配置信息
+        /// </summary>
+        public bool HasTempItemInfo { get; private set; } = false;
+
+        /// <summary>
+        /// 模板字段位置
+        /// </summary>
+        public string TempCellAddress { get; private set; }
+
+        /// <summary>
+        /// 模板列表类型
+        /// </summary>
+        public TempListType TempListType { get; private set; }
+
+        /// <summary>
+        /// 模板数据开始
+        /// </summary>
+        public int TempListStartIndex { get; private set; }
+
+        /// <summary>
+        /// 模板数据结束
+        /// </summary>
+        public int TempListEndIndex { get; private set; }
+
+        /// <summary>
+        /// 模板列表数据位置
+        /// </summary>
+        public int TempListItemIndex { get; private set; }
+
+        /// <summary>
+        /// 子属性字段信息
+        /// </summary>
+        public List<ExcelPropertyInfo> Children { get; set; } = new List<ExcelPropertyInfo>();
+
+        #endregion
+
+        #endregion
+
+        #region Attribute
+
+        #region 公共Attribute
+
+        /// <summary>
+        /// 图片属性
+        /// </summary>
+        public ImageAttribute ImageAttribute { get; set; }
 
         #endregion
 
@@ -75,24 +168,20 @@ namespace ExcelHelper
         /// </summary>
         public ImportLimitAttribute ImportLimitAttribute { get; }
 
-        #endregion
-
-        #region 导出配置
+        /// <summary>
+        /// 导入必须
+        /// </summary>
+        public ImportRequiredAttribute ImportRequiredAttribute { get; }
 
         /// <summary>
-        /// 导出头标题
+        /// 导入数据Trim
         /// </summary>
-        public string ExportHeaderTitle { get; private set; }
+        public ImportTrimAttribute ImportTrimAttribute { get; }
 
         /// <summary>
-        /// 导出头备注
+        /// 导入唯一限制
         /// </summary>
-        public string ExportHeaderComment { get; private set; }
-
-        /// <summary>
-        /// 导出忽略
-        /// </summary>
-        public bool ExportIgnore { get; private set; } = false;
+        public ImportUniqueAttribute ImportUniqueAttribute { get; }
 
         #endregion
 
@@ -107,7 +196,6 @@ namespace ExcelHelper
         /// 导出映射
         /// </summary>
         public IEnumerable<ExportMapperAttribute> ExportMapperAttributes { get; }
-
         /// <summary>
         /// 导出映射else
         /// </summary>
@@ -117,6 +205,32 @@ namespace ExcelHelper
         /// 忽略导出，如果为null则导出，不为null则不导出
         /// </summary>
         public ExportIgnoreAttribute ExportIgnoreAttribute { get; }
+
+        /// <summary>
+        /// 导出格式化
+        /// </summary>
+        public ExportFormatAttribute ExportFormatAttribute { get; set; }
+
+        #endregion
+
+        #region 模板Attribute
+
+        /// <summary>
+        /// 模板头
+        /// </summary>
+        public TempAttribute TempAttribute { get; }
+
+        /// <summary>
+        /// 模板头-列表数据
+        /// </summary>
+        public TempListAttribute TempListAttribute { get; set; }
+
+        /// <summary>
+        /// 模板头-列表数据项
+        /// </summary>
+        public TempListItemAttribute TempListItemAttribute { get; set; }
+
+        #endregion
 
         #endregion
 
@@ -129,18 +243,49 @@ namespace ExcelHelper
         public ExcelPropertyInfo(PropertyInfo propertyInfo)
         {
             PropertyInfo = propertyInfo;
+            IsArray = propertyInfo.PropertyType.IsGenericType;
+            ImportHeaderTitle = propertyInfo.Name;
+
+            ImageAttribute = propertyInfo.GetCustomAttribute<ImageAttribute>();
 
             ImportHeaderAttributes = propertyInfo.GetCustomAttributes<ImportHeaderAttribute>();
             ImportMapperAttributes = propertyInfo.GetCustomAttributes<ImportMapperAttribute>();
             ImportMapperElseAttribute = propertyInfo.GetCustomAttribute<ImportMapperElseAttribute>();
             ImportLimitAttribute = propertyInfo.GetCustomAttribute<ImportLimitAttribute>();
+            ImportRequiredAttribute = propertyInfo.GetCustomAttribute<ImportRequiredAttribute>();
+            ImportTrimAttribute = propertyInfo.GetCustomAttribute<ImportTrimAttribute>();
+            ImportUniqueAttribute = propertyInfo.GetCustomAttribute<ImportUniqueAttribute>();
             SetImportInfo();
 
             ExportHeaderAttribute = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>() ?? new ExportHeaderAttribute(null);
             ExportMapperAttributes = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
             ExportMapperElseAttribute = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
             ExportIgnoreAttribute = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
+            ExportFormatAttribute = propertyInfo.GetCustomAttribute<ExportFormatAttribute>();
             SetExportInfo();
+
+            if (IsArray)
+            {
+                TempListAttribute = propertyInfo.GetCustomAttribute<TempListAttribute>();
+                if (TempListAttribute != null)
+                {
+                    foreach (var genericType in propertyInfo.PropertyType.GenericTypeArguments)
+                    {
+                        var properties = genericType.GetProperties();
+                        foreach (var property in properties)
+                        {
+                            var excelPropertyInfo = property.GetExcelPropertyInfo();
+                            Children.Add(excelPropertyInfo);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                TempAttribute = propertyInfo.GetCustomAttribute<TempAttribute>();
+                TempListItemAttribute = propertyInfo.GetCustomAttribute<TempListItemAttribute>();
+            }
+            SetTempInfo();
         }
 
         /// <summary>
@@ -148,6 +293,18 @@ namespace ExcelHelper
         /// </summary>
         private void SetImportInfo()
         {
+            // 导入唯一限制
+            if (ImportUniqueAttribute != null)
+            {
+                ImportUnique = true;
+                ImportUniqueMessage = ImportUniqueAttribute.Message;
+            }
+            // 导入必须限制
+            if (ImportRequiredAttribute != null)
+            {
+                ImportRequired = true;
+                ImportRequiredMessage = ImportRequiredAttribute.Message;
+            }
             // 导入值限制
             if (ImportLimitAttribute?.Limits != null)
             {
@@ -157,14 +314,10 @@ namespace ExcelHelper
                 }
             }
             // 导入头Trim
-            if (ImportHeaderAttributes != null)
+            if (ImportTrimAttribute != null)
             {
-                foreach (var importHeader in ImportHeaderAttributes)
-                {
-                    ImportTrimValue = importHeader.Trim;
-                }
+                ImportTrimValue = ImportTrimAttribute.Trim;
             }
-            
         }
 
         /// <summary>
@@ -188,6 +341,44 @@ namespace ExcelHelper
 
             // 导出忽略
             ExportIgnore = ExportIgnoreAttribute != null;
+        }
+
+        /// <summary>
+        /// 设置模板信息
+        /// </summary>
+        private void SetTempInfo()
+        {
+            if (TempAttribute != null)
+            {
+                TempCellAddress = TempAttribute.CellAddress;
+                HasTempInfo = true;
+            }
+            if (TempListAttribute != null)
+            {
+                TempListType = TempListAttribute.Type;
+                TempListStartIndex = TempListAttribute.StartIndex;
+                TempListEndIndex = TempListAttribute.EndIndex;
+                HasTempInfo = true;
+            }
+            if (TempListItemAttribute != null)
+            {
+                TempListItemIndex = TempListItemAttribute.ItemIndex;
+                HasTempItemInfo = true;
+            }
+        }
+
+        #endregion
+
+        #region Method
+
+        #region 公共
+
+        /// <summary>
+        /// 是否是图片
+        /// </summary>
+        public bool IsImage()
+        {
+            return ImageAttribute != null;
         }
 
         #endregion
@@ -312,14 +503,6 @@ namespace ExcelHelper
         #region Check
 
         /// <summary>
-        /// 是否是图片
-        /// </summary>
-        public bool IsExportImage()
-        {
-            return ExportHeaderAttribute != null && ExportHeaderAttribute.IsImage;
-        }
-
-        /// <summary>
         /// 是否导出时忽略当前属性
         /// </summary>
         /// <returns></returns>
@@ -384,58 +567,12 @@ namespace ExcelHelper
         #region Check
 
         /// <summary>
-        /// 是否是图片
-        /// </summary>
-        public bool IsImportImage()
-        {
-            if (ImportHeaderAttributes == null)
-            {
-                return false;
-            }
-
-            foreach (var importHeader in ImportHeaderAttributes)
-            {
-                if (importHeader.IsImage)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// 是否必须
         /// </summary>
         /// <returns></returns>
         public bool IsImportRequired()
         {
-            if (ImportRequired)
-            {
-                return true;
-            }
-
-            if (ImportHeaderAttributes == null)
-            {
-                return false;
-            }
-
-            foreach (var importHeader in ImportHeaderAttributes)
-            {
-                if (!string.IsNullOrEmpty(importHeader.RequiredMessage))
-                {
-                    ImportRequired = true;
-                    ImportRequiredMessage = importHeader.RequiredMessage;
-                    return true;
-                }
-                else if (importHeader.IsRequired)
-                {
-                    ImportRequired = true;
-                    return true;
-                }
-            }
-
-            return false;
+            return ImportRequired;
         }
 
         /// <summary>
@@ -444,26 +581,7 @@ namespace ExcelHelper
         /// <returns></returns>
         public bool IsImportUnqiue()
         {
-            if (ImportUnique)
-            {
-                return true;
-            }
-
-            if (ImportHeaderAttributes == null)
-            {
-                return false;
-            }
-
-            foreach (var header in ImportHeaderAttributes)
-            {
-                if (header.IsUnique)
-                {
-                    ImportUnique = true;
-                    return true;
-                }
-            }
-
-            return false;
+            return ImportUnique;
         }
 
         /// <summary>
@@ -485,7 +603,14 @@ namespace ExcelHelper
                 }
             }
 
-            throw ImportException.New($"列【{ImportHeaderTitle}】值【{value}】不被支持");
+            if (!string.IsNullOrEmpty(ImportLimitMessage))
+            {
+                throw ImportException.New(ImportLimitMessage);
+            }
+            else
+            {
+                throw ImportException.New($"【{ImportHeaderTitle}】设置了不被支持的值【{value}】");
+            }
         }
 
         /// <summary>
@@ -498,13 +623,13 @@ namespace ExcelHelper
             {
                 if (string.IsNullOrEmpty(data?.ToString()))
                 {
-                    if (string.IsNullOrEmpty(ImportRequiredMessage))
+                    if (!string.IsNullOrEmpty(ImportRequiredMessage))
                     {
-                        throw new ImportException($"【{ImportHeaderTitle}】是必须的!");
+                        throw ImportException.New(ImportRequiredMessage);
                     }
                     else
                     {
-                        throw new ImportException(ImportRequiredMessage);
+                        throw ImportException.New($"【{ImportHeaderTitle}】是必须的!");
                     }
                 }
             }
@@ -527,7 +652,14 @@ namespace ExcelHelper
             {
                 if (importUnqiueCheckSet.Contains(actualValue?.ToString()))
                 {
-                    throw new ImportException($"【{ImportHeaderTitle}】列存在重复数据：{actualValue}");
+                    if (!string.IsNullOrEmpty(ImportUniqueMessage))
+                    {
+                        throw ImportException.New(ImportUniqueMessage);
+                    }
+                    else
+                    {
+                        throw ImportException.New($"【{ImportHeaderTitle}】存在重复数据：{actualValue}");
+                    }
                 }
                 importUnqiueCheckSet.Add(actualValue?.ToString());
             }
@@ -568,6 +700,49 @@ namespace ExcelHelper
         /// <summary>
         /// 更新导入信息
         /// </summary>
+        /// <param name="baseImportSetting"></param>
+        private void UpdateByBaseImportSetting(BaseImportSetting baseImportSetting)
+        {
+            if (baseImportSetting == null)
+            {
+                return;
+            }
+
+            // 导入限制
+            if (baseImportSetting.LimitValues.TryGetValue(PropertyInfo.Name, out var values))
+            {
+                foreach (var value in values)
+                {
+                    ImportLimitValues.Add(value);
+                }
+            }
+            if (baseImportSetting.LimitMessage.TryGetValue(PropertyInfo.Name, out var limitMessage))
+            {
+                ImportLimitMessage = limitMessage;
+            }
+            // 导入值Trim
+            if (baseImportSetting.ValueTrim.TryGetValue(PropertyInfo.Name, out var trim))
+            {
+                ImportTrimValue = trim;
+            }
+
+            // 导入唯一性限制
+            ImportUnique = baseImportSetting.UniqueProperties.Contains(PropertyInfo.Name);
+            if (baseImportSetting.UniqueMessage.TryGetValue(PropertyInfo.Name, out var uniqueMessage))
+            {
+                ImportUniqueMessage = uniqueMessage;
+            }
+            // 导入必须限制
+            ImportRequired = baseImportSetting.RequiredProperties.Contains(PropertyInfo.Name);
+            if (baseImportSetting.RequiredMessage.TryGetValue(PropertyInfo.Name, out var requiredMessage))
+            {
+                ImportRequiredMessage = requiredMessage;
+            }
+        }
+
+        /// <summary>
+        /// 更新导入信息
+        /// </summary>
         /// <param name="importSetting"></param>
         public void UpdateByImportSetting(ImportSetting importSetting)
         {
@@ -581,24 +756,8 @@ namespace ExcelHelper
             {
                 ImportHeaderTitle = title;
             }
-            // 导入限制
-            if (importSetting.LimitValues.TryGetValue(PropertyInfo.Name, out var values))
-            {
-                foreach (var value in values)
-                {
-                    ImportLimitValues.Add(value);
-                }
-            }
-            // 导入值Trim
-            if (importSetting.ValueTrim.TryGetValue(PropertyInfo.Name, out var trim))
-            {
-                ImportTrimValue = trim;
-            }
 
-            // 导入唯一性限制
-            ImportUnique = importSetting.UniqueProperties.Contains(PropertyInfo.Name);
-            // 导入必须限制
-            ImportRequired = importSetting.RequiredProperties.Contains(PropertyInfo.Name);
+            UpdateByBaseImportSetting(importSetting);
         }
 
         /// <summary>
@@ -636,6 +795,93 @@ namespace ExcelHelper
 
             return false;
         }
+
+        #endregion
+
+        #endregion
+
+        #region Temp
+
+        #region Set
+
+        /// <summary>
+        /// 更新模板信息，
+        /// 动态设置会覆盖模型静态配置
+        /// </summary>
+        public void UpdateByTempSetting(TempSetting tempSetting)
+        {
+            if (tempSetting == null)
+            {
+                return;
+            }
+            if (IsArray)
+            {
+                if (tempSetting.ListSettings.TryGetValue(PropertyInfo.Name, out var tempListSetting))
+                {
+                    TempListType = tempListSetting.Type;
+                    TempListStartIndex = tempListSetting.StartIndex;
+                    TempListEndIndex = tempListSetting.EndIndex;
+                    HasTempInfo = true;
+                    foreach (var child in Children)
+                    {
+                        child.UpdateByTempListSetting(tempListSetting);
+                        child.UpdateImportHeaderTitle($"{ImportHeaderTitle}.{child.ImportHeaderTitle}");
+                    }
+                }
+            }
+            else
+            {
+                if (tempSetting.CellAddress.TryGetValue(PropertyInfo.Name, out var cellAddress))
+                {
+                    TempCellAddress = cellAddress;
+                    HasTempInfo = true;
+                }
+
+            }
+
+            UpdateByBaseImportSetting(tempSetting);
+        }
+
+        private void UpdateByTempListSetting(TempListSetting tempListSetting)
+        {
+            if (tempListSetting == null)
+            {
+                return;
+            }
+            if (tempListSetting.ItemIndexs.TryGetValue(PropertyInfo.Name, out var itemIndex))
+            {
+                TempListItemIndex = itemIndex;
+                HasTempItemInfo = true;
+            }
+
+            UpdateByBaseImportSetting(tempListSetting);
+        }
+
+        private void UpdateImportHeaderTitle(string title)
+        {
+            ImportHeaderTitle = title;
+        }
+
+        /// <summary>
+        /// 裁剪掉没有设置模板配置的子项
+        /// </summary>
+        public void TrimTempChildren()
+        {
+            var needRemoves = new List<ExcelPropertyInfo>();
+            foreach (var child in Children)
+            {
+                if (!child.HasTempItemInfo)
+                {
+                    needRemoves.Add(child);
+                }
+            }
+            foreach (var item in needRemoves)
+            {
+                Children.Remove(item);
+            }
+        }
+
+        #endregion
 
         #endregion
 

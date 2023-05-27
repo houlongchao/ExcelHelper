@@ -1,6 +1,4 @@
 ﻿using Aspose.Cells;
-using System;
-using System.Collections.Generic;
 
 namespace ExcelHelper.Aspose
 {
@@ -19,8 +17,7 @@ namespace ExcelHelper.Aspose
         /// <summary>
         /// Excel 写入帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
-        public ExcelWriteHelper(ExcelHelperBuilder excelHelperBuilder) : base(excelHelperBuilder)
+        public ExcelWriteHelper() 
         {
             _excel = AsposeCellHelper.CreateExcel();
             _excel.Worksheets.Clear();

@@ -117,5 +117,34 @@ namespace ExcelHelper
 
             return result;
         }
+
+        /// <summary>
+        /// 获取模板模型属性信息列表
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="tempSetting"></param>
+        /// <returns></returns>
+        public static List<ExcelPropertyInfo> GetTempExcelPropertyInfoList(this Type type, TempSetting tempSetting = null)
+        {
+            var result = new List<ExcelPropertyInfo>();
+            // 获取导入模型属性信息
+            var properties = type.GetProperties();
+            foreach (var property in properties)
+            {
+                var excelPropertyInfo = property.GetExcelPropertyInfo();
+                if (excelPropertyInfo != null)
+                {
+                    excelPropertyInfo.UpdateByTempSetting(tempSetting);
+                    if (excelPropertyInfo.HasTempInfo)
+                    {
+                        excelPropertyInfo.TrimTempChildren();
+                        result.Add(excelPropertyInfo);
+                    }
+                }
+            }
+
+            return result;
+        }
+
     }
 }

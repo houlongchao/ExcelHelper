@@ -532,6 +532,44 @@ namespace ExcelHelper.NPOI
         }
 
         /// <summary>
+        /// 设置单元格数据
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static ICell SetValue(this ICell cell, object data)
+        {
+            if (data is DateTime dt)
+            {
+                if (DateTime.MinValue != dt)
+                {
+                    cell.SetValue(dt).SetDataFormat();
+                }
+            }
+            else if (data is bool b)
+            {
+                cell.SetValue(b);
+            }
+            else if (data is double d)
+            {
+                cell.SetValue(d);
+            }
+            else if (data is int di)
+            {
+                cell.SetValue(di);
+            }
+            else if (data is decimal dc)
+            {
+                cell.SetValue((double)dc);
+            }
+            else
+            {
+                cell.SetValue(data?.ToString());
+            }
+            return cell;
+        }
+
+        /// <summary>
         /// 设置单元格格式字符串
         /// </summary>
         /// <param name="cell"></param>

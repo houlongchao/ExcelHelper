@@ -21,5 +21,10 @@ namespace ExcelHelper
         /// 导入限制
         /// </summary>
         public object[] Limits { get; private set; }
+
+        /// <summary>
+        /// 提示信息
+        /// </summary>
+        public string Message { get; set; }
     }
 }

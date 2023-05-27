@@ -9,26 +9,26 @@
 
 ## 功能说明
 
-### 导入
+### 数据导入
 
 
 - [x] 支持导入多个Sheet页 `.ImportSheet<DemoIO>()`
-- [x] 支持导入图片 `[ImportHeader("图片", IsImage = true)]`
+- [x] 支持数据列标题设置 `[ImportHeader("姓名")]`
 - [x] 支持导入配置数据限制 `[ImportLimit("A1", "A2", "A3")]`
-- [x] 支持导入验证必填 `[ImportHeader("A", IsRequired = true)]`
-- [x] 支持设置导入必填验证消息 `[ImportHeader("A", RequiredMessage = "数据A必填")]`
-- [x] 支持导入移除前后空格 `[ImportHeader("AA", Trim = Trim.Start)]`
+- [x] 支持导入验证必填 `[ImportRequired]`
+- [x] 支持设置导入必填验证消息 `[ImportRequired(Message = "数据A必填")]`
+- [x] 支持导入移除前后空格 `[ImportTrim(Trim.Start)]`
 - [x] 支持导入数据映射 `[ImportMapper("A3", "b")]`
-- [x] 支持导入数据唯一性校验 `[ImportHeader("A", IsUnique = true)]`
-- [x] 支持导入组合数据唯一性校验 `[ImportUnique(nameof(A), nameof(B))]`
+- [x] 支持导入数据唯一性校验 `[ImportUnique]`
+- [x] 支持导入组合数据唯一性校验 `[ImportUniques(nameof(A), nameof(B))]`
 - [x] 支持导入时动态设置 `new ImportSetting()`
 
-### 导出
+### 数据导出
 
 
 - [x] 支持导出多个Sheet页 `.ExportSheet("sheet", data)`
-- [x] 支持导出图片 `[ExportHeader("图片", IsImage = true)]`
-- [x] 支持导出格式化字符串 `[ExportHeader("日期", Format = "yyyy/MM/dd")]`
+- [x] 支持数据列标题设置 `[ExportHeader("日期"]`
+- [x] 支持导出格式化字符串 `[ExportFormat("yyyy/MM/dd")]`
 - [x] 支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
 - [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
 - [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
@@ -36,6 +36,19 @@
 - [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
 - [x] 支持导出时动态设置 `new ExportSetting()`
 - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
+
+### 模板操作
+
+- [x] 标识数据属性对应Excel位置 `[Temp("A1")]`
+- [x] 标识列表数据行/列范围`[TempList(TempListType.Row, 5, 8)]`
+- [x] 标识列表数据位置`[TempListItem(1)]`
+- [x] 模板导入导出时支持Import和Export操作的限制型属性
+
+### 公共
+
+- [x] 支持导入导出图片 `[Image]`
+
+
 
 ## Nuget 引用
 
@@ -52,10 +65,10 @@ dotnet add package ExcelHelper.Aspose
 ### 读数据
 
 ``` C#
-// 通过ExcelHelperBuilder从指定文件（指定流或指定内存字节）构建读取器
-_excelHelper = new ExcelHelperBuilder().BuildRead("Excel.xlsx");
-_excelHelper = new ExcelHelperBuilder().BuildRead(stream);
-_excelHelper = new ExcelHelperBuilder().BuildRead(bytes);
+// 构建读取器
+_excelHelper = new ExcelReadHelper("Excel.xlsx");
+_excelHelper = new ExcelReadHelper(stream);
+_excelHelper = new ExcelReadHelper(bytes);
 // 导入，如果没有指定Sheet则从第一个sheet读取
 var demos = _excelHelper.ImportSheet<DemoIO>();
 // 指定了Sheet则从指定Sheet读取
@@ -67,8 +80,8 @@ var demos = _excelHelper.ImportSheet<DemoIO>("Sheet1", "S1", "S");
 ### 写数据
 
 ``` C#
-// 通过ExcelHelperBuilder构建写入器
-_excelHelper = new ExcelHelperBuilder().BuildWrite();
+// 构建写入器
+_excelHelper = new ExcelWriteHelper();
 // 写入树datas到test页
 _excelHelper.ExportSheet("test", datas);
 // 写入树datas到test2页
@@ -81,58 +94,87 @@ var bytes = _excelHelper.ToBytes();
 File.WriteAllBytes("test.xlsx", bytes);
 ```
 
-### 导入导出模型
+### 模板操作
+
+``` C#
+// 构建模板操作类
+_excelHelper = new ExcelTempHelper();
+// 将数据 tempIO 写到模板 Excel.xlsx 中
+var bytes = _excelHelper.SetData("Excel.xlsx", tempIo);
+// 将数据写入到文件
+File.WriteAllBytes("test.xlsx", bytes);
+
+// 从包含数据的模板 test.xlsx 中读取数据
+var data = _excelHelper.GetData<DemoTempIO>("test.xlsx");
+```
+
+### 模型
+
+#### 导入导出
 
 ``` C#
 /// <summary>
 /// 导入导出测试模型
 /// </summary>
-[ImportUnique(nameof(A), nameof(B))]
+[ImportUniques(nameof(A), nameof(B))]
+//[ImportUniques(nameof(A), nameof(B), Message = "数据必须唯一提示")]
 public class DemoIO
 {
-  [ImportHeader("A", IsRequired = true, IsUnique = false)]
-  [ImportHeader("AA", Trim = Trim.Start)]
+  [ImportHeader("A")]
+  [ImportHeader("AA")]
+  [ImportRequired]
+  //[ImportRequired(Message = "数据必填提示")]
+  [ImportUnique]
+  //[ImportUnique(Message = "数据唯一提示")]
+  [ImportTrim(Trim.Start)]
+  [ImportLimit("A1", "A2", "A3")]
   [ExportHeader("A2", ColorName = "Red")]
   public string A { get; set; }
 
   [ImportHeader("B")]
   [ImportHeader("BB")]
-  [ImportMapper("True", "true")]
+  [ImportRequired(Message = "数据B必填")]
   [ExportHeader("B2")]
   public string B { get; set; }
 
   [ImportHeader("C")]
   [ImportHeader("CC")]
   [ImportMapper("A3", "b")]
-  [ImportMapper("False", "false")]
+  [ImportLimit("A3", true, 123)]
   [ExportHeader("C2", Comment = "备注")]
   [ExportMapper("a", "Aa")]
   [ExportMapper("b", "Ab")]
   [ExportMapper("c", "Ac")]
   public string C { get; set; }
 
-  [ExportHeader("日期", ColumnWidth = 30, Format = "yyyy/MM/dd")]
+  [ExportHeader("日期", ColumnWidth = 30)]
   public DateTime DateTime { get; set; }
+
+  [ExportHeader("日期2", ColumnWidth = 30)]
+  [ExportFormat("yyyy/MM/dd")]
+  public DateTime? DateTime2 { get; set; }
 
   [ExportIgnore]
   public DateTime Date { get; set; }
 
-  [ExportMapper(0, "011")]
-  [ExportHeader("数字", Format = "0.0")]
+  [ExportHeader("数字")]
+  [ExportFormat("0.0")]
   public double Number { get; set; }
 
   public bool Boolean { get; set; }
 
   public string Formula { get; set; }
 
-  [ExportMapper(Status.A, "AA")]
+  [ExportMapper(ExcelHelperTest.Status.A, "AA")]
   [ExportMapper(null, "")]
-  [ExportMapperElse("其它数据")]
+  [ExportMapperElse("else")]
   public Status? Status { get; set; }
-  
-  
-  [ExportHeader("图片", IsImage = true)]
-  [ImportHeader("图片", IsImage = true)]
+
+  public string ImageName { get; set; }
+
+  [ExportHeader("图片")]
+  [ImportHeader("图片")]
+  [Image]
   public byte[] Image { get; set; }
 }
 
@@ -143,9 +185,56 @@ public enum Status
 }
 ```
 
+#### 模板
+
+``` C#
+public class DemoTempIO
+{
+  [Temp("A1")]
+  public string A { get; set; }
+
+  [Temp("B2")]
+  public int B { get; set; }
+
+  [Temp("C3")]
+  public DateTime C { get; set; }
+
+  public string D { get; set; }
+
+  [TempList(TempListType.Row, 5, 8)]
+  public List<DemoTempChild> Children { get; set; }
+}
+
+public class DemoTempChild
+{
+  [TempListItem(1)]
+  public string Name { get; set; }
+
+  [TempListItem(2)]
+  public int Age { get; set; }
+
+  public string Other { get; set; }
+}
+```
+
+
+
 ## 模型配置说明
 
-### 导入
+### 公共Attribute
+
+#### ImageAttribute
+
+设置在`byte[]`数组属性上，标识该属性为图片的二进制数据。
+
+``` C#
+[Image]
+public byte[] Image { get; set; }  // 图片数据必须用 byte[] 接收
+```
+
+
+
+### 导入Attribute
 
 #### ImportHeaderAttribute
 
@@ -155,22 +244,6 @@ public enum Status
 [ImportHeader("A")]   // 读取列A的数据
 [ImportHeader("AA")]  // 读取列AA的数据
 public string A { get; set; }
-
-[ImportHeader("图片", IsImage = true)]  // 读取图片
-public byte[] Image { get; set; }       // 图片数据必须用 byte[] 接收
-
-[ImportHeader("A", IsRequired = true)] // 数据必须不能为空
-public string A { get; set; }
-
-[ImportHeader("A", RequiredMessage = "数据A必填")] // 数据必填消息自定义
-public string A { get; set; }
-
-[ImportHeader("A", IsUnique = false)] // 数据必须不能重复
-public string A { get; set; }
-
-[ImportHeader("AA", Trim = Trim.Start)]  // 依次数据前面的空白字符
-public string A { get; set; }
-
 ```
 
 #### ImportMapperAttribute
@@ -193,28 +266,72 @@ public string C { get; set; }
 public string C { get; set; }
 ```
 
+#### ImportTrimAttribute
+
+设置导入数据时对数据的Trim操作方式
+
+``` C#
+[ImportTrim(Trim.Start)]
+public string A { get; set; }   //移除数据前面的空白字符
+```
+
+#### ImportRequiredAttribute
+
+导入数据必填不能为空
+
+``` C#
+[ImportRequired]
+public string A { get; set; }
+
+[ImportRequired(Message = "数据必填提示")]
+public string A { get; set; }
+```
+
 #### ImportLimitAttribute
 
 导入限制，只能导入设置的数据
 
 ``` C#
 [ImportLimit("A1", "A2", "A3")]   // 导入限制
-public string C { get; set; }
+public string A { get; set; }
+
+[ImportLimit("A1", "A2", "A3", Message = "数据限制提示")] // 导入限制
+public string A { get; set; }
 ```
 
 #### ImportUniqueAttribute
 
-导入唯一性数据限制，**在class上设置**
+导入唯一性数据限制
 
 ```C#
+[ImportRequired]
+public string A { get; set; }
+
+[ImportRequired(Message = "数据必填提示")]
+public string A { get; set; }
+```
+
+#### ImportUniquesAttribute
+
+导入唯一性数据限制，**在class上设置**
+
+``` C#
 [ImportUnique(nameof(A), nameof(B))] // A和B的组合数据都唯一
+public class DemoIO
+{
+   // ...
+}
+
+[ImportUniques(nameof(A), nameof(B), Message = "数据必须唯一提示")] // A和B的组合数据都唯一
 public class DemoIO
 {
    // ...
 }
 ```
 
-### 导出
+
+
+### 导出Attribute
 
 #### ExportHeaderAttribute
 
@@ -226,9 +343,6 @@ public string C { get; set; }
 
 [ExportHeader("日期", ColumnWidth = 30)]
 public DateTime DateTime { get; set; }
-
-[ExportHeader("图片", IsImage = true)]
-public byte[] Image { get; set; }
 
 [ExportHeader("A2", ColorName = "Red", IsBold = true, FontSize = 12)] // 指定导出标题字体
 public string A { get; set; }
@@ -245,14 +359,24 @@ public string A { get; set; }
 public string C { get; set; }
 ```
 
-#### ExportMapperAttribute
+#### ExportMapperElseAttribute
 
 与导出映射转换器`ExportMapperAttribute`配合使用，当`ExportMapperAttribute`没有匹配的数据时全部数据值设置为该属性配置的值。
 
 ```C#
 [ExportMapper("A3", "b")]        // 当数据为A3时Excel中写入数据b
-[ExportMapperrElse("其它数据")]    // 否则其它数据都写入为"其它数据"
+[ExportMapperElse("其它数据")]    // 否则其它数据都写入为"其它数据"
 public string C { get; set; }
+```
+
+#### ExportFormatAttribute
+
+``` C#
+[ExportFormat("yyyy/MM/dd")]
+public DateTime? DateTime2 { get; set; }
+
+[ExportFormat("0.0")]
+public double Number { get; set; }
 ```
 
 #### ExportIgnoreAttribute
@@ -264,6 +388,36 @@ public string C { get; set; }
 public DateTime Date { get; set; }
 ```
 
+### 模板Attribute
+
+####  TempAttribute
+
+设置字段属性与Excel单元格的关系
+
+``` C#
+[Temp("A1")]
+public string A { get; set; }   // 设置A数据和Excel中A1单元格数据绑定
+```
+
+#### TempListAttribute
+
+设置列表属性对应Excel中表格的位置关系。这是表格的行/列模式，行/列的开始和结束索引。
+
+``` C#
+[TempList(TempListType.Row, 5, 8)]         // 数据为行模式，数据从索引5(第6行，包含)到缩影8(第9行，包含)
+public List<DemoTempChild> Children { get; set; }
+```
+
+#### TempListItemAttribute
+
+设置列表数据中数据属性的行/列索引。如果列表为行模式，则此处为列索引。
+
+```C#
+[TempListItem(1)]
+public string Name { get; set; }
+```
+
+
 ## 动态设置
 
 ### ImportSetting
@@ -273,25 +427,16 @@ public DateTime Date { get; set; }
 ``` c#
 var importSetting = new ImportSetting();
 importSetting.AddTitleMapping(nameof(DemoIO.A), "AA");
-importSetting.AddRequiredProperties(nameof(DemoIO.Image));
+importSetting.AddRequiredProperties(nameof(DemoIO.A));
+importSetting.AddRequiredMessage(nameof(DemoIO.A), "AA是必须的");
 importSetting.AddUniqueProperties(nameof(DemoIO.A));
+importSetting.AddUniqueMessage(nameof(DemoIO.A), "AA必须唯一");
 importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
+importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
 importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
 
 var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
 ```
-
-> `TitleMapping` : 导入头映射，参数为一个字典，`key`为接收模型属性名，`value`为excel表格导入列名。
->
-> `RequiredProperties` : 对导入数据进行必须性验证，参数为属性名字符串列表。如果模型属性名称在列表中，则对该列数据进行必须性验证。
->
-> `UniqueProperties` ：对导入数据进行唯一性验证，参数为属性名字符串列表。如果模型属性名称在列表中，则对该列数据进行唯一性验证。
->
-> `LimitValues` ：对导入数据进行验证，参数为一个字典。`key`为属性名，`value`为要检查的值列表。如果导入的值在指定列表中，则该导入值有效。
->
-> `ValueTrim` ：对导入数据进行前后空白字符移除，参数为一个字典。`key`为属性名，`value`为要移除的模式。
-
-## 
 
 ### ExportSetting
 
@@ -307,12 +452,31 @@ setting.AddTitleComment(nameof(DemoIO.Date), "日期备注");
 _excelHelper.ExportSheet("test3", data3, exportSetting);
 ```
 
-> `AddTitle` : 导出时是否添加列标题，默认为`true`。
->
-> `TitleMapping` : 导出头映射，参数为一个字典。`key`为接收模型属性名，`value`为excel表格导出列名。
->
-> `IgnoreProperties` : 要忽略导出的属性，参数为属性名字符串列表。如果模型属性名称在列表中，则导出时不导出该列数据。
->
-> `IncludeProperties` : 要导出的属性，参数为属性名字符串列表。如果模型属性名称在列表中，则导出时导出该列数据。优先级：`IgnoreProperties` > `IncludeProperties` > `ExportIgnoreAttribute`
->
-> `TitleComment` : 导出列标题备注信息，参数为一个字典。`key`为接收模型属性名，`value`为excel表格导出列名的备注信息。
+### TempSetting
+
+数据模板导入导出动态设置
+
+``` C#
+var tempSetting = new TempSetting();
+tempSetting.AddCellAddress(nameof(DemoTempIO.A), "A8");
+tempSetting.AddCellAddress(nameof(DemoTempIO.B), "B8");
+tempSetting.AddCellAddress(nameof(DemoTempIO.C), "C8");
+tempSetting.AddCellAddress(nameof(DemoTempIO.D), "D8");
+//tempSetting.AddRequiredProperties(nameof(DemoTempIO.A));
+//tempSetting.AddRequiredMessage(nameof(DemoTempIO.A), "AA是必须的");
+//tempSetting.AddUniqueProperties(nameof(DemoTempIO.A));
+//tempSetting.AddUniqueMessage(nameof(DemoTempIO.A), "AA必须唯一");
+//tempSetting.AddLimitValues(nameof(DemoTempIO.A), "A1", "A2", "A3");
+//tempSetting.AddLimitMessage(nameof(DemoTempIO.A), "AA数据非法");
+//tempSetting.AddValueTrim(nameof(DemoTempIO.A), Trim.All);
+var childrenSetting = tempSetting.AddTempListSetting(nameof(DemoTempIO.Children), TempListType.Row, 10, 15);
+childrenSetting.AddItemIndex(nameof(DemoTempChild.Name), 0);
+childrenSetting.AddItemIndex(nameof(DemoTempChild.Age), 5);
+childrenSetting.AddItemIndex(nameof(DemoTempChild.Other), 3);
+
+var bytes = _excelHelper.SetData("Excel.xlsx", tempIo, tempSetting: tempSetting);
+File.WriteAllBytes("test.xlsx", bytes);
+
+var data = _excelHelper.GetData<DemoTempIO>("test.xlsx", tempSetting: tempSetting);
+```
+

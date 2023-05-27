@@ -4,6 +4,21 @@
         <name>ExcelHelper.Core</name>
     </assembly>
     <members>
+        <member name="T:ExcelHelper.ExportFormatAttribute">
+            <summary>
+            导出格式化设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportFormatAttribute.Format">
+            <summary>
+            格式化字符串
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportFormatAttribute.#ctor(System.String)">
+            <summary>
+            导出格式化设置
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ExportHeaderAttribute">
             <summary>
             导出头设置
@@ -43,16 +58,6 @@
             <summary>
             title 颜色
             <br/>颜色受限于Excel驱动框架的颜色系统
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ExportHeaderAttribute.IsImage">
-            <summary>
-            是否是图片数据
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ExportHeaderAttribute.Format">
-            <summary>
-            格式化字符串
             </summary>
         </member>
         <member name="M:ExcelHelper.ExportHeaderAttribute.#ctor(System.String)">
@@ -104,6 +109,11 @@
             </summary>
             <param name="display">显示值</param>
         </member>
+        <member name="T:ExcelHelper.ImageAttribute">
+            <summary>
+            图片
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImportHeaderAttribute">
             <summary>
             导入头设置
@@ -120,56 +130,6 @@
             </summary>
             <param name="name"></param>
         </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.IsImage">
-            <summary>
-            是否是图片数据
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.IsRequired">
-            <summary>
-            是否必须
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.RequiredMessage">
-            <summary>
-            必须提示消息
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.Trim">
-            <summary>
-            字符串Trim
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportHeaderAttribute.IsUnique">
-            <summary>
-            是否唯一
-            </summary>
-        </member>
-        <member name="T:ExcelHelper.Trim">
-            <summary>
-            Trim类型
-            </summary>
-        </member>
-        <member name="F:ExcelHelper.Trim.None">
-            <summary>
-            不做处理
-            </summary>
-        </member>
-        <member name="F:ExcelHelper.Trim.All">
-            <summary>
-            处理两面
-            </summary>
-        </member>
-        <member name="F:ExcelHelper.Trim.Start">
-            <summary>
-            处理前面
-            </summary>
-        </member>
-        <member name="F:ExcelHelper.Trim.End">
-            <summary>
-            处理后面
-            </summary>
-        </member>
         <member name="T:ExcelHelper.ImportLimitAttribute">
             <summary>
             导入限制
@@ -184,6 +144,11 @@
         <member name="P:ExcelHelper.ImportLimitAttribute.Limits">
             <summary>
             导入限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportLimitAttribute.Message">
+            <summary>
+            提示信息
             </summary>
         </member>
         <member name="T:ExcelHelper.ImportMapperAttribute">
@@ -224,19 +189,209 @@
             </summary>
             <param name="actual">真实值</param>
         </member>
+        <member name="T:ExcelHelper.ImportRequiredAttribute">
+            <summary>
+            导入必须
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportRequiredAttribute.Message">
+            <summary>
+            提示信息
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ImportTrimAttribute">
+            <summary>
+            导入时对字符串进行Trim
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportTrimAttribute.Trim">
+            <summary>
+            字符串Trim
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ImportTrimAttribute.#ctor(ExcelHelper.Trim)">
+            <summary>
+            导入时对字符串进行Trim
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImportUniqueAttribute">
             <summary>
             导入唯一限制
             </summary>
         </member>
-        <member name="P:ExcelHelper.ImportUniqueAttribute.UniquePropertites">
+        <member name="P:ExcelHelper.ImportUniqueAttribute.Message">
+            <summary>
+            提示信息
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.ImportUniquesAttribute">
+            <summary>
+            导入唯一限制
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportUniquesAttribute.Message">
+            <summary>
+            提示信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ImportUniquesAttribute.UniquePropertites">
             <summary>
             导入唯一限制联合属性
             </summary>
         </member>
-        <member name="M:ExcelHelper.ImportUniqueAttribute.#ctor(System.String[])">
+        <member name="M:ExcelHelper.ImportUniquesAttribute.#ctor(System.String[])">
             <summary>
             导入唯一限制
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.TempAttribute">
+            <summary>
+            模板设置
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.TempAttribute.#ctor(System.String)">
+            <summary>
+            模板头设置
+            </summary>
+            <param name="cellAddress">单元格位置，如：<c>A11</c></param>
+        </member>
+        <member name="P:ExcelHelper.TempAttribute.CellAddress">
+            <summary>
+            单元格位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempAttribute.IsImage">
+            <summary>
+            是否是图片数据
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempAttribute.IsRequired">
+            <summary>
+            是否必须
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempAttribute.RequiredMessage">
+            <summary>
+            必须提示消息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempAttribute.Trim">
+            <summary>
+            字符串Trim
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.TempListAttribute">
+            <summary>
+            模板列表数据设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListAttribute.Type">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListAttribute.StartIndex">
+            <summary>
+            开始位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListAttribute.EndIndex">
+            <summary>
+            结束位置
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.TempListAttribute.#ctor(ExcelHelper.TempListType,System.Int32,System.Int32)">
+            <summary>
+            模板列表数据设置
+            </summary>
+            <param name="type">行列表/列列表</param>
+            <param name="startIndex">数据开始坐标（包含）</param>
+            <param name="endIndex">数据结束坐标（包含）</param>
+        </member>
+        <member name="T:ExcelHelper.TempListType">
+            <summary>
+            列表类型
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.TempListType.Row">
+            <summary>
+            行
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.TempListType.Column">
+            <summary>
+            列
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.TempListItemAttribute">
+            <summary>
+            模板列表数据位置
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.TempListItemAttribute.#ctor(System.Int32)">
+            <summary>
+            模板列表数据位置
+            </summary>
+            <param name="itemIndex">行/列 索引</param>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.ItemIndex">
+            <summary>
+            模板列表数据位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.CellAddress">
+            <summary>
+            单元格位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.IsImage">
+            <summary>
+            是否是图片数据
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.IsRequired">
+            <summary>
+            是否必须
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.RequiredMessage">
+            <summary>
+            必须提示消息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.Trim">
+            <summary>
+            字符串Trim
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListItemAttribute.IsUnique">
+            <summary>
+            是否唯一
+            </summary>
+        </member>
+        <member name="T:ExcelHelper.Trim">
+            <summary>
+            Trim类型
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.None">
+            <summary>
+            不做处理
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.All">
+            <summary>
+            处理两面
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.Start">
+            <summary>
+            处理前面
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Trim.End">
+            <summary>
+            处理后面
             </summary>
         </member>
         <member name="T:ExcelHelper.BaseExcelReadHelper">
@@ -249,25 +404,22 @@
             Excel 文件流
             </summary>
         </member>
-        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(System.IO.Stream)">
             <summary>
             Excel 帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="stream">Excel 文件流</param>
         </member>
-        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(System.Byte[])">
             <summary>
             Excel 帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="fileBytes">Excel 文件字节数据</param>
         </member>
-        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+        <member name="M:ExcelHelper.BaseExcelReadHelper.#ctor(System.String)">
             <summary>
             Excel 帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="filePath">Excel 文件路径</param>
         </member>
         <member name="M:ExcelHelper.BaseExcelReadHelper.Dispose">
@@ -301,16 +453,34 @@
         <member name="M:ExcelHelper.BaseExcelReadHelper.GetExcelSheet(System.String[])">
             <inheritdoc/>
         </member>
-        <member name="T:ExcelHelper.BaseExcelWriteHelper">
+        <member name="T:ExcelHelper.BaseExcelTempHelper">
             <summary>
             Excel 帮助类基类
             </summary>
         </member>
-        <member name="M:ExcelHelper.BaseExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+        <member name="M:ExcelHelper.BaseExcelTempHelper.Dispose">
             <summary>
-            Excel 帮助类
+            释放资源
             </summary>
-            <param name="excelHelperBuilder"></param>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelTempHelper.GetData``1(System.String,System.String,ExcelHelper.TempSetting)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelTempHelper.SetData``1(System.String,``0,System.String,ExcelHelper.TempSetting)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelTempHelper.GetExcelSheet(System.String,System.String)">
+            <summary>
+            获取指定Excel文件指定Sheet页信息
+            </summary>
+            <param name="filePath"></param>
+            <param name="sheetName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.BaseExcelWriteHelper">
+            <summary>
+            Excel 帮助类基类
+            </summary>
         </member>
         <member name="M:ExcelHelper.BaseExcelWriteHelper.Dispose">
             <summary>
@@ -391,6 +561,32 @@
             <param name="sheetNames"></param>
             <returns></returns>
         </member>
+        <member name="T:ExcelHelper.IExcelTempHelper">
+            <summary>
+            Excel 模板操作类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelTempHelper.GetData``1(System.String,System.String,ExcelHelper.TempSetting)">
+            <summary>
+            获取模板数据
+            </summary>
+            <typeparam name="T">输出模型</typeparam>
+            <param name="filePath">文件路径</param>
+            <param name="sheetName">sheet页名称，默认第一个sheet页</param>
+            <param name="tempSetting">模板设置</param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelTempHelper.SetData``1(System.String,``0,System.String,ExcelHelper.TempSetting)">
+            <summary>
+            设置模板数据
+            </summary>
+            <typeparam name="T">数据对象模型</typeparam>
+            <param name="tempPath">模板文件路径</param>
+            <param name="data">数据</param>
+            <param name="sheetName">sheet页名称，默认第一个sheet页</param>
+            <param name="tempSetting">模板设置</param>
+            <returns></returns>
+        </member>
         <member name="T:ExcelHelper.IExcelWriteHelper">
             <summary>
             Excel 写入帮助类
@@ -431,15 +627,120 @@
             <param name="sheetName"></param>
             <returns></returns>
         </member>
-        <member name="T:ExcelHelper.ExcelHelperBuilder">
+        <member name="T:ExcelHelper.BaseExcelSheet">
             <summary>
-            Excel 帮助类构建器
+            Excel Sheet 基础操作实现
             </summary>
         </member>
-        <member name="M:ExcelHelper.ExcelHelperBuilder.Dispose">
+        <member name="M:ExcelHelper.BaseExcelSheet.GetRowCount">
             <summary>
-            释放
+            获取总行数
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetColumnCount(System.Int32)">
+            <summary>
+            获取指定行的列数
+            </summary>
+            <param name="rowIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.ToBytes">
+            <summary>
+            生成字节数组
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetImage(System.Int32,System.Int32)">
+            <summary>
+            获取指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetImage(System.String)">
+            <summary>
+            获取指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetValue(System.Int32,System.Int32)">
+            <summary>
+            获取指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetValue(System.String)">
+            <summary>
+            获取指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetValue(System.String,System.Object)">
+            <summary>
+            设置指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetImage(System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            设置指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetImage(System.String,System.Byte[])">
+            <summary>
+            设置指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetComment(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定位置的备注信息
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetFormat(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定位置的格式化字符串
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetAutoSizeColumn(System.Int32)">
+            <summary>
+            设置指定列自动调整宽度
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetColumnWidth(System.Int32,System.Int32)">
+            <summary>
+            设置指定列的宽度
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetFont(System.Int32,System.Int32,System.String,System.Int32,System.Boolean)">
+            <summary>
+            设置指定位置的字体
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.AppendEmptyRow">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.GetTempData``1(ExcelHelper.TempSetting)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetTempData``1(``0,ExcelHelper.TempSetting)">
+            <inheritdoc/>
         </member>
         <member name="T:ExcelHelper.IExcelSheet">
             <summary>
@@ -481,6 +782,26 @@
             <summary>
             获取总行数
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.ToBytes">
+            <summary>
+            保存为字节数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.GetTempData``1(ExcelHelper.TempSetting)">
+            <summary>
+            获取模板数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetTempData``1(``0,ExcelHelper.TempSetting)">
+            <summary>
+            设置模板数据
+            </summary>
+            <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
         <member name="T:ExcelHelper.ExcelHelperException">
@@ -540,7 +861,7 @@
             对象类型
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelObjectInfo.ImportUniques">
+        <member name="P:ExcelHelper.ExcelObjectInfo.ImportUniquesAttributes">
             <summary>
             导入唯一限制
             </summary>
@@ -556,12 +877,13 @@
             唯一判断字典
             </summary>
         </member>
-        <member name="M:ExcelHelper.ExcelObjectInfo.CheckImportUnique``1(``0)">
+        <member name="M:ExcelHelper.ExcelObjectInfo.CheckImportUnique``1(``0,ExcelHelper.ImportSetting)">
             <summary>
             检查导入唯一性限制
             </summary>
             <typeparam name="T"></typeparam>
             <param name="t"></param>
+            <param name="importSetting"></param>
             <exception cref="T:ExcelHelper.ImportException"></exception>
         </member>
         <member name="T:ExcelHelper.ExcelPropertyInfo">
@@ -572,6 +894,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.PropertyInfo">
             <summary>
             字段属性信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.IsArray">
+            <summary>
+            是否是数组
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderTitle">
@@ -589,6 +916,11 @@
             导入唯一性限制
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportUniqueMessage">
+            <summary>
+            导入唯一性限制提示信息
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportRequired">
             <summary>
             导入数据必须
@@ -604,9 +936,74 @@
             导入限制
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportLimitMessage">
+            <summary>
+            导入限制提示信息
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportTrimValue">
             <summary>
             导入值Trim
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderTitle">
+            <summary>
+            导出头标题
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderComment">
+            <summary>
+            导出头备注
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
+            <summary>
+            导出忽略
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.HasTempInfo">
+            <summary>
+            是否设置了模板配置信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.HasTempItemInfo">
+            <summary>
+            是否设置了列表模板项配置信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempCellAddress">
+            <summary>
+            模板字段位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListType">
+            <summary>
+            模板列表类型
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListStartIndex">
+            <summary>
+            模板数据开始
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListEndIndex">
+            <summary>
+            模板数据结束
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListItemIndex">
+            <summary>
+            模板列表数据位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.Children">
+            <summary>
+            子属性字段信息
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImageAttribute">
+            <summary>
+            图片属性
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportHeaderAttributes">
@@ -629,19 +1026,19 @@
             导入限制
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderTitle">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportRequiredAttribute">
             <summary>
-            导出头标题
+            导入必须
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderComment">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportTrimAttribute">
             <summary>
-            导出头备注
+            导入数据Trim
             </summary>
         </member>
-        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportIgnore">
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportUniqueAttribute">
             <summary>
-            导出忽略
+            导入唯一限制
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderAttribute">
@@ -664,6 +1061,26 @@
             忽略导出，如果为null则导出，不为null则不导出
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportFormatAttribute">
+            <summary>
+            导出格式化
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempAttribute">
+            <summary>
+            模板头
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListAttribute">
+            <summary>
+            模板头-列表数据
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.TempListItemAttribute">
+            <summary>
+            模板头-列表数据项
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.Reflection.PropertyInfo)">
             <summary>
             Excel 属性信息
@@ -680,6 +1097,16 @@
             获取导出头标题
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetTempInfo">
+            <summary>
+            设置模板信息
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImage">
+            <summary>
+            是否是图片
+            </summary>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ExportMappedToDisplay(System.Object)">
             <summary>
@@ -701,11 +1128,6 @@
             动态设置会覆盖模型静态配置
             </summary>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.IsExportImage">
-            <summary>
-            是否是图片
-            </summary>
-        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.IsExportIgnore">
             <summary>
             是否导出时忽略当前属性
@@ -718,11 +1140,6 @@
             </summary>
             <param name="display">显示值</param>
             <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportImage">
-            <summary>
-            是否是图片
-            </summary>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.IsImportRequired">
             <summary>
@@ -766,6 +1183,12 @@
             </summary>
             <param name="data"></param>
         </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByBaseImportSetting(ExcelHelper.BaseImportSetting)">
+            <summary>
+            更新导入信息
+            </summary>
+            <param name="baseImportSetting"></param>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByImportSetting(ExcelHelper.ImportSetting)">
             <summary>
             更新导入信息
@@ -777,6 +1200,17 @@
             设置导入头列索引
             </summary>
             <param name="titleIndexDict"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.UpdateByTempSetting(ExcelHelper.TempSetting)">
+            <summary>
+            更新模板信息，
+            动态设置会覆盖模型静态配置
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.TrimTempChildren">
+            <summary>
+            裁剪掉没有设置模板配置的子项
+            </summary>
         </member>
         <member name="T:ExcelHelper.ExcelSheetInfo">
             <summary>
@@ -850,6 +1284,114 @@
             <param name="exportSetting"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.PropertyInfoExtensions.GetTempExcelPropertyInfoList(System.Type,ExcelHelper.TempSetting)">
+            <summary>
+            获取模板模型属性信息列表
+            </summary>
+            <param name="type"></param>
+            <param name="tempSetting"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ExcelHelper.BaseImportSetting">
+            <summary>
+            基础导入设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.LimitValues">
+            <summary>
+            导入值限制 (<c>nameof(A)</c>, <c>value list</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>value list</c> : 值列表</para>
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.LimitMessage">
+            <summary>
+            导入限制提示
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.ValueTrim">
+            <summary>
+            值Trim
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.RequiredProperties">
+            <summary>
+            必须有数据的属性
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.RequiredMessage">
+            <summary>
+            导入必须提示
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.UniqueProperties">
+            <summary>
+            唯一性验证的属性
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.UniqueMessage">
+            <summary>
+            导入唯一性验证提示
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.BaseImportSetting.ImportUniquesAttributes">
+            <summary>
+            导入唯一限制
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddLimitValues(System.String,System.Object[])">
+            <summary>
+            添加限制值清单
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="values">导入数据限制列表</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddLimitMessage(System.String,System.String)">
+            <summary>
+            添加限制值提示信息
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="message">提示信息</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddValueTrim(System.String,ExcelHelper.Trim)">
+            <summary>
+            添加数据值Trim
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="trim">数据Trim方式</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddRequiredProperties(System.String[])">
+            <summary>
+            添加必填属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddRequiredMessage(System.String,System.String)">
+            <summary>
+            添加必填提示信息
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="message">提示信息</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddUniqueProperties(System.String[])">
+            <summary>
+            添加唯一属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddUniqueMessage(System.String,System.String)">
+            <summary>
+            添加唯一性提示信息
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="message">提示信息</param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddUniquesAttribute(ExcelHelper.ImportUniquesAttribute)">
+            <summary>
+            添加导入数据唯一限制（针对列表对象，多字段唯一）
+            </summary>
+            <param name="importUniquesAttribute"></param>
+        </member>
         <member name="T:ExcelHelper.ExportSetting">
             <summary>
             导出配置
@@ -922,28 +1464,6 @@
             <para><c>title</c> : Excel列标题</para>
             </summary>
         </member>
-        <member name="P:ExcelHelper.ImportSetting.LimitValues">
-            <summary>
-            导入值限制 (<c>nameof(A)</c>, <c>value list</c>)
-            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
-            <para><c>value list</c> : 值列表</para>
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportSetting.ValueTrim">
-            <summary>
-            值Trim
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportSetting.RequiredProperties">
-            <summary>
-            必须有数据的属性
-            </summary>
-        </member>
-        <member name="P:ExcelHelper.ImportSetting.UniqueProperties">
-            <summary>
-            唯一性验证的属性
-            </summary>
-        </member>
         <member name="M:ExcelHelper.ImportSetting.AddTitleMapping(System.String,System.String)">
             <summary>
             添加属性与excel头映射
@@ -951,31 +1471,74 @@
             <param name="propertyName">对象属性名称</param>
             <param name="title">excel中列标题</param>
         </member>
-        <member name="M:ExcelHelper.ImportSetting.AddLimitValues(System.String,System.Object[])">
+        <member name="T:ExcelHelper.TempSetting">
             <summary>
-            添加限制值清单
+            模板配置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempSetting.CellAddress">
+            <summary>
+            属性单元格位置 (<c>nameof(A)</c>, <c>cellAddress</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>cellAddress</c> : Excel中单元格位置</para>
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempSetting.ListSettings">
+            <summary>
+            列表属性 (<c>nameof(A)</c>, <see cref="T:ExcelHelper.TempListSetting"/>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><see cref="T:ExcelHelper.TempListSetting"/> : 模板列表设置</para>
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.TempSetting.AddCellAddress(System.String,System.String)">
+            <summary>
+            添加属性单元格位置
             </summary>
             <param name="propertyName">对象属性名称</param>
-            <param name="values">导入数据限制列表</param>
+            <param name="cellAddress">Excel中单元格位置</param>
         </member>
-        <member name="M:ExcelHelper.ImportSetting.AddValueTrim(System.String,ExcelHelper.Trim)">
+        <member name="M:ExcelHelper.TempSetting.AddTempListSetting(System.String,ExcelHelper.TempListType,System.Int32,System.Int32)">
             <summary>
-            添加数据值Trim
+            添加列表属性设置
             </summary>
             <param name="propertyName">对象属性名称</param>
-            <param name="trim">数据Trim方式</param>
+            <param name="type">行列表/列列表</param>
+            <param name="startIndex">数据开始坐标（包含）</param>
+            <param name="endIndex">数据结束坐标（包含）</param>
         </member>
-        <member name="M:ExcelHelper.ImportSetting.AddRequiredProperties(System.String[])">
+        <member name="T:ExcelHelper.TempListSetting">
             <summary>
-            添加必填属性
+            模板列表设置
             </summary>
-            <param name="propertyNames">对象属性名称</param>
         </member>
-        <member name="M:ExcelHelper.ImportSetting.AddUniqueProperties(System.String[])">
+        <member name="P:ExcelHelper.TempListSetting.Type">
             <summary>
-            添加唯一属性
+            数据类型
             </summary>
-            <param name="propertyNames">对象属性名称</param>
+        </member>
+        <member name="P:ExcelHelper.TempListSetting.StartIndex">
+            <summary>
+            开始位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListSetting.EndIndex">
+            <summary>
+            结束位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.TempListSetting.ItemIndexs">
+            <summary>
+            列表数据位置 (<c>nameof(A)</c>, <c>itemIndex</c>)
+            <para><c>nameof(A)</c> : 对象的指定属性A的名称</para>
+            <para><c>itemIndex</c> : 列表数据位置</para>
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.TempListSetting.AddItemIndex(System.String,System.Int32)">
+            <summary>
+            添加列表数据位置
+            </summary>
+            <param name="propertyName">对象属性名称</param>
+            <param name="itemIndex">列表数据位置</param>
         </member>
     </members>
 </doc>

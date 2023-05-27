@@ -1,5 +1,4 @@
-﻿using NPOI.SS.Formula.Functions;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using System.Collections.Generic;
 using System.IO;
 
@@ -20,9 +19,8 @@ namespace ExcelHelper.NPOI
         /// <summary>
         /// Excel 读取帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="stream"></param>
-        public ExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, Stream stream) : base(excelHelperBuilder, stream)
+        public ExcelReadHelper(Stream stream) : base(stream)
         {
             _excel = NpoiHelper.ReadExcel(FileStream);
         }
@@ -30,9 +28,8 @@ namespace ExcelHelper.NPOI
         /// <summary>
         /// Excel 读取帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="fileBytes"></param>
-        public ExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, byte[] fileBytes) : base(excelHelperBuilder, fileBytes)
+        public ExcelReadHelper(byte[] fileBytes) : base(fileBytes)
         {
             _excel = NpoiHelper.ReadExcel(FileStream);
         }
@@ -40,9 +37,8 @@ namespace ExcelHelper.NPOI
         /// <summary>
         /// Excel 读取帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="filePath"></param>
-        public ExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, string filePath) : base(excelHelperBuilder, filePath)
+        public ExcelReadHelper(string filePath) : base(filePath)
         {
             _excel = NpoiHelper.ReadExcel(FileStream);
         }

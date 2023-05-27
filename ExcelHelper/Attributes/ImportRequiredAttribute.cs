@@ -3,10 +3,10 @@
 namespace ExcelHelper
 {
     /// <summary>
-    /// 导入唯一限制
+    /// 导入必须
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class ImportUniqueAttribute : Attribute
+    public class ImportRequiredAttribute : Attribute
     {
         /// <summary>
         /// 提示信息

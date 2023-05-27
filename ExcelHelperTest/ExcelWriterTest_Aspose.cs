@@ -9,7 +9,7 @@ namespace ExcelHelperTest
         [SetUp]
         public void Setup()
         {
-            _excelHelper = new ExcelHelperBuilder().BuildWrite();
+            _excelHelper = new ExcelWriteHelper();
         }
 
     }

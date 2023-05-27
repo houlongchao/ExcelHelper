@@ -9,7 +9,7 @@ namespace ExcelHelperTest
         [SetUp]
         public void Setup()
         {
-            _excelHelper = new ExcelHelperBuilder().BuildRead("Excel.xlsx");
+            _excelHelper = new ExcelReadHelper("Excel.xlsx");
         }
 
     }

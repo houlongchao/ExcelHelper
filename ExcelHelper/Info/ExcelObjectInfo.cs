@@ -19,7 +19,7 @@ namespace ExcelHelper
         /// <summary>
         /// 导入唯一限制
         /// </summary>
-        public IEnumerable<ImportUniqueAttribute> ImportUniques { get; set; }
+        public IEnumerable<ImportUniquesAttribute> ImportUniquesAttributes { get; set; }
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace ExcelHelper
         public ExcelObjectInfo(Type objectType)
         {
             ObjectType = objectType;
-            ImportUniques = ObjectType.GetCustomAttributes<ImportUniqueAttribute>();
+            ImportUniquesAttributes = ObjectType.GetCustomAttributes<ImportUniquesAttribute>();
         }
 
         /// <summary>
@@ -43,22 +43,29 @@ namespace ExcelHelper
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
+        /// <param name="importSetting"></param>
         /// <exception cref="ImportException"></exception>
-        public void CheckImportUnique<T>(T t) where T : new()
+        public void CheckImportUnique<T>(T t, ImportSetting importSetting = null) where T : new()
         {
-            if (ImportUniques == null)
+            CheckImportUnique(t, ImportUniquesAttributes);
+            CheckImportUnique(t, importSetting?.ImportUniquesAttributes);
+        }
+
+        private void CheckImportUnique<T>(T t, IEnumerable<ImportUniquesAttribute> importUniquesAttributes) where T : new()
+        {
+            if (importUniquesAttributes == null)
             {
                 return;
             }
 
-            foreach (var importUnique in ImportUniques)
+            foreach (var importUniquesAttribute in importUniquesAttributes)
             {
-                if (importUnique.UniquePropertites.Length <= 0)
+                if (importUniquesAttribute.UniquePropertites.Length <= 0)
                 {
                     continue;
                 }
 
-                var key = string.Join(",", importUnique.UniquePropertites);
+                var key = string.Join(",", importUniquesAttribute.UniquePropertites);
 
                 if (!uniqueDict.ContainsKey(key))
                 {
@@ -66,7 +73,7 @@ namespace ExcelHelper
                 }
 
                 string value = "";
-                foreach (var uniqueProperty in importUnique.UniquePropertites)
+                foreach (var uniqueProperty in importUniquesAttribute.UniquePropertites)
                 {
                     var data = typeof(T).GetProperty(uniqueProperty)?.GetValue(t)?.ToString();
                     value += data + ";";
@@ -74,7 +81,14 @@ namespace ExcelHelper
 
                 if (uniqueDict[key].Contains(value))
                 {
-                    throw new ImportException($"数据导入唯一性限制【{key}】");
+                    if (!string.IsNullOrEmpty(importUniquesAttribute.Message))
+                    {
+                        ImportException.New(importUniquesAttribute.Message);
+                    }
+                    else
+                    {
+                        ImportException.New($"数据导入唯一性限制【{key}】");
+                    }
                 }
 
                 uniqueDict[key].Add(value);

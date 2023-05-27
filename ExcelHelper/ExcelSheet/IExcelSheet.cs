@@ -43,5 +43,25 @@ namespace ExcelHelper
         /// </summary>
         /// <returns></returns>
         int GetRowCount();
+
+        /// <summary>
+        /// 保存为字节数据
+        /// </summary>
+        /// <returns></returns>
+        byte[] ToBytes();
+
+        /// <summary>
+        /// 获取模板数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        T GetTempData<T>(TempSetting tempSetting = null) where T : new();
+
+        /// <summary>
+        /// 设置模板数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        IExcelSheet SetTempData<T>(T data, TempSetting tempSetting = null) where T : new();
     }
 }

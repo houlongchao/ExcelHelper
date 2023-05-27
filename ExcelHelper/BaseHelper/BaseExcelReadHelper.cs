@@ -16,34 +16,28 @@ namespace ExcelHelper
         /// </summary>
         public Stream FileStream => _excelStream;
 
-        private readonly ExcelHelperBuilder _excelHelperBuilder;
-
         /// <summary>
         /// Excel 帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="stream">Excel 文件流</param>
-        public BaseExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, Stream stream)
+        public BaseExcelReadHelper(Stream stream)
         {
             _excelStream = stream;
-            _excelHelperBuilder = excelHelperBuilder;
         }
 
         /// <summary>
         /// Excel 帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="fileBytes">Excel 文件字节数据</param>
-        public BaseExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, byte[] fileBytes) : this(excelHelperBuilder, new MemoryStream(fileBytes))
+        public BaseExcelReadHelper(byte[] fileBytes) : this(new MemoryStream(fileBytes))
         {
         }
 
         /// <summary>
         /// Excel 帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
         /// <param name="filePath">Excel 文件路径</param>
-        public BaseExcelReadHelper(ExcelHelperBuilder excelHelperBuilder, string filePath) : this(excelHelperBuilder, File.ReadAllBytes(filePath))
+        public BaseExcelReadHelper(string filePath) : this(File.ReadAllBytes(filePath))
         {
         }
 
@@ -53,7 +47,6 @@ namespace ExcelHelper
         public virtual void Dispose()
         {
             _excelStream.Dispose();
-            _excelHelperBuilder.Dispose();
         }
 
         /// <summary>

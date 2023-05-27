@@ -8,24 +8,10 @@ namespace ExcelHelper
     /// </summary>
     public abstract class BaseExcelWriteHelper : IDisposable, IExcelWriteHelper
     {
-        private readonly ExcelHelperBuilder _excelHelperBuilder;
-
-        /// <summary>
-        /// Excel 帮助类
-        /// </summary>
-        /// <param name="excelHelperBuilder"></param>
-        public BaseExcelWriteHelper(ExcelHelperBuilder excelHelperBuilder)
-        {
-            _excelHelperBuilder = excelHelperBuilder;
-        }
-
         /// <summary>
         /// 释放资源
         /// </summary>
-        public virtual void Dispose()
-        {
-            _excelHelperBuilder.Dispose();
-        }
+        public virtual void Dispose() { }
 
         /// <summary>
         /// 导出 Sheet 数据

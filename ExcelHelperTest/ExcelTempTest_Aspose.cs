@@ -1,15 +1,15 @@
 ﻿using ExcelHelper;
-using ExcelHelper.NPOI;
+using ExcelHelper.Aspose;
 using NUnit.Framework;
 
 namespace ExcelHelperTest
 {
-    public class ExcelWriterTest_NPOI : ExcelWriterTest
+    public class ExcelTempTest_Aspose : ExcelTempTest
     {
         [SetUp]
         public void Setup()
         {
-            _excelHelper = new ExcelWriteHelper();
+            _excelHelper = new ExcelTempHelper();
         }
 
     }

@@ -45,16 +45,6 @@ namespace ExcelHelper
         public string ColorName { get; set; } = "Black";
 
         /// <summary>
-        /// 是否是图片数据
-        /// </summary>
-        public bool IsImage { get; set; } = false;
-
-        /// <summary>
-        /// 格式化字符串
-        /// </summary>
-        public string Format { get; set; }
-
-        /// <summary>
         /// 导出头设置
         /// </summary>
         /// <param name="name"></param>

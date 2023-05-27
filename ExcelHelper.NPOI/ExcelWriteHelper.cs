@@ -1,7 +1,5 @@
 ﻿using NPOI.SS.UserModel;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace ExcelHelper.NPOI
 {
@@ -20,8 +18,7 @@ namespace ExcelHelper.NPOI
         /// <summary>
         /// Excel 写入帮助类
         /// </summary>
-        /// <param name="excelHelperBuilder"></param>
-        public ExcelWriteHelper(ExcelHelperBuilder excelHelperBuilder) : base(excelHelperBuilder)
+        public ExcelWriteHelper()
         {
             _excel = NpoiHelper.CreateExcel();
         }

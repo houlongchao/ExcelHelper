@@ -1,5 +1,4 @@
 ﻿using Aspose.Cells;
-using Aspose.Cells.Drawing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -456,9 +455,35 @@ namespace ExcelHelper.Aspose
         /// <param name="cell"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Cell SetCellValue(this Cell cell, object data)
+        public static Cell SetValue(this Cell cell, object data)
         {
-            cell.Value = data;
+            if (data is DateTime dt)
+            {
+                if (DateTime.MinValue != dt)
+                {
+                    cell.SetValue(dt).SetDataFormat();
+                }
+            }
+            else if (data is bool b)
+            {
+                cell.SetValue(b);
+            }
+            else if (data is double d)
+            {
+                cell.SetValue(d);
+            }
+            else if (data is int di)
+            {
+                cell.SetValue(di);
+            }
+            else if (data is decimal dc)
+            {
+                cell.SetValue((double)dc);
+            }
+            else
+            {
+                cell.SetValue(data?.ToString());
+            }
             return cell;
         }
 

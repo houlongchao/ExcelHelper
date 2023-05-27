@@ -4,42 +4,6 @@
         <name>ExcelHelper.NPOI</name>
     </assembly>
     <members>
-        <member name="T:ExcelHelper.NPOI.ExcelHelperBuilderExtension">
-            <summary>
-            Excel 帮助类构建器扩展
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.String)">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="filePath"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="fileBytes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="stream"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelHelperBuilderExtension.BuildWrite(ExcelHelper.ExcelHelperBuilder)">
-            <summary>
-            构建Excel文件
-            </summary>
-            <param name="builder"></param>
-            <returns></returns>
-        </member>
         <member name="T:ExcelHelper.NPOI.ExcelReadHelper">
             <summary>
             Excel 读取帮助类
@@ -50,25 +14,22 @@
             NPOI IWorkbook
             </summary>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(System.IO.Stream)">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="stream"></param>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(System.Byte[])">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="fileBytes"></param>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+        <member name="M:ExcelHelper.NPOI.ExcelReadHelper.#ctor(System.String)">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="filePath"></param>
         </member>
         <member name="M:ExcelHelper.NPOI.ExcelReadHelper.Dispose">
@@ -96,19 +57,60 @@
             </summary>
             <param name="sheet"></param>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelSheet.AppendEmptyRow">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
-            <inheritdoc/>
-        </member>
         <member name="M:ExcelHelper.NPOI.ExcelSheet.GetRowCount">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetColumnCount(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.ToBytes">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetImage(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetImage(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetValue(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.GetValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetValue(System.String,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetImage(System.Int32,System.Int32,System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetImage(System.String,System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetComment(System.Int32,System.Int32,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetFormat(System.Int32,System.Int32,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetAutoSizeColumn(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetColumnWidth(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.SetFont(System.Int32,System.Int32,System.String,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.NPOI.ExcelTempHelper">
+            <summary>
+            模板Excel操作类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.NPOI.ExcelTempHelper.GetExcelSheet(System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="T:ExcelHelper.NPOI.ExcelWriteHelper">
@@ -121,11 +123,10 @@
             NPOI IWorkbook
             </summary>
         </member>
-        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+        <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.#ctor">
             <summary>
             Excel 写入帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
         </member>
         <member name="M:ExcelHelper.NPOI.ExcelWriteHelper.Dispose">
             <inheritdoc/>
@@ -394,6 +395,14 @@
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.DateTime)">
+            <summary>
+            设置单元格数据
+            </summary>
+            <param name="cell"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.SetValue(NPOI.SS.UserModel.ICell,System.Object)">
             <summary>
             设置单元格数据
             </summary>

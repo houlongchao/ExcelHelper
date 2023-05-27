@@ -271,7 +271,7 @@
             <param name="data"></param>
             <returns></returns>
         </member>
-        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetCellValue(Aspose.Cells.Cell,System.Object)">
+        <member name="M:ExcelHelper.Aspose.AsposeCellHelper.SetValue(Aspose.Cells.Cell,System.Object)">
             <summary>
             设置单元格数据
             </summary>
@@ -352,42 +352,6 @@
             <param name="sheet"></param>
             <returns></returns>
         </member>
-        <member name="T:ExcelHelper.Aspose.ExcelHelperBuilderExtension">
-            <summary>
-            ExcelHelperBuilder 扩展方法
-            </summary>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.String)">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="filePath"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="fileBytes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildRead(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
-            <summary>
-            读取Excel文件
-            </summary>
-            <param name="builder"></param>
-            <param name="stream"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelHelperBuilderExtension.BuildWrite(ExcelHelper.ExcelHelperBuilder)">
-            <summary>
-            构建Excel文件
-            </summary>
-            <param name="builder"></param>
-            <returns></returns>
-        </member>
         <member name="T:ExcelHelper.Aspose.ExcelReadHelper">
             <summary>
             Excel 读取帮助类
@@ -398,25 +362,22 @@
             Aspose Workbook
             </summary>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.IO.Stream)">
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(System.IO.Stream)">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="stream"></param>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.Byte[])">
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(System.Byte[])">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="fileBytes"></param>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(ExcelHelper.ExcelHelperBuilder,System.String)">
+        <member name="M:ExcelHelper.Aspose.ExcelReadHelper.#ctor(System.String)">
             <summary>
             Excel 读取帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
             <param name="filePath"></param>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelReadHelper.Dispose">
@@ -444,19 +405,60 @@
             </summary>
             <param name="sheet"></param>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},ExcelHelper.ExportSetting)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.AppendEmptyRow">
-            <inheritdoc/>
-        </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
-            <inheritdoc/>
-        </member>
         <member name="M:ExcelHelper.Aspose.ExcelSheet.GetRowCount">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetColumnCount(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.ToBytes">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetImage(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetImage(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetValue(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.GetValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetValue(System.String,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetImage(System.Int32,System.Int32,System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetImage(System.String,System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetComment(System.Int32,System.Int32,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetFormat(System.Int32,System.Int32,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetAutoSizeColumn(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetColumnWidth(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetFont(System.Int32,System.Int32,System.String,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ExcelHelper.Aspose.ExcelTempHelper">
+            <summary>
+            模板Excel操作类
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.Aspose.ExcelTempHelper.GetExcelSheet(System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="T:ExcelHelper.Aspose.ExcelWriteHelper">
@@ -469,11 +471,10 @@
             Aspose Workbook
             </summary>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.#ctor(ExcelHelper.ExcelHelperBuilder)">
+        <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.#ctor">
             <summary>
             Excel 写入帮助类
             </summary>
-            <param name="excelHelperBuilder"></param>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelWriteHelper.Dispose">
             <inheritdoc/>
