@@ -33,6 +33,7 @@
 - [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
 - [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
 - [x] 支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
+- [x] 支持导出设置数据单元格数据校验`[ExportValidations("A1", "A2", "A3")]`
 - [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
 - [x] 支持导出时动态设置 `new ExportSetting()`
 - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
