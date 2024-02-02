@@ -109,6 +109,21 @@
             </summary>
             <param name="display">显示值</param>
         </member>
+        <member name="T:ExcelHelper.ExportValidationsAttribute">
+            <summary>
+            单元格数据限制设置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportValidationsAttribute.Validations">
+            <summary>
+            单元格限制设置
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.ExportValidationsAttribute.#ctor(System.String[])">
+            <summary>
+            单元格数据限制设置
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ImageAttribute">
             <summary>
             图片
@@ -724,6 +739,16 @@
             设置指定位置的字体
             </summary>
         </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.SetValidationData(System.Int32,System.Int32,System.Int32,System.Int32,System.String[])">
+            <summary>
+            设置验证数据
+            </summary>
+            <param name="firstRowIndex"></param>
+            <param name="lastRowIndex"></param>
+            <param name="firstColIndex"></param>
+            <param name="lastColIndex"></param>
+            <param name="explicitListValues"></param>
+        </member>
         <member name="M:ExcelHelper.BaseExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
             <inheritdoc/>
         </member>
@@ -1044,6 +1069,11 @@
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportHeaderAttribute">
             <summary>
             导出头
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ExportValidationsAttribute">
+            <summary>
+            导出单元格验证
             </summary>
         </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ExportMapperAttributes">

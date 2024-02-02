@@ -379,6 +379,15 @@ public DateTime? DateTime2 { get; set; }
 public double Number { get; set; }
 ```
 
+#### ExportValidationsAttribute
+
+导出数据校验，导出的对于数据单元格会添加下拉校验数据选项
+
+``` C#
+[ExportValidations("A1", "A2", "A3")]
+public string C { get; set; }
+```
+
 #### ExportIgnoreAttribute
 
 忽略导出该字段

@@ -193,6 +193,11 @@ namespace ExcelHelper
         public ExportHeaderAttribute ExportHeaderAttribute { get; }
 
         /// <summary>
+        /// 导出单元格验证
+        /// </summary>
+        public ExportValidationsAttribute ExportValidationsAttribute { get; }
+
+        /// <summary>
         /// 导出映射
         /// </summary>
         public IEnumerable<ExportMapperAttribute> ExportMapperAttributes { get; }
@@ -258,6 +263,7 @@ namespace ExcelHelper
             SetImportInfo();
 
             ExportHeaderAttribute = propertyInfo.GetCustomAttribute<ExportHeaderAttribute>() ?? new ExportHeaderAttribute(null);
+            ExportValidationsAttribute = propertyInfo.GetCustomAttribute<ExportValidationsAttribute>();
             ExportMapperAttributes = propertyInfo.GetCustomAttributes<ExportMapperAttribute>();
             ExportMapperElseAttribute = propertyInfo.GetCustomAttribute<ExportMapperElseAttribute>();
             ExportIgnoreAttribute = propertyInfo.GetCustomAttribute<ExportIgnoreAttribute>();
@@ -394,51 +400,58 @@ namespace ExcelHelper
         /// <returns></returns>
         public object ExportMappedToDisplay(object actual)
         {
-            if (ExportMapperAttributes == null)
+            if (ExportMapperAttributes != null)
             {
-                return ExportMappedToElseDisplay(actual);
-            }
-
-            foreach (var mapper in ExportMapperAttributes)
-            {
-                if (actual is DateTime dt && dt.Equals(mapper.Actual))
+                foreach (var mapper in ExportMapperAttributes)
                 {
-                    return mapper.Display;
-                }
-                else if (actual is Boolean b && b.Equals(mapper.Actual))
-                {
-                    return mapper.Display;
-                }
-                else if (actual is double d && d.Equals(Convert.ToDouble(mapper.Actual)))
-                {
-                    return mapper.Display;
-                }
-                else if (actual is float df && df.Equals(Convert.ToDouble(mapper.Actual)))
-                {
-                    return mapper.Display;
-                }
-                else if (actual is decimal dc && dc.Equals(Convert.ToDecimal(mapper.Actual)))
-                {
-                    return mapper.Display;
-                }
-                else if (actual is int di && di.Equals(Convert.ToInt32(mapper.Actual)))
-                {
-                    return mapper.Display;
-                }
-                else if (actual == null)
-                {
-                    if (actual == mapper.Actual)
+                    if (CheckExportMapperActual(actual, mapper.Actual))
                     {
                         return mapper.Display;
                     }
                 }
-                else if (actual.Equals(mapper.Actual))
-                {
-                    return mapper.Display;
-                }
             }
 
             return ExportMappedToElseDisplay(actual);
+        }
+
+        private bool CheckExportMapperActual(object actual, object mapperActual)
+        {
+            if (actual is DateTime dt && dt.Equals(mapperActual))
+            {
+                return true;
+            }
+            else if (actual is Boolean b && b.Equals(mapperActual))
+            {
+                return true;
+            }
+            else if (actual is double d && d.Equals(Convert.ToDouble(mapperActual)))
+            {
+                return true;
+            }
+            else if (actual is float df && df.Equals(Convert.ToDouble(mapperActual)))
+            {
+                return true;
+            }
+            else if (actual is decimal dc && dc.Equals(Convert.ToDecimal(mapperActual)))
+            {
+                return true;
+            }
+            else if (actual is int di && di.Equals(Convert.ToInt32(mapperActual)))
+            {
+                return true;
+            }
+            else if (actual == null)
+            {
+                if (actual == mapperActual)
+                {
+                    return true;
+                }
+            }
+            else if (actual.Equals(mapperActual))
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -526,28 +539,35 @@ namespace ExcelHelper
         /// <returns></returns>
         public object ImportMappedToActual(object display)
         {
-            if (ImportMapperAttributes == null)
+            if (ImportMapperAttributes != null)
             {
-                return ImportMappedToElseActual(display);
-            }
-
-            foreach (var mapper in ImportMapperAttributes)
-            {
-                if (display is DateTime dt && mapper.Display == dt.ToString("yyyy-MM-dd HH:mm:ss"))
+                foreach (var mapper in ImportMapperAttributes)
                 {
-                    return mapper.Actual;
-                }
-                else if (display is Boolean b && mapper.Display == b.ToString().ToUpper())
-                {
-                    return mapper.Actual;
-                }
-                else if (mapper.Display == display?.ToString())
-                {
-                    return mapper.Actual;
+                    if (CheckImportMapperDisplay(display, mapper.Display))
+                    {
+                        return mapper.Actual;
+                    }
                 }
             }
 
             return ImportMappedToElseActual(display);
+        }
+
+        private bool CheckImportMapperDisplay(object display, string mapperDisplay)
+        {
+            if (display is DateTime dt && mapperDisplay == dt.ToString("yyyy-MM-dd HH:mm:ss"))
+            {
+                return true;
+            }
+            else if (display is Boolean b && mapperDisplay == b.ToString().ToUpper())
+            {
+                return true;
+            }
+            else if (mapperDisplay == display?.ToString())
+            {
+                return true;
+            }
+            return false;
         }
 
         private object ImportMappedToElseActual(object display)

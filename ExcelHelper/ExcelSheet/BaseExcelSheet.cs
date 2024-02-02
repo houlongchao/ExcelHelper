@@ -103,6 +103,16 @@ namespace ExcelHelper
         /// </summary>
         public abstract void SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true);
 
+        /// <summary>
+        /// 设置验证数据
+        /// </summary>
+        /// <param name="firstRowIndex"></param>
+        /// <param name="lastRowIndex"></param>
+        /// <param name="firstColIndex"></param>
+        /// <param name="lastColIndex"></param>
+        /// <param name="explicitListValues"></param>
+        public abstract void SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues);
+
         #endregion
 
         #region Implement
@@ -154,6 +164,7 @@ namespace ExcelHelper
                 rowIndex++;
             }
 
+            int firstRowIndex = rowIndex;
             // 写入数据
             foreach (var data in datas)
             {
@@ -185,7 +196,9 @@ namespace ExcelHelper
                 rowIndex++;
             }
 
-            // 设置列宽度
+           int lastRowIndex = rowIndex - 1;
+
+            // 设置列宽度及数据样式属性
             {
                 var colIndex = 0;
                 foreach (var property in excelPropertyInfoList)
@@ -203,6 +216,11 @@ namespace ExcelHelper
                     else if (exportHeader.ColumnWidth > 0)
                     {
                         SetColumnWidth(colIndex, exportHeader.ColumnWidth);
+                    }
+
+                    if (property.ExportValidationsAttribute != null)
+                    {
+                        SetValidationData(firstRowIndex, lastRowIndex, colIndex, colIndex, property.ExportValidationsAttribute.Validations);
                     }
 
                     colIndex++;

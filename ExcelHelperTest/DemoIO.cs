@@ -36,6 +36,7 @@ namespace ExcelHelperTest
         [ExportMapper("a", "Aa")]
         [ExportMapper("b", "Ab")]
         [ExportMapper("c", "Ac")]
+        [ExportValidations("A1", "A2", "A3")]
         public string C { get; set; }
 
         [ExportHeader("日期", ColumnWidth = 30)]
