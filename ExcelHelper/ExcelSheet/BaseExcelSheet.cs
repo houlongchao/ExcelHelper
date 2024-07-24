@@ -180,6 +180,7 @@ namespace ExcelHelper
                         {
                             SetImage(rowIndex, colIndex, imageBytes);
                         }
+                        colIndex++;
                         continue;
                     }
 

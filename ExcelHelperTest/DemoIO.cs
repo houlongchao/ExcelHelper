@@ -69,6 +69,13 @@ namespace ExcelHelperTest
         [ImportHeader("图片")]
         [Image]
         public byte[] Image { get; set; }
+
+        /// <summary>
+        /// 其它属性
+        /// </summary>
+        public Dictionary<string, object> OtherPropries { get; set; }
+
+        public string Other { get; set; }
     }
 
     public enum Status

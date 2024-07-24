@@ -23,6 +23,7 @@
 - [x] 支持导入组合数据唯一性校验 `[ImportUniques(nameof(A), nameof(B))]`
 - [x] 支持导入时动态设置 `new ImportSetting()`
 - [x] 支持导入通过`List<Dictionary>`字典列表来接收数据
+- [x] 支持导入展开的`IDictionary`类型属性
 
 ### 数据导出
 
@@ -39,6 +40,7 @@
 - [x] 支持导出时动态设置 `new ExportSetting()`
 - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
 - [x] 支持导出`IEnumerable<IDictionary>`字典列表数据
+- [x] 支持展开`IDictionary`类型属性导出
 
 ### 模板操作
 
@@ -465,28 +467,6 @@ setting.AddTitleComment(nameof(DemoIO.Date), "日期备注");
 _excelHelper.ExportSheet("test3", data3, exportSetting);
 ```
 
-``` C#
-// 导出`IEnumerable<IDictionary>`字典列表数据
-var data4 = new List<Dictionary<string, object>>();
-data4.Add(new Dictionary<string, object>()
-          {
-              {"a", "aa" },
-              {"b", true },
-              {"c", DateTime.Now },
-              {"d", 1.1 },
-          });
-
-var setting4 = new ExportSetting();
-setting4.AddIncludeProperties("a", "b", "c", "d");
-setting4.AddTitleMapping("a", "字符串");
-setting4.AddTitleMapping("c", "日期");
-setting4.AddTitleComment("c", "日期备注");
-
-_excelHelper.ExportSheet("test4", data4, setting4);
-```
-
-
-
 ### TempSetting
 
 数据模板导入导出动态设置
@@ -513,5 +493,88 @@ var bytes = _excelHelper.SetData("Excel.xlsx", tempIo, tempSetting: tempSetting)
 File.WriteAllBytes("test.xlsx", bytes);
 
 var data = _excelHelper.GetData<DemoTempIO>("test.xlsx", tempSetting: tempSetting);
+```
+
+
+
+## 字典对象
+
+### 导入
+
+``` C#
+ var importSetting = new ImportSetting();
+ importSetting.AddTitleMapping("A", "AA");  // 从excel中读取AA列数据写入到对象的A属性中
+ importSetting.AddRequiredProperties("A");
+ importSetting.AddRequiredMessage("A", "AA是必须的");
+ importSetting.AddUniqueProperties("A");
+ importSetting.AddUniqueMessage("A", "AA必须唯一");
+ importSetting.AddLimitValues("A", "A1", "A2", "A3");
+ importSetting.AddLimitMessage("A", "AA数据非法");
+ importSetting.AddValueTrim("A", Trim.All);
+
+ var sheets = _excelHelper.ImportSheet<Dictionary<string, object>>(importSetting);
+```
+
+### 导出
+
+``` C#
+// 导出`IEnumerable<IDictionary>`字典列表数据
+var data4 = new List<Dictionary<string, object>>();
+data4.Add(new Dictionary<string, object>()
+          {
+              {"a", "aa" },
+              {"b", true },
+              {"c", DateTime.Now },
+              {"d", 1.1 },
+          });
+
+var setting4 = new ExportSetting();
+setting4.AddIncludeProperties("a", "b", "c", "d"); // 必须指定导出列Key，导出顺序相同
+setting4.AddTitleMapping("a", "字符串");
+setting4.AddTitleMapping("c", "日期");
+setting4.AddTitleComment("c", "日期备注");
+
+_excelHelper.ExportSheet("test4", data4, setting4);
+```
+
+
+
+## 字典属性
+
+### 导入导出模型
+
+``` C#
+public class DemoIO
+{
+    public string A { get; set; }
+    public Dictionary<string, object> OtherPropries { get; set; }
+}
+```
+
+### 导入
+
+``` C#
+var importSetting = new ImportSetting();
+importSetting.AddTitleMapping(nameof(DemoIO.A), "AA");
+importSetting.AddRequiredProperties(nameof(DemoIO.A));
+importSetting.AddRequiredMessage(nameof(DemoIO.A), "AA是必须的");
+importSetting.AddUniqueProperties(nameof(DemoIO.A));
+importSetting.AddUniqueMessage(nameof(DemoIO.A), "AA必须唯一");
+importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
+importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
+importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
+importSetting.AddTitleMapping("OtherPropries.A", "Other2");  // Excel中的Other2列数据读取到OtherProperies中，Key为A
+importSetting.AddTitleMapping("OtherPropries.B", "Other3");  // Excel中的Other3列数据读取到OtherProperies中，Key为B
+
+var sheets = _excelHelper.ImportSheet<DemoIO>(importSetting);
+```
+
+### 导出
+
+``` C#
+var exportSetting = new ExportSetting()
+setting.AddIncludeProperties(nameof(DemoIO.Date), nameof(DemoIO.B), "OtherPropries.A", "OtherPropries.B"); // 指定要导入的数据
+setting.AddTitleMapping("OtherPropries.A", "Other2");  // OtherProperies为IDictionary字典，导出Key为A的值到Other2列中
+_excelHelper.ExportSheet("test3", data3, exportSetting);
 ```
 

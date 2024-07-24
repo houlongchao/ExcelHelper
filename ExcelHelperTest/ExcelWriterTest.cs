@@ -58,7 +58,7 @@ namespace ExcelHelperTest
                 ImageName = "050.jpg",
                 Image = File.ReadAllBytes("image.jpg"),
             });
-            var data3 = new List<DemoIO>(data2);
+            var data3 = new List<DemoIO>();
             data3.Add(new DemoIO()
             {
                 A = "data3",
@@ -67,19 +67,25 @@ namespace ExcelHelperTest
                 Status = Status.B,
                 ImageName = "050.jpg",
                 Image = File.ReadAllBytes("image.jpg"),
+                OtherPropries = new Dictionary<string, object>
+                {
+                    { "a", "aa" },
+                    { "b", true },
+                }
             });
 
-            _excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);
+            //_excelHelper.CreateExcelSheet("aaa").AppendData(data2).AppendEmptyRow().AppendData(data2).AppendData(data2, false);
 
             var setting2 = new ExportSetting();
             setting2.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));
 
             var setting3 = new ExportSetting();
             setting3.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));
-            setting3.AddIncludeProperties(nameof(DemoIO.Date), nameof(DemoIO.B));
+            setting3.AddIncludeProperties(nameof(DemoIO.Date), nameof(DemoIO.B), "OtherPropries.a", "OtherPropries.b", "OtherPropries.c");
             setting3.AddTitleMapping(nameof(DemoIO.Date), "日期");
             setting3.AddTitleComment(nameof(DemoIO.Date), "日期备注");
-
+            setting3.AddTitleMapping("OtherPropries.a", "扩展属性A");
+            //_excelHelper.ExportSheet("test", data3, setting3);
             var data4 = new List<Dictionary<string, object>>();
             data4.Add(new Dictionary<string, object>()
             {

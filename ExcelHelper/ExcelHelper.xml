@@ -916,6 +916,11 @@
             Excel 属性信息
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.OwnerPropertyInfo">
+            <summary>
+            所属字段属性信息
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.PropertyInfo">
             <summary>
             字段属性信息
@@ -1122,7 +1127,7 @@
             </summary>
             <param name="propertyInfo"></param>
         </member>
-        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.String)">
+        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.String,System.Reflection.PropertyInfo)">
             <summary>
             Excel 属性信息
             </summary>

@@ -40,6 +40,10 @@ namespace ExcelHelper
         /// <returns></returns>
         public static List<ExcelPropertyInfo> GetImportExcelPropertyInfoList(this Type type, Dictionary<string, int> titleIndexDict, ImportSetting importSetting = null)
         {
+            if (importSetting == null)
+            {
+                importSetting = new ImportSetting();
+            }
             var result = new List<ExcelPropertyInfo>();
             if (typeof(IDictionary).IsAssignableFrom(type))
             {
@@ -60,13 +64,32 @@ namespace ExcelHelper
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                var excelPropertyInfo = property.GetExcelPropertyInfo();
-                excelPropertyInfo.UpdateByImportSetting(importSetting);
-
-                // 如果表头能被识别则加入要读取的列表
-                if (excelPropertyInfo.SetImportHeaderColumnIndex(titleIndexDict))
+                // 对象属性为IEnumerable<IDictionary>
+                if (typeof(IDictionary).IsAssignableFrom(property.PropertyType))
                 {
-                    result.Add(excelPropertyInfo);
+                    var keys = titleIndexDict.Keys.Except(importSetting.TitleMapping.Values).Concat(importSetting.TitleMapping.Keys).Distinct().Where(t => t.StartsWith($"{property.Name}."));
+                    foreach (var propName in keys)
+                    {
+                        var excelPropertyInfo = new ExcelPropertyInfo(propName, property);
+                        excelPropertyInfo.UpdateByImportSetting(importSetting);
+                        // 如果表头能被识别则加入要读取的列表
+                        if (excelPropertyInfo.SetImportHeaderColumnIndex(titleIndexDict))
+                        {
+                            result.Add(excelPropertyInfo);
+                        }
+                    }
+                }
+                else
+                {
+                    // 其它属性类型
+                    var excelPropertyInfo = property.GetExcelPropertyInfo();
+                    excelPropertyInfo.UpdateByImportSetting(importSetting);
+
+                    // 如果表头能被识别则加入要读取的列表
+                    if (excelPropertyInfo.SetImportHeaderColumnIndex(titleIndexDict))
+                    {
+                        result.Add(excelPropertyInfo);
+                    }
                 }
             }
 
@@ -121,6 +144,7 @@ namespace ExcelHelper
         public static List<ExcelPropertyInfo> GetExportExcelPropertyInfoList(this Type type, ExportSetting exportSetting)
         {
             var result = new List<ExcelPropertyInfo>();
+            // 数据对象为IEnumerable<IDictionary>
             if (typeof(IDictionary).IsAssignableFrom(type))
             {
                 foreach (var propName in exportSetting.IncludeProperties)
@@ -137,11 +161,29 @@ namespace ExcelHelper
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                var excelPropertyInfo = property.GetExcelPropertyInfo();
-                excelPropertyInfo.UpdateByExportSetting(exportSetting);
-                if (!excelPropertyInfo.IsExportIgnore())
+                // 对象属性为IEnumerable<IDictionary>
+                if (typeof(IDictionary).IsAssignableFrom(property.PropertyType))
                 {
-                    result.Add(excelPropertyInfo);
+                    var dictProperties = exportSetting.IncludeProperties.Where(t => t.StartsWith($"{property.Name}."));
+                    foreach (var propName in dictProperties)
+                    {
+                        var excelPropertyInfo = new ExcelPropertyInfo(propName, property);
+                        excelPropertyInfo.UpdateByExportSetting(exportSetting);
+                        if (!excelPropertyInfo.IsExportIgnore())
+                        {
+                            result.Add(excelPropertyInfo);
+                        }
+                    }
+                }
+                else
+                {
+                    // 其它属性类型
+                    var excelPropertyInfo = property.GetExcelPropertyInfo();
+                    excelPropertyInfo.UpdateByExportSetting(exportSetting);
+                    if (!excelPropertyInfo.IsExportIgnore())
+                    {
+                        result.Add(excelPropertyInfo);
+                    }
                 }
             }
 

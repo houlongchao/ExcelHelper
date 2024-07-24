@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ExcelHelper
@@ -11,6 +12,11 @@ namespace ExcelHelper
     public class ExcelPropertyInfo
     {
         #region Property
+
+        /// <summary>
+        /// 所属字段属性信息
+        /// </summary>
+        private PropertyInfo OwnerPropertyInfo { get; }
 
         /// <summary>
         /// 字段属性信息
@@ -304,11 +310,12 @@ namespace ExcelHelper
         /// <summary>
         /// Excel 属性信息
         /// </summary>
-        public ExcelPropertyInfo(string propertyName)
+        public ExcelPropertyInfo(string propertyName, PropertyInfo ownerPropertyInfo = null)
         {
             PropertyName = propertyName;
             ImportHeaderTitle = PropertyName;
             ExportHeaderTitle = PropertyName;
+            OwnerPropertyInfo = ownerPropertyInfo;
         }
 
         /// <summary>
@@ -419,6 +426,15 @@ namespace ExcelHelper
             {
                 return dict[PropertyName];
             }
+            if (OwnerPropertyInfo != null)
+            {
+                var dictData = OwnerPropertyInfo.GetValue(data) as IDictionary;
+                var subName = PropertyName.Substring(OwnerPropertyInfo.Name.Length + 1);
+                if (dictData != null && dictData.Contains(subName))
+                {
+                    return dictData[subName];
+                }
+            }
             return null;
         }
 
@@ -436,6 +452,18 @@ namespace ExcelHelper
             else if (data is IDictionary dict)
             {
                 dict[PropertyName] = value;
+            }
+            else if(OwnerPropertyInfo != null)
+            {
+                var dictData = OwnerPropertyInfo.GetValue(data) as IDictionary;
+                if (dictData == null)
+                {
+                    OwnerPropertyInfo.SetValue(data, Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(OwnerPropertyInfo.PropertyType.GenericTypeArguments)));
+                    dictData = OwnerPropertyInfo.GetValue(data) as IDictionary;
+                }
+                var subName = PropertyName.Substring(OwnerPropertyInfo.Name.Length + 1);
+                dictData[subName] = value;
+                
             }
         }
 

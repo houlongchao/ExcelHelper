@@ -40,6 +40,8 @@ namespace ExcelHelperTest
             importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
             importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
             importSetting.AddTitleMapping("BB", "B");
+            importSetting.AddTitleMapping("OtherPropries.A", "Other2");
+            importSetting.AddTitleMapping("OtherPropries.B", "Other3");
 
             var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
             Assert.AreEqual(3, sheets2.Count);
