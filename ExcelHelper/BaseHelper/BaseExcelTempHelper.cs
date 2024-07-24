@@ -5,7 +5,7 @@ namespace ExcelHelper
     /// <summary>
     /// Excel 帮助类基类
     /// </summary>
-    public abstract class BaseExcelTempHelper : IDisposable, IExcelTempHelper
+    public abstract class BaseExcelTempHelper : IExcelTempHelper
     {
         /// <summary>
         /// 释放资源

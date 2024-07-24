@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ExcelHelper
 {
     /// <summary>
     /// Excel 写入帮助类
     /// </summary>
-    public interface IExcelWriteHelper
+    public interface IExcelWriteHelper : IDisposable
     {
         /// <summary>
         /// 导出数据

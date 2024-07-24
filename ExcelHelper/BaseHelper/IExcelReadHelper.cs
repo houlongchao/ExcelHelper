@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ExcelHelper
@@ -6,7 +7,7 @@ namespace ExcelHelper
     /// <summary>
     /// Excel 读取帮助类
     /// </summary>
-    public interface IExcelReadHelper
+    public interface IExcelReadHelper: IDisposable
     {
         /// <summary>
         /// Excel 文件流

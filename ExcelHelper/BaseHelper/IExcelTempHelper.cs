@@ -1,9 +1,11 @@
-﻿namespace ExcelHelper
+﻿using System;
+
+namespace ExcelHelper
 {
     /// <summary>
     /// Excel 模板操作类
     /// </summary>
-    public interface IExcelTempHelper
+    public interface IExcelTempHelper : IDisposable
     {
         /// <summary>
         /// 获取模板数据

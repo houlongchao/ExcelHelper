@@ -7,7 +7,7 @@ namespace ExcelHelper
     /// <summary>
     /// Excel 帮助类基类
     /// </summary>
-    public abstract class BaseExcelReadHelper : IDisposable, IExcelReadHelper
+    public abstract class BaseExcelReadHelper : IExcelReadHelper
     {
         private readonly Stream _excelStream;
 

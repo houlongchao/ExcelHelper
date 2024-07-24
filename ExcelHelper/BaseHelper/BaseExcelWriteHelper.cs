@@ -6,7 +6,7 @@ namespace ExcelHelper
     /// <summary>
     /// Excel 帮助类基类
     /// </summary>
-    public abstract class BaseExcelWriteHelper : IDisposable, IExcelWriteHelper
+    public abstract class BaseExcelWriteHelper : IExcelWriteHelper
     {
         /// <summary>
         /// 释放资源
