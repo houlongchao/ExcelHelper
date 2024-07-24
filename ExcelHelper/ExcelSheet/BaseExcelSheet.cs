@@ -171,7 +171,7 @@ namespace ExcelHelper
                 var colIndex = 0;
                 foreach (var property in excelPropertyInfoList)
                 {
-                    var value = property.PropertyInfo.GetValue(data);
+                    var value = property.GetValue(data);
 
                     // 如果导出的是图片二进制数据
                     if (property.IsImage())
@@ -277,7 +277,7 @@ namespace ExcelHelper
                         var bytes = GetImage(i, excelPropertyInfo.ImportHeaderColumnIndex);
                         if (bytes != null)
                         {
-                            excelPropertyInfo.PropertyInfo.SetValue(t, bytes);
+                            excelPropertyInfo.SetValue(t, bytes);
                             hasValue = true;
                         }
                     }
@@ -291,7 +291,7 @@ namespace ExcelHelper
                             var actualValue = excelPropertyInfo.ImportMappedToActual(value);
                             excelPropertyInfo.ImportCheckLimitValue(value);
                             excelPropertyInfo.ImportCheckUnqiue(value);
-                            excelPropertyInfo.PropertyInfo.SetValueAuto(t, actualValue);
+                            excelPropertyInfo.SetValue(t, actualValue);
 
                             hasValue = true;
                         }
@@ -302,7 +302,7 @@ namespace ExcelHelper
                 {
                     foreach (var excelPropertyInfo in excelPropertyInfoList)
                     {
-                        excelPropertyInfo.ImportCheckRequired(excelPropertyInfo.PropertyInfo.GetValue(t));
+                        excelPropertyInfo.ImportCheckRequired(excelPropertyInfo.GetValue(t));
                     }
 
                     excelObjectInfo.CheckImportUnique(t, importSetting);
@@ -325,12 +325,12 @@ namespace ExcelHelper
             {
                 if (excelPropertyInfo.IsArray)
                 {
-                    var newList = Activator.CreateInstance(typeof(List<>).MakeGenericType(excelPropertyInfo.PropertyInfo.PropertyType.GenericTypeArguments));
-                    excelPropertyInfo.PropertyInfo.SetValueAuto(result, newList);
+                    var newList = excelPropertyInfo.CreateListObject();
+                    excelPropertyInfo.SetValue(result, newList);
                     var addMethod = newList.GetType().GetMethod("Add");
                     for (int i = excelPropertyInfo.TempListStartIndex; i <= excelPropertyInfo.TempListEndIndex; i++)
                     {
-                        var ct = Activator.CreateInstance(excelPropertyInfo.PropertyInfo.PropertyType.GenericTypeArguments[0]);
+                        var ct = excelPropertyInfo.CreateGenericTypeObject();
                         bool hasValue = false;
                         foreach (var child in excelPropertyInfo.Children)
                         {
@@ -354,7 +354,7 @@ namespace ExcelHelper
                                 }
                                 if (bytes != null)
                                 {
-                                    excelPropertyInfo.PropertyInfo.SetValue(result, bytes);
+                                    excelPropertyInfo.SetValue(result, bytes);
                                     hasValue = true;
                                 }
                             }
@@ -383,7 +383,7 @@ namespace ExcelHelper
                                     var actualValue = child.ImportMappedToActual(value);
                                     child.ImportCheckLimitValue(value);
                                     child.ImportCheckUnqiue(value);
-                                    child.PropertyInfo.SetValueAuto(ct, actualValue);
+                                    child.SetValue(ct, actualValue);
                                     hasValue = true;
                                 }
                             }
@@ -392,7 +392,7 @@ namespace ExcelHelper
                         {
                             foreach (var child in excelPropertyInfo.Children)
                             {
-                                child.ImportCheckRequired(child.PropertyInfo.GetValue(ct));
+                                child.ImportCheckRequired(child.GetValue(ct));
                             }
                             addMethod.Invoke(newList, new object[] { ct });
                         }
@@ -405,7 +405,7 @@ namespace ExcelHelper
                     {
                         var bytes = GetImage(excelPropertyInfo.TempCellAddress);
                         excelPropertyInfo.ImportCheckRequired(bytes);
-                        excelPropertyInfo.PropertyInfo.SetValue(result, bytes);
+                        excelPropertyInfo.SetValue(result, bytes);
                     }
                     else
                     {
@@ -417,7 +417,7 @@ namespace ExcelHelper
                         if (value != null)
                         {
                             var actualValue = excelPropertyInfo.ImportMappedToActual(value);
-                            excelPropertyInfo.PropertyInfo.SetValueAuto(result, actualValue);
+                            excelPropertyInfo.SetValue(result, actualValue);
                         }
                     }
                 }
@@ -436,7 +436,7 @@ namespace ExcelHelper
             {
                 if (excelPropertyInfo.IsArray)
                 {
-                    var arrayData = excelPropertyInfo.PropertyInfo.GetValue(data) as IEnumerable;
+                    var arrayData = excelPropertyInfo.GetValue(data) as IEnumerable;
                     int i = excelPropertyInfo.TempListStartIndex;
                     foreach (var itemData in arrayData)
                     {
@@ -447,7 +447,7 @@ namespace ExcelHelper
 
                         foreach (var childProperty in excelPropertyInfo.Children)
                         {
-                            var value = childProperty.PropertyInfo.GetValue(itemData);
+                            var value = childProperty.GetValue(itemData);
 
                             // 如果导出的是图片二进制数据
                             if (childProperty.IsImage())
@@ -496,7 +496,7 @@ namespace ExcelHelper
                 }
                 else
                 {
-                    var value = excelPropertyInfo.PropertyInfo.GetValue(data);
+                    var value = excelPropertyInfo.GetValue(data);
 
                     // 如果导出的是图片二进制数据
                     if (excelPropertyInfo.IsImage())

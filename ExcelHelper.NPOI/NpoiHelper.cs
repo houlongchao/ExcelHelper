@@ -361,7 +361,7 @@ namespace ExcelHelper.NPOI
         /// <returns></returns>
         public static int GetRowCount(this ISheet sheet)
         {
-            return sheet.PhysicalNumberOfRows;
+            return sheet.LastRowNum + 1;
         }
 
         #endregion

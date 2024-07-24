@@ -51,7 +51,10 @@ namespace ExcelHelper.NPOI
                 return this;
             }
 
-            _excel.SetSheetOrder(sheetName, index);
+            if (_excel.NumberOfSheets > index)
+            {
+                _excel.SetSheetOrder(sheetName, index);
+            }
 
             return this;
         }

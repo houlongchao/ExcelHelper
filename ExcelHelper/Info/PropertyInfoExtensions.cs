@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ExcelHelper
@@ -39,6 +41,21 @@ namespace ExcelHelper
         public static List<ExcelPropertyInfo> GetImportExcelPropertyInfoList(this Type type, Dictionary<string, int> titleIndexDict, ImportSetting importSetting = null)
         {
             var result = new List<ExcelPropertyInfo>();
+            if (typeof(IDictionary).IsAssignableFrom(type))
+            {
+                var keys = titleIndexDict.Keys.Except(importSetting.TitleMapping.Values).Concat(importSetting.TitleMapping.Keys).Distinct();
+                foreach (var propName in keys)
+                {
+                    var excelPropertyInfo = new ExcelPropertyInfo(propName);
+                    excelPropertyInfo.UpdateByImportSetting(importSetting);
+                    // 如果表头能被识别则加入要读取的列表
+                    if (excelPropertyInfo.SetImportHeaderColumnIndex(titleIndexDict))
+                    {
+                        result.Add(excelPropertyInfo);
+                    }
+                }
+                return result;
+            }
             // 获取导入模型属性信息
             var properties = type.GetProperties();
             foreach (var property in properties)
@@ -104,6 +121,19 @@ namespace ExcelHelper
         public static List<ExcelPropertyInfo> GetExportExcelPropertyInfoList(this Type type, ExportSetting exportSetting)
         {
             var result = new List<ExcelPropertyInfo>();
+            if (typeof(IDictionary).IsAssignableFrom(type))
+            {
+                foreach (var propName in exportSetting.IncludeProperties)
+                {
+                    var excelPropertyInfo = new ExcelPropertyInfo(propName);
+                    excelPropertyInfo.UpdateByExportSetting(exportSetting);
+                    if (!excelPropertyInfo.IsExportIgnore())
+                    {
+                        result.Add(excelPropertyInfo);
+                    }
+                }
+                return result;
+            }
             var properties = type.GetProperties();
             foreach (var property in properties)
             {

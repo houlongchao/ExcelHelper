@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -14,7 +15,12 @@ namespace ExcelHelper
         /// <summary>
         /// 字段属性信息
         /// </summary>
-        public PropertyInfo PropertyInfo { get; }
+        private PropertyInfo PropertyInfo { get; }
+
+        /// <summary>
+        /// 字段属性名称
+        /// </summary>
+        public string PropertyName { get; set; }
 
         /// <summary>
         /// 是否是数组
@@ -151,12 +157,12 @@ namespace ExcelHelper
         /// <summary>
         /// 导入头
         /// </summary>
-        public IEnumerable<ImportHeaderAttribute> ImportHeaderAttributes { get; }
+        public IEnumerable<ImportHeaderAttribute> ImportHeaderAttributes { get; } = new List<ImportHeaderAttribute>();
 
         /// <summary>
         /// 导入映射
         /// </summary>
-        public IEnumerable<ImportMapperAttribute> ImportMapperAttributes { get; }
+        public IEnumerable<ImportMapperAttribute> ImportMapperAttributes { get; } = new List<ImportMapperAttribute>();
 
         /// <summary>
         /// 导入映射else
@@ -200,7 +206,7 @@ namespace ExcelHelper
         /// <summary>
         /// 导出映射
         /// </summary>
-        public IEnumerable<ExportMapperAttribute> ExportMapperAttributes { get; }
+        public IEnumerable<ExportMapperAttribute> ExportMapperAttributes { get; } = new List<ExportMapperAttribute>();
         /// <summary>
         /// 导出映射else
         /// </summary>
@@ -248,6 +254,7 @@ namespace ExcelHelper
         public ExcelPropertyInfo(PropertyInfo propertyInfo)
         {
             PropertyInfo = propertyInfo;
+            PropertyName = propertyInfo.Name;
             IsArray = propertyInfo.PropertyType.IsGenericType;
             ImportHeaderTitle = propertyInfo.Name;
 
@@ -292,6 +299,16 @@ namespace ExcelHelper
                 TempListItemAttribute = propertyInfo.GetCustomAttribute<TempListItemAttribute>();
             }
             SetTempInfo();
+        }
+        
+        /// <summary>
+        /// Excel 属性信息
+        /// </summary>
+        public ExcelPropertyInfo(string propertyName)
+        {
+            PropertyName = propertyName;
+            ImportHeaderTitle = PropertyName;
+            ExportHeaderTitle = PropertyName;
         }
 
         /// <summary>
@@ -339,7 +356,7 @@ namespace ExcelHelper
             }
             else
             {
-                ExportHeaderTitle = PropertyInfo.Name;
+                ExportHeaderTitle = PropertyName;
             }
 
             // 导出头备注
@@ -385,6 +402,64 @@ namespace ExcelHelper
         public bool IsImage()
         {
             return ImageAttribute != null;
+        }
+
+        /// <summary>
+        /// 返回指定对象的属性值
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public object GetValue(object data)
+        {
+            if (PropertyInfo != null)
+            {
+                return PropertyInfo.GetValue(data);
+            }
+            if (data is IDictionary dict && dict.Contains(PropertyName))
+            {
+                return dict[PropertyName];
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 设置指定对象的属性值
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="value"></param>
+        public void SetValue(object data, object value)
+        {
+            if (PropertyInfo != null)
+            {
+                PropertyInfo.SetValueAuto(data, value);
+            }
+            else if (data is IDictionary dict)
+            {
+                dict[PropertyName] = value;
+            }
+        }
+
+        /// <summary>
+        /// 创建列表对象
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public object CreateListObject()
+        {
+            if (!IsArray)
+            {
+                throw new ArgumentException("尝试在非列表属性上创建列表对象");
+            }
+            return Activator.CreateInstance(typeof(List<>).MakeGenericType(PropertyInfo.PropertyType.GenericTypeArguments));
+        }
+
+        /// <summary>
+        /// 创建泛型对象
+        /// </summary>
+        /// <returns></returns>
+        public object CreateGenericTypeObject()
+        {
+            return Activator.CreateInstance(PropertyInfo.PropertyType.GenericTypeArguments[0]);
         }
 
         #endregion
@@ -487,25 +562,25 @@ namespace ExcelHelper
             }
 
             // 导出头标题映射
-            if (exportSetting.TitleMapping.TryGetValue(PropertyInfo.Name, out var title))
+            if (exportSetting.TitleMapping.TryGetValue(PropertyName, out var title))
             {
                 ExportHeaderTitle = title;
             }
 
             // 导出头备注
-            if (exportSetting.TitleComment.TryGetValue(PropertyInfo.Name, out var comment))
+            if (exportSetting.TitleComment.TryGetValue(PropertyName, out var comment))
             {
                 ExportHeaderComment = comment;
             }
 
             // 导出时是否被忽略
             // 如果动态配置的导出忽略，则必定忽略
-            if (exportSetting.IgnoreProperties.Contains(PropertyInfo.Name))
+            if (exportSetting.IgnoreProperties.Contains(PropertyName))
             {
                 ExportIgnore = true;
             }
             // 否则，如果动态配置的导出包含，则必定包含
-            else if (exportSetting.IncludeProperties.Contains(PropertyInfo.Name))
+            else if (exportSetting.IncludeProperties.Contains(PropertyName))
             {
                 ExportIgnore = false;
             }
@@ -729,32 +804,32 @@ namespace ExcelHelper
             }
 
             // 导入限制
-            if (baseImportSetting.LimitValues.TryGetValue(PropertyInfo.Name, out var values))
+            if (baseImportSetting.LimitValues.TryGetValue(PropertyName, out var values))
             {
                 foreach (var value in values)
                 {
                     ImportLimitValues.Add(value);
                 }
             }
-            if (baseImportSetting.LimitMessage.TryGetValue(PropertyInfo.Name, out var limitMessage))
+            if (baseImportSetting.LimitMessage.TryGetValue(PropertyName, out var limitMessage))
             {
                 ImportLimitMessage = limitMessage;
             }
             // 导入值Trim
-            if (baseImportSetting.ValueTrim.TryGetValue(PropertyInfo.Name, out var trim))
+            if (baseImportSetting.ValueTrim.TryGetValue(PropertyName, out var trim))
             {
                 ImportTrimValue = trim;
             }
 
             // 导入唯一性限制
-            ImportUnique = baseImportSetting.UniqueProperties.Contains(PropertyInfo.Name);
-            if (baseImportSetting.UniqueMessage.TryGetValue(PropertyInfo.Name, out var uniqueMessage))
+            ImportUnique = baseImportSetting.UniqueProperties.Contains(PropertyName);
+            if (baseImportSetting.UniqueMessage.TryGetValue(PropertyName, out var uniqueMessage))
             {
                 ImportUniqueMessage = uniqueMessage;
             }
             // 导入必须限制
-            ImportRequired = baseImportSetting.RequiredProperties.Contains(PropertyInfo.Name);
-            if (baseImportSetting.RequiredMessage.TryGetValue(PropertyInfo.Name, out var requiredMessage))
+            ImportRequired = baseImportSetting.RequiredProperties.Contains(PropertyName);
+            if (baseImportSetting.RequiredMessage.TryGetValue(PropertyName, out var requiredMessage))
             {
                 ImportRequiredMessage = requiredMessage;
             }
@@ -772,7 +847,7 @@ namespace ExcelHelper
             }
 
             // 导入头标题映射
-            if (importSetting.TitleMapping.TryGetValue(PropertyInfo.Name, out var title))
+            if (importSetting.TitleMapping.TryGetValue(PropertyName, out var title))
             {
                 ImportHeaderTitle = title;
             }
@@ -806,10 +881,10 @@ namespace ExcelHelper
             }
 
             // 从属性自身识别
-            if (titleIndexDict.ContainsKey(PropertyInfo.Name))
+            if (titleIndexDict.ContainsKey(PropertyName))
             {
-                ImportHeaderTitle = PropertyInfo.Name;
-                ImportHeaderColumnIndex = titleIndexDict[PropertyInfo.Name];
+                ImportHeaderTitle = PropertyName;
+                ImportHeaderColumnIndex = titleIndexDict[PropertyName];
                 return true;
             }
 
@@ -836,7 +911,7 @@ namespace ExcelHelper
             }
             if (IsArray)
             {
-                if (tempSetting.ListSettings.TryGetValue(PropertyInfo.Name, out var tempListSetting))
+                if (tempSetting.ListSettings.TryGetValue(PropertyName, out var tempListSetting))
                 {
                     TempListType = tempListSetting.Type;
                     TempListStartIndex = tempListSetting.StartIndex;
@@ -851,7 +926,7 @@ namespace ExcelHelper
             }
             else
             {
-                if (tempSetting.CellAddress.TryGetValue(PropertyInfo.Name, out var cellAddress))
+                if (tempSetting.CellAddress.TryGetValue(PropertyName, out var cellAddress))
                 {
                     TempCellAddress = cellAddress;
                     HasTempInfo = true;
@@ -868,7 +943,7 @@ namespace ExcelHelper
             {
                 return;
             }
-            if (tempListSetting.ItemIndexs.TryGetValue(PropertyInfo.Name, out var itemIndex))
+            if (tempListSetting.ItemIndexs.TryGetValue(PropertyName, out var itemIndex))
             {
                 TempListItemIndex = itemIndex;
                 HasTempItemInfo = true;

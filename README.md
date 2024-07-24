@@ -22,6 +22,7 @@
 - [x] 支持导入数据唯一性校验 `[ImportUnique]`
 - [x] 支持导入组合数据唯一性校验 `[ImportUniques(nameof(A), nameof(B))]`
 - [x] 支持导入时动态设置 `new ImportSetting()`
+- [x] 支持导入通过`List<Dictionary>`字典列表来接收数据
 
 ### 数据导出
 
@@ -37,6 +38,7 @@
 - [x] 支持导出忽略指定字段导出 `[ExportIgnore]`
 - [x] 支持导出时动态设置 `new ExportSetting()`
 - [x] 支持导出时设置Sheet位置 `.SetSheetIndex("sheet", 1)`
+- [x] 支持导出`IEnumerable<IDictionary>`字典列表数据
 
 ### 模板操作
 
@@ -446,6 +448,7 @@ importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
 importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
 
 var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
+var sheets3 = _excelHelper.ImportSheet<Dictionary<string, object>>(importSetting);
 ```
 
 ### ExportSetting
@@ -461,6 +464,28 @@ setting.AddTitleComment(nameof(DemoIO.Date), "日期备注");
 
 _excelHelper.ExportSheet("test3", data3, exportSetting);
 ```
+
+``` C#
+// 导出`IEnumerable<IDictionary>`字典列表数据
+var data4 = new List<Dictionary<string, object>>();
+data4.Add(new Dictionary<string, object>()
+          {
+              {"a", "aa" },
+              {"b", true },
+              {"c", DateTime.Now },
+              {"d", 1.1 },
+          });
+
+var setting4 = new ExportSetting();
+setting4.AddIncludeProperties("a", "b", "c", "d");
+setting4.AddTitleMapping("a", "字符串");
+setting4.AddTitleMapping("c", "日期");
+setting4.AddTitleComment("c", "日期备注");
+
+_excelHelper.ExportSheet("test4", data4, setting4);
+```
+
+
 
 ### TempSetting
 

@@ -1,5 +1,6 @@
 ﻿using ExcelHelper;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace ExcelHelperTest
 {
@@ -38,9 +39,15 @@ namespace ExcelHelperTest
             importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
             importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
             importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
+            importSetting.AddTitleMapping("BB", "B");
 
             var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
+            Assert.AreEqual(3, sheets2.Count);
             Assert.IsNotNull(sheets2);
+
+            var sheets3 = _excelHelper.ImportSheet<Dictionary<string, object>>(importSetting);
+            Assert.AreEqual(3, sheets3.Count);
+            Assert.IsNotNull(sheets3);
         }
     }
 }

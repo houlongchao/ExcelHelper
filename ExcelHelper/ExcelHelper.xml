@@ -921,6 +921,11 @@
             字段属性信息
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.PropertyName">
+            <summary>
+            字段属性名称
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.IsArray">
             <summary>
             是否是数组
@@ -1117,6 +1122,11 @@
             </summary>
             <param name="propertyInfo"></param>
         </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.#ctor(System.String)">
+            <summary>
+            Excel 属性信息
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.SetImportInfo">
             <summary>
             设置导入信息
@@ -1137,6 +1147,33 @@
             <summary>
             是否是图片
             </summary>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.GetValue(System.Object)">
+            <summary>
+            返回指定对象的属性值
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.SetValue(System.Object,System.Object)">
+            <summary>
+            设置指定对象的属性值
+            </summary>
+            <param name="data"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.CreateListObject">
+            <summary>
+            创建列表对象
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:ExcelHelper.ExcelPropertyInfo.CreateGenericTypeObject">
+            <summary>
+            创建泛型对象
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ExcelHelper.ExcelPropertyInfo.ExportMappedToDisplay(System.Object)">
             <summary>
