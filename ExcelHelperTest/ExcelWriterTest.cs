@@ -90,8 +90,7 @@ namespace ExcelHelperTest
             });
 
             var setting4 = new ExportSetting();
-            setting4.AddIgnoreProperties("b");
-            setting4.AddIncludeProperties("a", "b", "c", "d");
+            setting4.AddIncludeProperties("a", "c", "b", "d");
             setting4.AddTitleMapping("a", "字符串");
             setting4.AddTitleMapping("c", "日期");
             setting4.AddTitleComment("c", "日期备注");
