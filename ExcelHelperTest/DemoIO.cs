@@ -54,6 +54,10 @@ namespace ExcelHelperTest
         [ExportFormat("0.0")]
         public double Number { get; set; }
 
+        [ImportHeader("整数")]
+        [ExportHeader("整数")]
+        public int? IntNum { get; set; }
+
         public bool Boolean { get; set; }
 
         public string Formula { get; set; }

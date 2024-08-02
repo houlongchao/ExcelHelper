@@ -105,23 +105,27 @@ namespace ExcelHelper
 
         public static void SetValueAuto(this PropertyInfo propertyInfo, object obj, object value)
         {
-            if (propertyInfo.PropertyType == typeof(double))
+            if (propertyInfo == null || obj == null || value == null)
+            {
+                return;
+            }
+            if (propertyInfo.PropertyType == typeof(double) || propertyInfo.PropertyType == typeof(double?))
             {
                 propertyInfo.SetValue(obj, Convert.ToDouble(value));
             }
-            else if (propertyInfo.PropertyType == typeof(int))
+            else if (propertyInfo.PropertyType == typeof(int) || propertyInfo.PropertyType == typeof(int?))
             {
                 propertyInfo.SetValue(obj, Convert.ToInt32(value));
             }
-            else if (propertyInfo.PropertyType == typeof(float))
+            else if (propertyInfo.PropertyType == typeof(float) || propertyInfo.PropertyType == typeof(float?))
             {
                 propertyInfo.SetValue(obj, Convert.ToDouble(value));
             }
-            else if (propertyInfo.PropertyType == typeof(decimal))
+            else if (propertyInfo.PropertyType == typeof(decimal) || propertyInfo.PropertyType == typeof(decimal?))
             {
                 propertyInfo.SetValue(obj, Convert.ToDecimal(value));
             }
-            else if (propertyInfo.PropertyType == typeof(DateTime))
+            else if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
             {
                 propertyInfo.SetValue(obj, Convert.ToDateTime(value));
             }
