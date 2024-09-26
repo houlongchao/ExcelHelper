@@ -461,7 +461,7 @@ namespace ExcelHelper.Aspose
             {
                 if (DateTime.MinValue != dt)
                 {
-                    cell.SetValue(dt).SetDataFormat();
+                    cell.SetValue(dt);
                 }
             }
             else if (data is bool b)

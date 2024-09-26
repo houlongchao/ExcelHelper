@@ -719,7 +719,7 @@
             设置指定位置的备注信息
             </summary>
         </member>
-        <member name="M:ExcelHelper.BaseExcelSheet.SetFormat(System.Int32,System.Int32,System.String)">
+        <member name="M:ExcelHelper.BaseExcelSheet.SetFormat(System.Int32,System.Int32,System.String,System.Boolean)">
             <summary>
             设置指定位置的格式化字符串
             </summary>

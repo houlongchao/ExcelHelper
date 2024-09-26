@@ -441,7 +441,7 @@
         <member name="M:ExcelHelper.Aspose.ExcelSheet.SetComment(System.Int32,System.Int32,System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetFormat(System.Int32,System.Int32,System.String)">
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.SetFormat(System.Int32,System.Int32,System.String,System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="M:ExcelHelper.Aspose.ExcelSheet.SetAutoSizeColumn(System.Int32)">

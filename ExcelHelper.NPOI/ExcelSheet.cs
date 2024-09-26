@@ -2,6 +2,9 @@
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
+using NPOI.XWPF.UserModel;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ExcelHelper.NPOI
 {
@@ -98,10 +101,33 @@ namespace ExcelHelper.NPOI
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetComment(comment);
         }
 
+        private readonly IDictionary<string, ICellStyle> _styles = new Dictionary<string, ICellStyle>();
+
         /// <inheritdoc/>
-        public override void SetFormat(int rowIndex, int colIndex, string format)
+        public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
         {
-            _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+            if (cacheFormat)
+            {
+                if (_styles.TryGetValue(format, out var style))
+                {
+                    _sheet.GetOrCreateCell(rowIndex, colIndex).SetCellStyle(style);
+                }
+                else
+                {
+                    var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
+                    var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
+                    cellStyle.CloneStyleFrom(cell.CellStyle);
+                    var df = cell.Sheet.Workbook.CreateDataFormat();
+                    cellStyle.DataFormat = df.GetFormat(format);
+                    _styles[format] = cellStyle;
+                    cell.SetCellStyle(cellStyle);
+                }
+            }
+            else
+            {
+                // 该方式每次都会创建一个style，数据量大时会报错
+                _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+            }
         }
 
         /// <inheritdoc/>

@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace ExcelHelper.Aspose
@@ -96,10 +97,32 @@ namespace ExcelHelper.Aspose
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetComment(comment);
         }
 
+        private readonly IDictionary<string, Style> _styles = new Dictionary<string, Style>();
         /// <inheritdoc/>
-        public override void SetFormat(int rowIndex, int colIndex, string format)
+        public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
         {
-            _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+            if (cacheFormat)
+            {
+                if (_styles.TryGetValue(format, out var style))
+                {
+                    _sheet.GetOrCreateCell(rowIndex, colIndex).SetCellStyle(style);
+                }
+                else
+                {
+                    var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
+
+                    var cellStyle = cell.Worksheet.Workbook.CreateStyle();
+                    cellStyle.Copy(cell.GetStyle());
+                    cellStyle.Custom = format;
+
+                    _styles[format] = cellStyle;
+                    cell.SetCellStyle(cellStyle);
+                }
+            }
+            else
+            {
+                _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+            }
         }
 
         /// <inheritdoc/>

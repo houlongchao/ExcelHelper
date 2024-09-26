@@ -86,7 +86,7 @@ namespace ExcelHelper
         /// <summary>
         /// 设置指定位置的格式化字符串
         /// </summary>
-        public abstract void SetFormat(int rowIndex, int colIndex, string format);
+        public abstract void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false);
 
         /// <summary>
         /// 设置指定列自动调整宽度
@@ -189,7 +189,7 @@ namespace ExcelHelper
 
                     if (!string.IsNullOrEmpty(property.ExportFormatAttribute?.Format))
                     {
-                        SetFormat(rowIndex, colIndex, property.ExportFormatAttribute?.Format);
+                        SetFormat(rowIndex, colIndex, property.ExportFormatAttribute?.Format, true);
                     }
 
                     colIndex++;
