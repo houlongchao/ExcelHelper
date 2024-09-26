@@ -1,9 +1,7 @@
-﻿using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
-using NPOI.XWPF.UserModel;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace ExcelHelper.NPOI
@@ -74,13 +72,21 @@ namespace ExcelHelper.NPOI
         /// <inheritdoc/>
         public override void SetValue(int rowIndex, int colIndex, object value)
         {
-            _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
+            var cell = _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
+            if (value is DateTime dt && DateTime.MinValue != dt)
+            {
+                SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
+            }
         }
 
         /// <inheritdoc/>
         public override void SetValue(string cellAddress, object value)
         {
-            _sheet.GetOrCreateCell(cellAddress).SetValue(value);
+            var cell = _sheet.GetOrCreateCell(cellAddress).SetValue(value);
+            if (value is DateTime dt && DateTime.MinValue != dt)
+            {
+                SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
+            }
         }
 
         /// <inheritdoc/>
@@ -106,15 +112,20 @@ namespace ExcelHelper.NPOI
         /// <inheritdoc/>
         public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
         {
+            var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
+            SetFormat(cell, format, cacheFormat);
+        }
+
+        private void SetFormat(ICell cell, string format, bool cacheFormat = false)
+        {
             if (cacheFormat)
             {
                 if (_styles.TryGetValue(format, out var style))
                 {
-                    _sheet.GetOrCreateCell(rowIndex, colIndex).SetCellStyle(style);
+                    cell.SetCellStyle(style);
                 }
                 else
                 {
-                    var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
                     var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
                     cellStyle.CloneStyleFrom(cell.CellStyle);
                     var df = cell.Sheet.Workbook.CreateDataFormat();
@@ -126,7 +137,7 @@ namespace ExcelHelper.NPOI
             else
             {
                 // 该方式每次都会创建一个style，数据量大时会报错
-                _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+                cell.SetDataFormat(format);
             }
         }
 

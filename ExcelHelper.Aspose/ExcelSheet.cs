@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -70,13 +71,21 @@ namespace ExcelHelper.Aspose
         /// <inheritdoc/>
         public override void SetValue(int rowIndex, int colIndex, object value)
         {
-            _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
+            var cell = _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
+            if (value is DateTime dt && DateTime.MinValue != dt)
+            {
+                SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
+            }
         }
 
         /// <inheritdoc/>
         public override void SetValue(string cellAddress, object value)
         {
-            _sheet.GetOrCreateCell(cellAddress).SetValue(value);
+            var cell = _sheet.GetOrCreateCell(cellAddress).SetValue(value);
+            if (value is DateTime dt && DateTime.MinValue != dt)
+            {
+                SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
+            }
         }
 
         /// <inheritdoc/>
@@ -98,19 +107,24 @@ namespace ExcelHelper.Aspose
         }
 
         private readonly IDictionary<string, Style> _styles = new Dictionary<string, Style>();
+        
         /// <inheritdoc/>
         public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
+        {
+            var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
+            SetFormat(cell, format, cacheFormat);
+        }
+
+        private void SetFormat(Cell cell, string format, bool cacheFormat = false)
         {
             if (cacheFormat)
             {
                 if (_styles.TryGetValue(format, out var style))
                 {
-                    _sheet.GetOrCreateCell(rowIndex, colIndex).SetCellStyle(style);
+                    cell.SetCellStyle(style);
                 }
                 else
                 {
-                    var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
-
                     var cellStyle = cell.Worksheet.Workbook.CreateStyle();
                     cellStyle.Copy(cell.GetStyle());
                     cellStyle.Custom = format;
@@ -121,7 +135,7 @@ namespace ExcelHelper.Aspose
             }
             else
             {
-                _sheet.GetOrCreateCell(rowIndex, colIndex).SetDataFormat(format);
+                cell.SetDataFormat(format);
             }
         }
 

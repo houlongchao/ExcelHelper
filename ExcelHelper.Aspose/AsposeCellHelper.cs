@@ -461,7 +461,7 @@ namespace ExcelHelper.Aspose
             {
                 if (DateTime.MinValue != dt)
                 {
-                    cell.SetValue(dt).SetDataFormat();
+                    cell.SetValue(dt);
                 }
             }
             else if (data is bool b)
@@ -487,7 +487,6 @@ namespace ExcelHelper.Aspose
             return cell;
         }
 
-        private static IDictionary<string, Style> _dataFormatDict = new Dictionary<string, Style>();
         /// <summary>
         /// 设置单元格格式字符串
         /// </summary>
@@ -496,17 +495,18 @@ namespace ExcelHelper.Aspose
         /// <returns></returns>
         public static Cell SetDataFormat(this Cell cell, string format = "yyyy/MM/dd HH:mm:ss")
         {
-            if (_dataFormatDict.TryGetValue(format, out var cellStyle))
+            var workbook = cell.Worksheet.Workbook;
+            var cellStyle = workbook.GetNamedStyle(format);
+            if (cellStyle != null)
             {
                 cell.SetStyle(cellStyle);
             }
             else
             {
                 cellStyle = cell.Worksheet.Workbook.CreateStyle();
-                cellStyle.Copy(cell.GetStyle());
                 cellStyle.Custom = format;
+                cellStyle.Name = format;
                 cell.SetStyle(cellStyle);
-                _dataFormatDict[format] = cellStyle;
             }
 
             return cell;

@@ -548,7 +548,7 @@ namespace ExcelHelper.NPOI
             {
                 if (DateTime.MinValue != dt)
                 {
-                    cell.SetValue(dt).SetDataFormat();
+                    cell.SetValue(dt);
                 }
             }
             else if (data is bool b)
@@ -574,8 +574,6 @@ namespace ExcelHelper.NPOI
             return cell;
         }
 
-        private static IDictionary<string, ICellStyle> _dataFormatDict = new Dictionary<string, ICellStyle>();
-
         /// <summary>
         /// 设置单元格格式字符串
         /// </summary>
@@ -584,20 +582,12 @@ namespace ExcelHelper.NPOI
         /// <returns></returns>
         public static ICell SetDataFormat(this ICell cell, string format = "yyyy/MM/dd HH:mm:ss")
         {
-            if (_dataFormatDict.TryGetValue(format, out var dataFormatStyle))
-            {
-                cell.CellStyle = dataFormatStyle;
-            }
-            else
-            {
-                var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
-                cellStyle.CloneStyleFrom(cell.CellStyle);
-                var df = cell.Sheet.Workbook.CreateDataFormat();
-                cellStyle.DataFormat = df.GetFormat(format);
-                cell.CellStyle = cellStyle;
-                _dataFormatDict[format] = cellStyle;
-            }
-           
+            var cellStyle = cell.Sheet.Workbook.CreateCellStyle();
+            cellStyle.CloneStyleFrom(cell.CellStyle);
+            var df = cell.Sheet.Workbook.CreateDataFormat();
+            cellStyle.DataFormat = df.GetFormat(format);
+            cell.CellStyle = cellStyle;
+
             return cell;
         }
 
