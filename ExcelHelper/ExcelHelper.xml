@@ -60,6 +60,11 @@
             <br/>颜色受限于Excel驱动框架的颜色系统
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExportHeaderAttribute.EmptyFallbackPropertyName">
+            <summary>
+            导出值为空是回退属性值，可以回退多个属性，用;隔开
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ExportHeaderAttribute.#ctor(System.String)">
             <summary>
             导出头设置

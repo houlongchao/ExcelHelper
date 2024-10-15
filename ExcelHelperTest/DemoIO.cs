@@ -26,7 +26,7 @@ namespace ExcelHelperTest
         [ImportHeader("B")]
         [ImportHeader("BB")]
         [ImportRequired(Message = "数据B必填")]
-        [ExportHeader("B2")]
+        [ExportHeader("B2", EmptyFallbackPropertyName = nameof(C))]
         public string B { get; set; }
 
         [ImportHeader("C")]
@@ -34,9 +34,9 @@ namespace ExcelHelperTest
         [ImportMapper("A3", "b")]
         [ImportLimit("A3", true, 123)]
         [ExportHeader("C2", Comment = "备注")]
-        [ExportMapper("a", "Aa")]
-        [ExportMapper("b", "Ab")]
-        [ExportMapper("c", "Ac")]
+        [ExportMapper("a", "A1")]
+        [ExportMapper("b", "A2")]
+        [ExportMapper("c", "A3")]
         [ExportValidations("A1", "A2", "A3")]
         public string C { get; set; }
 

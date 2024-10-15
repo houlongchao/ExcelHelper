@@ -45,6 +45,11 @@ namespace ExcelHelper
         public string ColorName { get; set; } = "Black";
 
         /// <summary>
+        /// 导出值为空是回退属性值，可以回退多个属性，用;隔开
+        /// </summary>
+        public string EmptyFallbackPropertyName { get; set; }
+
+        /// <summary>
         /// 导出头设置
         /// </summary>
         /// <param name="name"></param>

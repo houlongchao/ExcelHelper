@@ -420,7 +420,21 @@ namespace ExcelHelper
         {
             if (PropertyInfo != null)
             {
-                return PropertyInfo.GetValue(data);
+                var value = PropertyInfo.GetValue(data);
+                if (!string.IsNullOrEmpty(value?.ToString()) || string.IsNullOrEmpty(ExportHeaderAttribute?.EmptyFallbackPropertyName))
+                {
+                    return value;
+                }
+                var fallbackNames = ExportHeaderAttribute.EmptyFallbackPropertyName.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var fallbackName in fallbackNames)
+                {
+                    var fallbackValue = PropertyInfo.DeclaringType.GetProperty(fallbackName)?.GetValue(data);
+                    if (!string.IsNullOrEmpty(fallbackValue?.ToString()))
+                    {
+                        return fallbackValue;
+                    }
+                }
+                return value;
             }
             if (data is IDictionary dict && dict.Contains(PropertyName))
             {

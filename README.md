@@ -33,6 +33,7 @@
 - [x] 支持导出格式化字符串 `[ExportFormat("yyyy/MM/dd")]`
 - [x] 支持导出设置列宽 `[ExportHeader("日期", ColumnWidth = 30)]`
 - [x] 支持导出头设置字体颜色 `[ExportHeader("A2", ColorName = "Red")]`
+- [x] 支持导出字段为空值时用其它字段值做回退值` [ExportHeader("A2", EmptyFallbackPropertyName = "FallbackProperty;FallbackProperty2")]`
 - [x] 支持导出数据映射 `[ExportMapper("a", "Aa")]`
 - [x] 支持导出表头设置备注信息 `[ExportHeader("C2", Comment = "备注")]`
 - [x] 支持导出设置数据单元格数据校验`[ExportValidations("A1", "A2", "A3")]`
@@ -350,6 +351,9 @@ public string C { get; set; }
 public DateTime DateTime { get; set; }
 
 [ExportHeader("A2", ColorName = "Red", IsBold = true, FontSize = 12)] // 指定导出标题字体
+public string A { get; set; }
+
+[ExportHeader("A2", EmptyFallbackPropertyName = "C;D")] // 如果A没有值，则使用C的值，如果C还没有值，则使用D的值，如果D还没有值，则返回空
 public string A { get; set; }
 ```
 
