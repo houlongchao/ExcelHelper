@@ -58,50 +58,50 @@ namespace ExcelHelper
         /// 设置指定位置的数据
         /// </summary>
         /// <returns></returns>
-        public abstract void SetValue(int rowIndex, int colIndex, object value);
+        public abstract IExcelSheet SetValue(int rowIndex, int colIndex, object value);
 
         /// <summary>
         /// 设置指定位置的数据
         /// </summary>
         /// <returns></returns>
-        public abstract void SetValue(string cellAddress, object value);
+        public abstract IExcelSheet SetValue(string cellAddress, object value);
 
         /// <summary>
         /// 设置指定位置的图片数据
         /// </summary>
         /// <returns></returns>
-        public abstract void SetImage(int rowIndex, int colIndex, byte[] value);
+        public abstract IExcelSheet SetImage(int rowIndex, int colIndex, byte[] value);
 
         /// <summary>
         /// 设置指定位置的图片数据
         /// </summary>
         /// <returns></returns>
-        public abstract void SetImage(string cellAddress, byte[] value);
+        public abstract IExcelSheet SetImage(string cellAddress, byte[] value);
 
         /// <summary>
         /// 设置指定位置的备注信息
         /// </summary>
-        public abstract void SetComment(int rowIndex, int colIndex, string comment);
+        public abstract IExcelSheet SetComment(int rowIndex, int colIndex, string comment);
 
         /// <summary>
         /// 设置指定位置的格式化字符串
         /// </summary>
-        public abstract void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false);
+        public abstract IExcelSheet SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false);
 
         /// <summary>
         /// 设置指定列自动调整宽度
         /// </summary>
-        public abstract void SetAutoSizeColumn(int colIndex);
+        public abstract IExcelSheet SetAutoSizeColumn(int colIndex);
 
         /// <summary>
         /// 设置指定列的宽度
         /// </summary>
-        public abstract void SetColumnWidth(int colIndex, int width);
+        public abstract IExcelSheet SetColumnWidth(int colIndex, int width);
 
         /// <summary>
         /// 设置指定位置的字体
         /// </summary>
-        public abstract void SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true);
+        public abstract IExcelSheet SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true);
 
         /// <summary>
         /// 设置验证数据
@@ -111,8 +111,11 @@ namespace ExcelHelper
         /// <param name="firstColIndex"></param>
         /// <param name="lastColIndex"></param>
         /// <param name="explicitListValues"></param>
-        public abstract void SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues);
+        public abstract IExcelSheet SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues);
 
+        /// <inheritdoc/>
+        public abstract IExcelSheet MergedRegion(int firstRow, int firstCol, int totalRows, int totalColumns);
+        
         #endregion
 
         #region Implement
@@ -136,13 +139,30 @@ namespace ExcelHelper
 
             // 获取导出模型属性信息列表
             var excelPropertyInfoList = typeof(T).GetExportExcelPropertyInfoList(exportSetting);
-            int rowIndex = GetRowCount();
+
+            int startRowIndex = 0;
+            int startColIndex = 0;
+            switch (exportSetting.ExportLocation)
+            {
+                case Settings.ExportLocation.LastRow:
+                    {
+                        startRowIndex = GetRowCount();
+                        break;
+                    }
+                case Settings.ExportLocation.Custom:
+                    {
+                        startRowIndex = exportSetting.ExportRowIndex;
+                        startColIndex = exportSetting.ExportColumnIndex;
+                        break;
+                    }
+            };
+            int rowIndex = startRowIndex;
 
             // 写表头
             if (exportSetting.AddTitle)
             {
                 // 设置表头
-                int colIndex = 0;
+                int colIndex = startColIndex;
                 foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
                     SetValue(rowIndex, colIndex, excelPropertyInfo.ExportHeaderTitle);
@@ -168,7 +188,7 @@ namespace ExcelHelper
             // 写入数据
             foreach (var data in datas)
             {
-                var colIndex = 0;
+                var colIndex = startColIndex;
                 foreach (var property in excelPropertyInfoList)
                 {
                     var value = property.GetValue(data);
@@ -201,7 +221,7 @@ namespace ExcelHelper
 
             // 设置列宽度及数据样式属性
             {
-                var colIndex = 0;
+                var colIndex = startColIndex;
                 foreach (var property in excelPropertyInfoList)
                 {
                     var exportHeader = property.ExportHeaderAttribute;

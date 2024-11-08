@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ExcelHelper.Settings;
+using System.Collections.Generic;
 
 namespace ExcelHelper
 {
@@ -11,6 +12,21 @@ namespace ExcelHelper
         /// 是否添加列标题
         /// </summary>
         public bool AddTitle { get; set; } = true;
+
+        /// <summary>
+        /// 导出位置
+        /// </summary>
+        public ExportLocation ExportLocation { get; set; } = ExportLocation.LastRow;
+
+        /// <summary>
+        /// 导出行位置坐标
+        /// </summary>
+        public int ExportRowIndex { get; set; }
+
+        /// <summary>
+        /// 导出列位置坐标
+        /// </summary>
+        public int ExportColumnIndex { get; set; }
 
         /// <summary>
         /// 导出头映射 (<c>nameof(A)</c>, <c>title</c>)

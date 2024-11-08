@@ -108,6 +108,9 @@
         <member name="M:ExcelHelper.NPOI.ExcelSheet.SetValidationData(System.Int32,System.Int32,System.Int32,System.Int32,System.String[])">
             <inheritdoc/>
         </member>
+        <member name="M:ExcelHelper.NPOI.ExcelSheet.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="T:ExcelHelper.NPOI.ExcelTempHelper">
             <summary>
             模板Excel操作类

@@ -69,50 +69,56 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
-        public override void SetValue(int rowIndex, int colIndex, object value)
+        public override IExcelSheet SetValue(int rowIndex, int colIndex, object value)
         {
             var cell = _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
             if (value is DateTime dt && DateTime.MinValue != dt)
             {
                 SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
             }
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetValue(string cellAddress, object value)
+        public override IExcelSheet SetValue(string cellAddress, object value)
         {
             var cell = _sheet.GetOrCreateCell(cellAddress).SetValue(value);
             if (value is DateTime dt && DateTime.MinValue != dt)
             {
                 SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
             }
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetImage(int rowIndex, int colIndex, byte[] value)
+        public override IExcelSheet SetImage(int rowIndex, int colIndex, byte[] value)
         {
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetImage(value);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetImage(string cellAddress, byte[] value)
+        public override IExcelSheet SetImage(string cellAddress, byte[] value)
         {
             _sheet.GetOrCreateCell(cellAddress).SetImage(value);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetComment(int rowIndex, int colIndex, string comment)
+        public override IExcelSheet SetComment(int rowIndex, int colIndex, string comment)
         {
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetComment(comment);
+            return this;
         }
 
         private readonly IDictionary<string, Style> _styles = new Dictionary<string, Style>();
         
         /// <inheritdoc/>
-        public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
+        public override IExcelSheet SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
         {
             var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
             SetFormat(cell, format, cacheFormat);
+            return this;
         }
 
         private void SetFormat(Cell cell, string format, bool cacheFormat = false)
@@ -140,19 +146,21 @@ namespace ExcelHelper.Aspose
         }
 
         /// <inheritdoc/>
-        public override void SetAutoSizeColumn(int colIndex)
+        public override IExcelSheet SetAutoSizeColumn(int colIndex)
         {
             _sheet.AutoFitColumn(colIndex);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetColumnWidth(int colIndex, int width)
+        public override IExcelSheet SetColumnWidth(int colIndex, int width)
         {
             _sheet.Cells.SetColumnWidth(colIndex, width);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true)
+        public override IExcelSheet SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true)
         {
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetFont(font =>
                     {
@@ -160,10 +168,11 @@ namespace ExcelHelper.Aspose
                         font.IsBold = isBold;
                         font.Color = Color.FromName(colorName);
                     });
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues)
+        public override IExcelSheet SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues)
         {
             var area = new CellArea();
             area.StartRow = firstRowIndex;
@@ -180,6 +189,15 @@ namespace ExcelHelper.Aspose
             validation.AlertStyle = ValidationAlertType.Stop;
             validation.ErrorTitle = "请从指定列表中选择值";
             validation.ErrorMessage = string.Join(", ", explicitListValues);
+
+            return this;
+        }
+        
+        /// <inheritdoc/>
+        public override IExcelSheet MergedRegion(int firstRow, int firstCol, int totalRows, int totalColumns)
+        {
+            _sheet.Cells.Merge(firstRow, firstCol, totalRows, totalColumns);
+            return this;
         }
     }
 }

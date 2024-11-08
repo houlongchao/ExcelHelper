@@ -70,50 +70,56 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
-        public override void SetValue(int rowIndex, int colIndex, object value)
+        public override IExcelSheet SetValue(int rowIndex, int colIndex, object value)
         {
             var cell = _sheet.GetOrCreateCell(rowIndex, colIndex).SetValue(value);
             if (value is DateTime dt && DateTime.MinValue != dt)
             {
                 SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
             }
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetValue(string cellAddress, object value)
+        public override IExcelSheet SetValue(string cellAddress, object value)
         {
             var cell = _sheet.GetOrCreateCell(cellAddress).SetValue(value);
             if (value is DateTime dt && DateTime.MinValue != dt)
             {
                 SetFormat(cell, "yyyy/MM/dd HH:mm:ss", true);
             }
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetImage(int rowIndex, int colIndex, byte[] value)
+        public override IExcelSheet SetImage(int rowIndex, int colIndex, byte[] value)
         {
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetImage(value);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetImage(string cellAddress, byte[] value)
+        public override IExcelSheet SetImage(string cellAddress, byte[] value)
         {
             _sheet.GetOrCreateCell(cellAddress).SetImage(value);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetComment(int rowIndex, int colIndex, string comment)
+        public override IExcelSheet SetComment(int rowIndex, int colIndex, string comment)
         {
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetComment(comment);
+            return this;
         }
 
         private readonly IDictionary<string, ICellStyle> _styles = new Dictionary<string, ICellStyle>();
 
         /// <inheritdoc/>
-        public override void SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
+        public override IExcelSheet SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false)
         {
             var cell = _sheet.GetOrCreateCell(rowIndex, colIndex);
             SetFormat(cell, format, cacheFormat);
+            return this;
         }
 
         private void SetFormat(ICell cell, string format, bool cacheFormat = false)
@@ -142,19 +148,21 @@ namespace ExcelHelper.NPOI
         }
 
         /// <inheritdoc/>
-        public override void SetAutoSizeColumn(int colIndex)
+        public override IExcelSheet SetAutoSizeColumn(int colIndex)
         {
             _sheet.AutoSizeColumn(colIndex);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetColumnWidth(int colIndex, int width)
+        public override IExcelSheet SetColumnWidth(int colIndex, int width)
         {
             _sheet.SetColumnWidth(colIndex, width * 256);
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true)
+        public override IExcelSheet SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true)
         {
             var indexedColor = IndexedColors.ValueOf(colorName);
             _sheet.GetOrCreateCell(rowIndex, colIndex).SetFont(font =>
@@ -163,10 +171,11 @@ namespace ExcelHelper.NPOI
                 font.IsBold = isBold;
                 font.Color = indexedColor?.Index ?? IndexedColors.Black.Index;
             });
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues)
+        public override IExcelSheet SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues)
         {
             var constraint =  new XSSFDataValidationConstraint(explicitListValues);
             var addressList = new CellRangeAddressList(firstRowIndex, lastRowIndex, firstColIndex, lastColIndex);
@@ -175,6 +184,14 @@ namespace ExcelHelper.NPOI
             validation.ShowErrorBox = true;
             validation.CreateErrorBox("请从指定列表中选择值", string.Join(", ", explicitListValues));
             _sheet.AddValidationData(validation);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IExcelSheet MergedRegion(int firstRow, int firstCol, int totalRows, int totalColumns)
+        {
+            _sheet.AddMergedRegion(new CellRangeAddress(firstRow, firstRow + totalRows - 1, firstCol, firstCol + totalColumns - 1));
+            return this;
         }
     }
 }

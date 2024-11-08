@@ -456,6 +456,9 @@
         <member name="M:ExcelHelper.Aspose.ExcelSheet.SetValidationData(System.Int32,System.Int32,System.Int32,System.Int32,System.String[])">
             <inheritdoc/>
         </member>
+        <member name="M:ExcelHelper.Aspose.ExcelSheet.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="T:ExcelHelper.Aspose.ExcelTempHelper">
             <summary>
             模板Excel操作类

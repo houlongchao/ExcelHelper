@@ -754,6 +754,9 @@
             <param name="lastColIndex"></param>
             <param name="explicitListValues"></param>
         </member>
+        <member name="M:ExcelHelper.BaseExcelSheet.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:ExcelHelper.BaseExcelSheet.AppendData``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
             <inheritdoc/>
         </member>
@@ -801,6 +804,45 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetValue(System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetValue(System.String,System.Object)">
+            <summary>
+            设置指定位置的数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetImage(System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            设置指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetImage(System.String,System.Byte[])">
+            <summary>
+            设置指定位置的图片数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetComment(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定位置的备注信息
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            合并单元格
+            </summary>
+            <param name="firstRow">起始行</param>
+            <param name="firstCol">起始列</param>
+            <param name="totalRows">总行数</param>
+            <param name="totalColumns">总列数</param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.IExcelSheet.GetData``1(ExcelHelper.ImportSetting)">
             <summary>
             获取数据
@@ -812,6 +854,13 @@
             <summary>
             获取总行数
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.GetColumnCount(System.Int32)">
+            <summary>
+            获取指定行的列数
+            </summary>
+            <param name="rowIndex"></param>
             <returns></returns>
         </member>
         <member name="M:ExcelHelper.IExcelSheet.ToBytes">
@@ -1469,6 +1518,21 @@
             </summary>
             <param name="importUniquesAttribute"></param>
         </member>
+        <member name="T:ExcelHelper.Settings.ExportLocation">
+            <summary>
+            数据追加类型
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Settings.ExportLocation.LastRow">
+            <summary>
+            最后一行，行尾
+            </summary>
+        </member>
+        <member name="F:ExcelHelper.Settings.ExportLocation.Custom">
+            <summary>
+            自定义行列
+            </summary>
+        </member>
         <member name="T:ExcelHelper.ExportSetting">
             <summary>
             导出配置
@@ -1477,6 +1541,21 @@
         <member name="P:ExcelHelper.ExportSetting.AddTitle">
             <summary>
             是否添加列标题
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.ExportLocation">
+            <summary>
+            导出位置
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.ExportRowIndex">
+            <summary>
+            导出行位置坐标
+            </summary>
+        </member>
+        <member name="P:ExcelHelper.ExportSetting.ExportColumnIndex">
+            <summary>
+            导出列位置坐标
             </summary>
         </member>
         <member name="P:ExcelHelper.ExportSetting.TitleMapping">

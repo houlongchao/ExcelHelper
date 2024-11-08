@@ -107,6 +107,25 @@ namespace ExcelHelperTest
                 .ExportSheet("test3", data3, setting3)
                 .ExportSheet("test4", data4, setting4)
                 .SetSheetIndex("test3", 1);
+
+            var locationSheet = _excelHelper.CreateExcelSheet("location1");
+            locationSheet.SetValue(0, 0, "A").MergedRegion(0, 0, 1, 5);
+            locationSheet.SetValue(0, 5, "B").MergedRegion(0, 5, 1, 5);
+            locationSheet.AppendData(datas, new ExportSetting()
+            {
+                ExportLocation = ExcelHelper.Settings.ExportLocation.LastRow,
+            });
+            locationSheet.AppendData(datas, new ExportSetting()
+            {
+                ExportLocation = ExcelHelper.Settings.ExportLocation.LastRow,
+            });
+            var locationSheet2 = _excelHelper.CreateExcelSheet("location2");
+            locationSheet2.AppendData(datas, new ExportSetting()
+            {
+                ExportLocation = ExcelHelper.Settings.ExportLocation.Custom,
+                ExportRowIndex = 2,
+                ExportColumnIndex = 2,
+            });
             var bytes = _excelHelper.ToBytes();
             File.WriteAllBytes("test.xlsx", bytes);
         }
