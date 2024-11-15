@@ -833,6 +833,26 @@
             设置指定位置的备注信息
             </summary>
         </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetFormat(System.Int32,System.Int32,System.String,System.Boolean)">
+            <summary>
+            设置指定位置的格式化字符串
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetFont(System.Int32,System.Int32,System.String,System.Int32,System.Boolean)">
+            <summary>
+            设置指定位置的字体
+            </summary>
+        </member>
+        <member name="M:ExcelHelper.IExcelSheet.SetValidationData(System.Int32,System.Int32,System.Int32,System.Int32,System.String[])">
+            <summary>
+            设置验证数据
+            </summary>
+            <param name="firstRowIndex"></param>
+            <param name="lastRowIndex"></param>
+            <param name="firstColIndex"></param>
+            <param name="lastColIndex"></param>
+            <param name="explicitListValues"></param>
+        </member>
         <member name="M:ExcelHelper.IExcelSheet.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             合并单元格

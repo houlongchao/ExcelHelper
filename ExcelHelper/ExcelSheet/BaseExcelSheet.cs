@@ -188,6 +188,11 @@ namespace ExcelHelper
             // 写入数据
             foreach (var data in datas)
             {
+                if (object.Equals(data, default(T)))
+                {
+                    rowIndex++;
+                    continue;
+                }
                 var colIndex = startColIndex;
                 foreach (var property in excelPropertyInfoList)
                 {

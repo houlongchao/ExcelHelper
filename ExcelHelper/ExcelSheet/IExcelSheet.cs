@@ -61,6 +61,27 @@ namespace ExcelHelper
         IExcelSheet SetComment(int rowIndex, int colIndex, string comment);
 
         /// <summary>
+        /// 设置指定位置的格式化字符串
+        /// </summary>
+        IExcelSheet SetFormat(int rowIndex, int colIndex, string format, bool cacheFormat = false);
+
+        /// <summary>
+        /// 设置指定位置的字体
+        /// </summary>
+        IExcelSheet SetFont(int rowIndex, int colIndex, string colorName = "Black", int fontSize = 12, bool isBold = true);
+
+        /// <summary>
+        /// 设置验证数据
+        /// </summary>
+        /// <param name="firstRowIndex"></param>
+        /// <param name="lastRowIndex"></param>
+        /// <param name="firstColIndex"></param>
+        /// <param name="lastColIndex"></param>
+        /// <param name="explicitListValues"></param>
+        IExcelSheet SetValidationData(int firstRowIndex, int lastRowIndex, int firstColIndex, int lastColIndex, string[] explicitListValues);
+
+
+        /// <summary>
         /// 合并单元格
         /// </summary>
         /// <param name="firstRow">起始行</param>
