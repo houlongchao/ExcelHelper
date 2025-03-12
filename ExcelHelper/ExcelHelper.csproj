@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452; netstandard2.0; netstandard2.1; net6.0;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0; netstandard2.1; net6.0;</TargetFrameworks>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -12,14 +12,14 @@
 		<Owners>Hou Longchao</Owners>
 		<Authors>Hou Longchao</Authors>
 		<Description>Excel 导入导出帮助类</Description>
-		<Copyright>Copyright © HLC 2022</Copyright>
+		<Copyright>Copyright © HLC 2025</Copyright>
 		<Product>ExcelHelper</Product>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>Excel, Helper, Common, Util</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Common</RepositoryType>
 		<RepositoryUrl>https://github.com/houlongchao/ExcelHelper</RepositoryUrl>
-		<Version>0.8.1</Version>
+		<Version>0.9.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
