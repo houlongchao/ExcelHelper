@@ -47,7 +47,7 @@ namespace ExcelHelperTest
             Assert.AreEqual(3, sheets2.Count);
             Assert.IsNotNull(sheets2);
 
-            var sheets3 = _excelHelper.ImportSheet<Dictionary<string, object>>(importSetting);
+            var sheets3 = _excelHelper.ImportSheet<Dictionary<string, string>>(importSetting);
             Assert.AreEqual(3, sheets3.Count);
             Assert.IsNotNull(sheets3);
         }

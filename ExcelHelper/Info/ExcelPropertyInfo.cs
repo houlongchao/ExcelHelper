@@ -465,7 +465,14 @@ namespace ExcelHelper
             }
             else if (data is IDictionary dict)
             {
-                dict[PropertyName] = value;
+                if (dict.GetType().GenericTypeArguments[1] == typeof(string))
+                {
+                    dict[PropertyName] = value.ToString();
+                }
+                else
+                {
+                    dict[PropertyName] = value;
+                }
             }
             else if(OwnerPropertyInfo != null)
             {
