@@ -297,6 +297,10 @@ namespace ExcelHelper
 
                 foreach (var excelPropertyInfo in excelPropertyInfoList)
                 {
+                    if (excelPropertyInfo.ImportIgnore || excelPropertyInfo.ImportHeaderColumnIndex < 0)
+                    {
+                        continue;
+                    }
                     // 导入图片
                     if (excelPropertyInfo.IsImage())
                     {

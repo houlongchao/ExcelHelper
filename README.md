@@ -452,6 +452,7 @@ importSetting.AddUniqueMessage(nameof(DemoIO.A), "AA必须唯一");
 importSetting.AddLimitValues(nameof(DemoIO.A), "A1", "A2", "A3");
 importSetting.AddLimitMessage(nameof(DemoIO.A), "AA数据非法");
 importSetting.AddValueTrim(nameof(DemoIO.A), Trim.All);
+importSetting.AddIgnoreProperties(nameof(DemoIO.A), nameof(DemoIO.B));  // 添加忽略导入字段
 
 var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
 var sheets3 = _excelHelper.ImportSheet<Dictionary<string, object>>(importSetting);

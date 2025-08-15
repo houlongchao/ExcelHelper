@@ -1,5 +1,6 @@
 ﻿using ExcelHelper;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Collections.Generic;
 
 namespace ExcelHelperTest
@@ -18,7 +19,7 @@ namespace ExcelHelperTest
         public void Test_GetAllSheets()
         {
             var sheets = _excelHelper.GetAllSheets();
-            Assert.IsNotNull(sheets);
+            ClassicAssert.IsNotNull(sheets);
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace ExcelHelperTest
         public void Test_ImportSheet()
         {
             var sheets = _excelHelper.ImportSheet<DemoIO>();
-            Assert.IsNotNull(sheets);
+            ClassicAssert.IsNotNull(sheets);
 
             var importSetting = new ImportSetting();
             importSetting.AddTitleMapping(nameof(DemoIO.A), "AA");
@@ -44,12 +45,12 @@ namespace ExcelHelperTest
             importSetting.AddTitleMapping("OtherPropries.B", "Other3");
 
             var sheets2 = _excelHelper.ImportSheet<DemoIO>(importSetting);
-            Assert.AreEqual(3, sheets2.Count);
-            Assert.IsNotNull(sheets2);
+            ClassicAssert.AreEqual(3, sheets2.Count);
+            ClassicAssert.IsNotNull(sheets2);
 
             var sheets3 = _excelHelper.ImportSheet<Dictionary<string, string>>(importSetting);
-            Assert.AreEqual(3, sheets3.Count);
-            Assert.IsNotNull(sheets3);
+            ClassicAssert.AreEqual(3, sheets3.Count);
+            ClassicAssert.IsNotNull(sheets3);
         }
     }
 }

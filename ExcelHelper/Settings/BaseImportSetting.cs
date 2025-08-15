@@ -40,6 +40,12 @@ namespace ExcelHelper
         public List<string> UniqueProperties { get; private set; } = new List<string>();
 
         /// <summary>
+        /// 要忽略导入的属性
+        /// </summary>
+        public List<string> IgnoreProperties { get; private set; } = new List<string>();
+
+
+        /// <summary>
         /// 导入唯一性验证提示
         /// </summary>
         public Dictionary<string, string> UniqueMessage { get; private set; } = new Dictionary<string, string>();
@@ -134,6 +140,15 @@ namespace ExcelHelper
         public void AddUniquesAttribute(ImportUniquesAttribute importUniquesAttribute)
         {
             ImportUniquesAttributes.Add(importUniquesAttribute);
+        }
+
+        /// <summary>
+        /// 添加导入时要忽略的属性
+        /// </summary>
+        /// <param name="propertyNames">对象属性名称</param>
+        public void AddIgnoreProperties(params string[] propertyNames)
+        {
+            IgnoreProperties.AddRange(propertyNames);
         }
 
         #endregion

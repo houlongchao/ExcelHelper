@@ -43,7 +43,7 @@ namespace ExcelHelper
         /// <summary>
         /// 导入标题所在列索引,执行<see cref="SetImportHeaderColumnIndex(Dictionary{string, int})"/>之后有效
         /// </summary>
-        public int ImportHeaderColumnIndex { get; private set; }
+        public int ImportHeaderColumnIndex { get; private set; } = -1;
 
         /// <summary>
         /// 导入唯一性限制
@@ -59,6 +59,11 @@ namespace ExcelHelper
         /// 导入数据必须
         /// </summary>
         public bool ImportRequired { get; private set; } = false;
+
+        /// <summary>
+        /// 导入忽略
+        /// </summary>
+        public bool ImportIgnore { get; set; } = false;
 
         /// <summary>
         /// 导入数据必须提示信息
@@ -877,7 +882,15 @@ namespace ExcelHelper
                 ImportUniqueMessage = uniqueMessage;
             }
             // 导入必须限制
-            ImportRequired = baseImportSetting.RequiredProperties.Contains(PropertyName);
+            if (baseImportSetting.RequiredProperties.Contains(PropertyName))
+            {
+                ImportRequired = true;
+            }
+            if (baseImportSetting.IgnoreProperties.Contains(PropertyName))
+            {
+                ImportIgnore = true;
+                ImportRequired = false;
+            }
             if (baseImportSetting.RequiredMessage.TryGetValue(PropertyName, out var requiredMessage))
             {
                 ImportRequiredMessage = requiredMessage;
@@ -937,7 +950,8 @@ namespace ExcelHelper
                 return true;
             }
 
-            return false;
+            ImportHeaderColumnIndex = -1;
+            return true;
         }
 
         #endregion

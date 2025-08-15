@@ -129,5 +129,32 @@ namespace ExcelHelperTest
             var bytes = _excelHelper.ToBytes();
             File.WriteAllBytes("test.xlsx", bytes);
         }
+
+        [Test]
+        public void Test_ExportDictionary()
+        {
+            var datas = new List<Dictionary<string, object>>()
+            {
+                new Dictionary<string, object>()
+                {
+                    {"a", "a1" },
+                    {"b", "b1" }
+                },
+                new Dictionary<string, object>()
+                {
+                    {"a", "a2" },
+                    {"b", "b2" }
+                },
+            };
+            var setting = new ExportSetting();
+            setting.AddIncludeProperties("a", "b");  // 导出字典类型时必须指定
+            setting.AddTitleMapping("a", "A");
+            setting.AddTitleMapping("b", "B");  
+
+            _excelHelper.ExportSheet("dict", datas, setting);
+            var bytes = _excelHelper.ToBytes();
+            File.WriteAllBytes("test_export_dict.xlsx", bytes);
+        }
+
     }
 }

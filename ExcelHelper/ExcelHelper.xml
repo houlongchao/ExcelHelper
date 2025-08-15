@@ -1035,6 +1035,11 @@
             导入数据必须
             </summary>
         </member>
+        <member name="P:ExcelHelper.ExcelPropertyInfo.ImportIgnore">
+            <summary>
+            导入忽略
+            </summary>
+        </member>
         <member name="P:ExcelHelper.ExcelPropertyInfo.ImportRequiredMessage">
             <summary>
             导入数据必须提示信息
@@ -1475,6 +1480,11 @@
             唯一性验证的属性
             </summary>
         </member>
+        <member name="P:ExcelHelper.BaseImportSetting.IgnoreProperties">
+            <summary>
+            要忽略导入的属性
+            </summary>
+        </member>
         <member name="P:ExcelHelper.BaseImportSetting.UniqueMessage">
             <summary>
             导入唯一性验证提示
@@ -1537,6 +1547,12 @@
             添加导入数据唯一限制（针对列表对象，多字段唯一）
             </summary>
             <param name="importUniquesAttribute"></param>
+        </member>
+        <member name="M:ExcelHelper.BaseImportSetting.AddIgnoreProperties(System.String[])">
+            <summary>
+            添加导入时要忽略的属性
+            </summary>
+            <param name="propertyNames">对象属性名称</param>
         </member>
         <member name="T:ExcelHelper.Settings.ExportLocation">
             <summary>
