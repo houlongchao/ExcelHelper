@@ -18,7 +18,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Common</RepositoryType>
 		<RepositoryUrl>https://github.com/houlongchao/ExcelHelper</RepositoryUrl>
-		<Version>0.10.0</Version>
+		<Version>0.10.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,11 +27,11 @@
 
 	<PropertyGroup>
 		<DocumentationFile>ExcelHelper.Aspose.xml</DocumentationFile>
-		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Aspose.Cells" Version="20.8.0" />
+		<PackageReference Include="System.Drawing.Common" Version="4.7.3" />
 	</ItemGroup>
 
 	<ItemGroup>

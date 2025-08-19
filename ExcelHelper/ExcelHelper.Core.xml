@@ -1656,6 +1656,11 @@
             <para><c>title</c> : Excel列标题</para>
             </summary>
         </member>
+        <member name="P:ExcelHelper.ImportSetting.IsUniqueTitle">
+            <summary>
+            是否必须唯一标题列，如果为true，检测到标题列重复将报错
+            </summary>
+        </member>
         <member name="M:ExcelHelper.ImportSetting.AddTitleMapping(System.String,System.String)">
             <summary>
             添加属性与excel头映射

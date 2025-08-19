@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace ExcelHelper
@@ -268,6 +267,11 @@ namespace ExcelHelper
         /// <inheritdoc/>
         public List<T> GetData<T>(ImportSetting importSetting = null) where T : new()
         {
+            if (importSetting == null)
+            {
+                importSetting = new ImportSetting();
+            }
+
             var result = new List<T>();
 
             // 读标题
@@ -279,6 +283,11 @@ namespace ExcelHelper
                 if (string.IsNullOrEmpty(title))
                 {
                     continue;
+                }
+                // 检查标题列是否重复
+                if (importSetting.IsUniqueTitle && titleIndexDict.ContainsKey(title))
+                {
+                    ImportException.New($"存在重复的标题列【{title}】");
                 }
                 titleIndexDict[title] = i;
             }

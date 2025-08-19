@@ -14,7 +14,11 @@ namespace ExcelHelper
         /// </summary>
         public Dictionary<string, string> TitleMapping { get; private set; } = new Dictionary<string, string>();
 
-        
+        /// <summary>
+        /// 是否必须唯一标题列，如果为true，检测到标题列重复将报错
+        /// </summary>
+        public bool IsUniqueTitle { get; set; } = true;
+
         #region Add
 
         /// <summary>

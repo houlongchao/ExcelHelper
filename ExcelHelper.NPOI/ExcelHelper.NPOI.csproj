@@ -18,7 +18,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Common</RepositoryType>
 		<RepositoryUrl>https://github.com/houlongchao/ExcelHelper</RepositoryUrl>
-		<Version>0.10.0</Version>
+		<Version>0.10.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,12 +27,12 @@
 
 	<PropertyGroup>
 		<DocumentationFile>ExcelHelper.NPOI.xml</DocumentationFile>
-		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 
 	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.7.4" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
 	</ItemGroup>
 
 	<ItemGroup>
