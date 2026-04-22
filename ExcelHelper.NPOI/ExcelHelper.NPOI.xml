@@ -350,6 +350,13 @@
             <param name="sheet"></param>
             <returns></returns>
         </member>
+        <member name="M:ExcelHelper.NPOI.NpoiHelper.GetColumnCount(NPOI.SS.UserModel.ISheet)">
+            <summary>
+            获取Sheet的总列数
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
         <member name="M:ExcelHelper.NPOI.NpoiHelper.GetIndex(NPOI.SS.UserModel.IRow,System.String,System.Int32,System.String[])">
             <summary>
             获取指定标题<paramref name="text"/>的列 Index

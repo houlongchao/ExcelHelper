@@ -1,4 +1,4 @@
-﻿using ExcelHelper;
+using ExcelHelper;
 using System;
 using System.Collections.Generic;
 
@@ -80,11 +80,22 @@ namespace ExcelHelperTest
         public Dictionary<string, object> OtherPropries { get; set; }
 
         public string Other { get; set; }
+
+        public User User { get; set; }
+
+        public List<User> Users { get; set; }
+
+        public Dictionary<string, User> UserDict { get; set; }
     }
 
     public enum Status
     {
         A = 0,
         B = 1,
+    }
+
+    public class User { 
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 }

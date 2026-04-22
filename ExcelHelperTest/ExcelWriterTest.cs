@@ -1,4 +1,4 @@
-﻿using ExcelHelper;
+using ExcelHelper;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,38 @@ namespace ExcelHelperTest
                 C = "a",
                 DateTime = DateTime.Now,
                 DateTime2 = DateTime.Now,
-                Number = 0.123
+                Number = 0.123,
+                User = new User()
+                {
+                    Name = "user1",
+                    Age = 20,   
+                },
+                Users = new List<User>()
+                {
+                    new User()
+                    {
+                        Name = "user2",
+                        Age = 21,
+                    },
+                    new User()
+                    {
+                        Name = "user3",
+                        Age = 22,
+                    },
+                },
+                UserDict = new Dictionary<string, User>()
+                {
+                    {"user4", new User()
+                    {
+                        Name = "user4",
+                        Age = 23,
+                    } },
+                    {"user5", new User()
+                    {
+                        Name = "user5",
+                        Age = 24,
+                    } },
+                }
 
             });
             datas.Add(new DemoIO()

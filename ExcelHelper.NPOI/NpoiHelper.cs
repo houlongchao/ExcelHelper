@@ -1,4 +1,4 @@
-﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -7,6 +7,8 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Text.Json;
 
 namespace ExcelHelper.NPOI
 {
@@ -368,6 +370,25 @@ namespace ExcelHelper.NPOI
             return sheet.LastRowNum + 1;
         }
 
+        /// <summary>
+        /// 获取Sheet的总列数
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
+        public static int GetColumnCount(this ISheet sheet)
+        {
+            int maxCol = 0;
+            for (int i = sheet.FirstRowNum; i <= sheet.LastRowNum; i++)
+            {
+                var row = sheet.GetRow(i);
+                if (row != null && row.LastCellNum > maxCol)
+                {
+                    maxCol = row.LastCellNum;
+                }
+            }
+            return maxCol;
+        }
+
         #endregion
 
         #region Row Extensions
@@ -544,6 +565,11 @@ namespace ExcelHelper.NPOI
         /// <returns></returns>
         public static ICell SetValue(this ICell cell, object data)
         {
+            if (data == null)
+            {
+                return cell;
+            }
+
             if (data is DateTime dt)
             {
                 if (DateTime.MinValue != dt)
@@ -566,6 +592,14 @@ namespace ExcelHelper.NPOI
             else if (data is decimal dc)
             {
                 cell.SetValue((double)dc);
+            }
+            else if (data is string s)
+            {
+                cell.SetValue(s);
+            }
+            else if (data.GetType().ToString() == data.ToString())
+            {
+                return cell.SetValue(JsonSerializer.Serialize(data));
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -166,7 +166,7 @@ namespace ExcelHelper
             foreach (var property in properties)
             {
                 // 对象属性为IEnumerable<IDictionary>
-                if (typeof(IDictionary).IsAssignableFrom(property.PropertyType))
+                if (typeof(IDictionary).IsAssignableFrom(property.PropertyType) && exportSetting.IncludeProperties.Any(t => t.StartsWith($"{property.Name}.")))
                 {
                     var dictProperties = exportSetting.IncludeProperties.Where(t => t.StartsWith($"{property.Name}."));
                     foreach (var propName in dictProperties)

@@ -1,7 +1,8 @@
-﻿using Aspose.Cells;
+using Aspose.Cells;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace ExcelHelper.Aspose
 {
@@ -457,6 +458,11 @@ namespace ExcelHelper.Aspose
         /// <returns></returns>
         public static Cell SetValue(this Cell cell, object data)
         {
+            if (data == null)
+            {
+                return cell;
+            }
+
             if (data is DateTime dt)
             {
                 if (DateTime.MinValue != dt)
@@ -479,6 +485,14 @@ namespace ExcelHelper.Aspose
             else if (data is decimal dc)
             {
                 cell.SetValue((double)dc);
+            }
+            else if (data is string s)
+            {
+                cell.SetValue(s);
+            }
+            else if (data.GetType().ToString() == data.ToString())
+            {
+                return cell.SetValue(JsonSerializer.Serialize(data));
             }
             else
             {
